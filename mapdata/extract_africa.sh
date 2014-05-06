@@ -1,17 +1,22 @@
 #!/bin/sh
 
+# extract just African countries into subunits.json
 ogr2ogr \
     -f GeoJSON \
     -where "continent IN ('Africa')" \
     subunits.json \
     ne_110m_admin_0_countries.shp
 
+# convert to topojson (saves lots of space) and drop lots of properties
 topojson \
     --id-property 'iso_a2' \
     -p name=NAME \
     -p name \
     -o africa.json \
     subunits.json
+
+# make a readable version of the json
+cat africa.json | python -mjson.tool > africa.pp.json
 
 exit 0
 
