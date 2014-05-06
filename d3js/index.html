@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<style>
 
-	.subunit { fill: #eee; }
+	.country { fill: #eee; }
 
 	</style>
 	<!--
@@ -20,39 +20,88 @@
 <div id="map"></div>
 	<script>
 
-var margin = {top: 20, left: 20, bottom: 20, right: 20}
-  , width = parseInt(d3.select('#map').style('width'))
-  , width = (width - margin.left - margin.right) * 0.7
-  , mapRatio = 1.0
-  , height = width * mapRatio;
+	var config = {
+		'mapurl': 'africa.json',
+		'dataurl': 'africadata.json',
+	}
+
+	var margin = {top: 20, left: 20, bottom: 20, right: 20}
+		, width = parseInt(d3.select('#map').style('width'))
+		, width = (width - margin.left - margin.right) * 0.7
+		, mapRatio = 1.0
+		, height = width * mapRatio;
 
 	//var width = 960, height = 1160;
 	var adata = {
-		'ZA': 85,
-		'ZW': 34,
-		'MW': 56,
-		'EG': 37
-	}
+		'ZA': {
+			'water': 85,
+			'name': 'South Africa'
+		},
+		'ZW': {
+			'water': 34,
+			'name': 'Zimbabwe'
+		},
+		'MW': {
+			'water': 56,
+			'name': 'Malawi'
+		},
+		'EG': {
+			'water': 37,
+			'name': 'Egypt'
+		}
+	};
 
 	var projection = d3.geo.mercator().scale(width/2).translate([width/2, height/2]);
 	var path = d3.geo.path().projection(projection);
 
 	var svg = d3.select("#map").append("svg").attr("width", width).attr("height", height);
 
-	var color = d3.scale.threshold().domain([20, 40, 60, 80, 100])
-		.range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+	function pluck(anObject, key) {
+		range = []
+		for (var key in anObject) {
+			if (anObject.hasOwnProperty(key)) {
+				var obj = anObject[key]
+				for (var prop in obj) {
+					if (obj.hasOwnProperty(prop)) {
+						range.push(obj[prop]);
+					}
+				}
+			}
+		}
+		return range;
+	}
 
-	d3.json("africa.json", function(error, africa) {
+	queue()
+		.defer(d3.json, config.mapurl)
+		//.defer(d3.json, config.dataurl)
+		.await(loadedDataCallback);
+
+	function loadedDataCallback(error, africa) {
+		countries = topojson.feature(africa, africa.objects.subunits).features;
+
+		dataRange = d3.extent(pluck(adata, 'water'));
+		var colorScale = d3.scale.linear()
+			.domain(dataRange)
+			.interpolate(d3.interpolateRgb)
+			.range(["#ff5a00", "#47ff00"]);
+
 		svg.selectAll(".subunit")
-				.data(topojson.feature(africa, africa.objects.subunits).features)
-			.enter().append("path")
-				.attr("class", function(d) { return "subunit " + d.id; })
-				.style("fill", function(d) { return color(adata[d.id]); })
+			.data(countries)
+			.enter()
+				.append("path")
+				.attr("class", function(d) { return "country " + d.id; })
+				.style("fill", function(d) { 
+					if (adata.hasOwnProperty(d.id)) {
+						return colorScale(adata[d.id]['water']);
+					} else {
+						return '#eee';
+					}
+				})
 				.attr("d", path);
-	});
+	}
 
-	d3.json("africadata.json", function(error, africadata) {
-	});
+	//d3.json("africadata.json", function(error, africadata) {
+	//});
 
 	</script>
 </body>
