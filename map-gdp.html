@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8"/>
+  <title>GDP by country visualization</title>
+
+  <!-- Adding "maximum-scale=1" fixes the Mobile Safari auto-zoom bug: http://filamentgroup.com/examples/iosScaleBug/ -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <script src="/js/jquery-1.8.2.min.js"></script>
+  <script src="/js/jquery-jvectormap-1.2.2.min.js"></script>
+
+  
+    
+      <script src="/js/jquery-jvectormap-world-mill-en.js"></script>
+    
+      <script src="/js/gdp-data.js"></script>
+    
+  
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link rel="stylesheet" media="all" href="/css/jquery-jvectormap-1.2.2.css"/>
+  <link rel="stylesheet" media="all" href="/css/jquery-ui-1.8.22.custom.css"/>
+<!--
+  <script src="/js/css3-mediaqueries.js"></script>
+  <script src="/js/modernizr.js"></script>
+  <script src="/js/tabs.js"></script>
+
+  <link rel="stylesheet" media="all" href="/css/style.css"/>
+  <link rel="stylesheet" media="all" href="/css/lessframework.css"/>
+  <link rel="stylesheet" media="all" href="/css/skin.css"/>
+  <link rel="stylesheet" media="all" href="/css/syntax.css"/>
+  <link rel="stylesheet" media="all" href="/css/jsdoc.css"/>
+-->
+</head>
+<body lang="en">
+
+<header></header>
+
+<div id="main">
+	<article>
+		<h2>GDP by country</h2>
+
+		<div id="world-map-gdp" style="width:720px; height:400px"></div>
+
+		<script>
+$(function(){
+  $('#world-map-gdp').vectorMap({
+    map: 'world_mill_en',
+    series: {
+      regions: [{
+        values: gdpData,
+        scale: ['#C8EEFF', '#0071A4'],
+        normalizeFunction: 'polynomial'
+      }]
+    },
+    onLabelShow: function(e, el, code){
+      el.html(el.html()+' (GDP - '+gdpData[code]+')');
+    }
+  });
+});
+		</script>
+
+	</article>
+</div>
+
+<footer></footer>
+
+</body>
+</html>
