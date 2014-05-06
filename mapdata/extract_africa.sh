@@ -7,7 +7,7 @@ ogr2ogr \
     ne_110m_admin_0_countries.shp
 
 topojson \
-    --id-property SU_A3 \
+    --id-property 'iso_a2' \
     -p name=NAME \
     -p name \
     -o africa.json \
