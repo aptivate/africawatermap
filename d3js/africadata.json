@@ -1,0 +1,18 @@
+{
+	"ZA": {
+		"water": 85,
+		"name": "South Africa"
+	},
+	"ZW": {
+		"water": 34,
+		"name": "Zimbabwe"
+	},
+	"MW": {
+		"water": 56,
+		"name": "Malawi"
+	},
+	"EG": {
+		"water": 37,
+		"name": "Egypt"
+	}
+}

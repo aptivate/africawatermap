@@ -32,24 +32,6 @@
 		, height = width * mapRatio;
 
 	//var width = 960, height = 1160;
-	var adata = {
-		'ZA': {
-			'water': 85,
-			'name': 'South Africa'
-		},
-		'ZW': {
-			'water': 34,
-			'name': 'Zimbabwe'
-		},
-		'MW': {
-			'water': 56,
-			'name': 'Malawi'
-		},
-		'EG': {
-			'water': 37,
-			'name': 'Egypt'
-		}
-	};
 
 	var projection = d3.geo.mercator().scale(width/2).translate([width/2, height/2]);
 	var path = d3.geo.path().projection(projection);
@@ -73,13 +55,13 @@
 
 	queue()
 		.defer(d3.json, config.mapurl)
-		//.defer(d3.json, config.dataurl)
+		.defer(d3.json, config.dataurl)
 		.await(loadedDataCallback);
 
-	function loadedDataCallback(error, africa) {
+	function loadedDataCallback(error, africa, africadata) {
 		countries = topojson.feature(africa, africa.objects.subunits).features;
 
-		dataRange = d3.extent(pluck(adata, 'water'));
+		dataRange = d3.extent(pluck(africadata, 'water'));
 		var colorScale = d3.scale.linear()
 			.domain(dataRange)
 			.interpolate(d3.interpolateRgb)
@@ -97,7 +79,7 @@
 			.enter()
 				.append("path")
 				.attr("class", function(d) { return "country " + d.id; })
-				.style("fill", function(d) { return colorScaleOrDefault(adata, d.id, 'water'); })
+				.style("fill", function(d) { return colorScaleOrDefault(africadata, d.id, 'water'); })
 				.attr("d", path);
 	}
 
