@@ -4,35 +4,54 @@
 	<meta charset="utf-8">
 	<style>
 
-	/* CSS goes here. */
+	.subunit { fill: #eee; }
 
 	</style>
 	<!--
 	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/queue.v1.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	-->
 	<script src="http://d3js.org/d3.v3.js"></script>
+	<script src="http://d3js.org/queue.v1.js"></script>
 	<script src="http://d3js.org/topojson.v1.js"></script>
 </head>
 <body>
+<div id="map"></div>
 	<script>
 
-	var width = 960, height = 1160;
+var margin = {top: 20, left: 20, bottom: 20, right: 20}
+  , width = parseInt(d3.select('#map').style('width'))
+  , width = (width - margin.left - margin.right) * 0.7
+  , mapRatio = 1.0
+  , height = width * mapRatio;
 
-	var projection = d3.geo.mercator().scale(500).translate([width/2, height/2]);
+	//var width = 960, height = 1160;
+	var adata = {
+		'ZA': 85,
+		'ZW': 34,
+		'MW': 56,
+		'EG': 37
+	}
+
+	var projection = d3.geo.mercator().scale(width/2).translate([width/2, height/2]);
 	var path = d3.geo.path().projection(projection);
 
-	var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
+	var svg = d3.select("#map").append("svg").attr("width", width).attr("height", height);
+
+	var color = d3.scale.threshold().domain([20, 40, 60, 80, 100])
+		.range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
 
 	d3.json("africa.json", function(error, africa) {
-		//var subunits = topojson.feature(africa, africa.objects.subunits);
-
-		//svg.append("path").datum(subunits).attr("d", path);
 		svg.selectAll(".subunit")
 				.data(topojson.feature(africa, africa.objects.subunits).features)
 			.enter().append("path")
 				.attr("class", function(d) { return "subunit " + d.id; })
+				.style("fill", function(d) { return color(adata[d.id]); })
 				.attr("d", path);
+	});
+
+	d3.json("africadata.json", function(error, africadata) {
 	});
 
 	</script>
