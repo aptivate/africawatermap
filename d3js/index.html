@@ -84,19 +84,20 @@
 			.domain(dataRange)
 			.interpolate(d3.interpolateRgb)
 			.range(["#ff5a00", "#47ff00"]);
+		function colorScaleOrDefault(data, id, key) {
+			if (data.hasOwnProperty(id)) {
+				return colorScale(data[id][key]);
+			} else {
+				return '#eee';
+			}
+		}
 
 		svg.selectAll(".subunit")
 			.data(countries)
 			.enter()
 				.append("path")
 				.attr("class", function(d) { return "country " + d.id; })
-				.style("fill", function(d) { 
-					if (adata.hasOwnProperty(d.id)) {
-						return colorScale(adata[d.id]['water']);
-					} else {
-						return '#eee';
-					}
-				})
+				.style("fill", function(d) { return colorScaleOrDefault(adata, d.id, 'water'); })
 				.attr("d", path);
 	}
 
