@@ -1,5 +1,11 @@
 .country { fill: #eee; }
 
+.country-border {
+	fill: none;
+	stroke: #bbb;
+	stroke-linejoin: round;
+}
+
 .wrapper { width: 80%; margin: 5%; }
 
 .legend {

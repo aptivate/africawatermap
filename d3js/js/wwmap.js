@@ -21,7 +21,10 @@ function countryClicked(d) {
 }
 
 function wwmapLoadedDataCallback(error, africa, africadata) {
-	countries = topojson.feature(africa, africa.objects.subunits).features;
+	var countries = topojson.feature(africa, africa.objects.subunits).features;
+	var borders = topojson.mesh(africa, africa.objects.subunits,
+		function(a, b) { return true; });
+		//function(a, b) { return a !== b; });  // this leads to lake borders being omitted
 
 	//dataRange = d3.extent(pluck(africadata, 'water'));
 	colorScale = d3.scale.linear()
@@ -46,6 +49,11 @@ function wwmapLoadedDataCallback(error, africa, africadata) {
 			})
 			.attr("d", path)
 			.on("click", countryClicked);
+
+	svg.append("path")
+		.datum(borders)
+		.attr("d", path)
+		.attr("class", "country-border");
 
 	addLegend('Water stuff');
 }
