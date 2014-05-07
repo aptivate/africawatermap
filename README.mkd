@@ -1,0 +1,34 @@
+## Local Development Server
+
+Run the following commands in a terminal
+
+    cd path/to/d3js/
+    python -m SimpleHTTPServer 8008
+
+And then you view the page at http://localhost:8008/
+
+## Guide to Project Directory Layout
+
+The main code we're using is in the d3js/ directory.
+
+The map data we're using, along with a script to generate the json files
+we need is in the mapdata/ directory.
+
+An early implementation using the jvectormap library is in the
+jvectormap/ directory.
+
+## Running the map script
+
+**Only required for generating map data, not for running the web server**
+
+That requires the ogr2ogr and topojson commands.  The ogr2ogr command
+can be installed by running:
+
+    sudo apt-get install gdal-bin
+
+The topojson command can be installed by running
+
+    sudo npm install topojson -g
+
+npm is part of node - on Ubuntu 14.04 you just install the nodejs package,
+or [see this guide for older versions of Ubuntu](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#ubuntu-mint-elementary-os)
