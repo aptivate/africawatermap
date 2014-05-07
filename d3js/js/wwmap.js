@@ -15,7 +15,7 @@ function pluck(anObject, key) {
 	return range;
 }
 
-function loadedDataCallback(error, africa, africadata) {
+function wwmapLoadedDataCallback(error, africa, africadata) {
 	countries = topojson.feature(africa, africa.objects.subunits).features;
 
 	dataRange = d3.extent(pluck(africadata, 'water'));
@@ -57,8 +57,7 @@ function wwmap_init(config) {
 	queue()
 		.defer(d3.json, config.mapurl)
 		.defer(d3.json, config.dataurl)
-		.await(loadedDataCallback);
-
+		.await(wwmapLoadedDataCallback);
 
 	d3.select('#year-slider').call(
 		d3.slider().axis(true).min(config.minYear).max(config.maxYear));
