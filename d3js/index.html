@@ -2,11 +2,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<style>
-
-	.country { fill: #eee; }
-
-	</style>
+	<link href="/css/wwmap.css" rel="stylesheet"></link>
+	<link href="/css/d3.slider.css" rel="stylesheet"></link>
 	<!--
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/queue.v1.min.js"></script>
@@ -15,76 +12,24 @@
 	<script src="http://d3js.org/d3.v3.js"></script>
 	<script src="http://d3js.org/queue.v1.js"></script>
 	<script src="http://d3js.org/topojson.v1.js"></script>
+	<script src="/js/d3.slider.js"></script>
+	<script src="/js/wwmap.js"></script>
 </head>
 <body>
-<div id="map"></div>
+<div class="wrapper">
+	<div id="map"></div>
+	<div id="year-slider"></div>
+</div>
 	<script>
 
-	var config = {
-		'mapurl': 'africa.json',
-		'dataurl': 'africadata.json',
-	}
+var wwmap_config = {
+	'minYear': 1990,
+	'maxYear': 2030,
+	'mapurl': 'africa.json',
+	'dataurl': 'africadata.json',
+}
 
-	var margin = {top: 20, left: 20, bottom: 20, right: 20}
-		, width = parseInt(d3.select('#map').style('width'))
-		, width = (width - margin.left - margin.right) * 0.7
-		, mapRatio = 1.0
-		, height = width * mapRatio;
-
-	//var width = 960, height = 1160;
-
-	var projection = d3.geo.mercator().scale(width/2).translate([width/2, height/2]);
-	var path = d3.geo.path().projection(projection);
-
-	var svg = d3.select("#map").append("svg").attr("width", width).attr("height", height);
-
-	function pluck(anObject, key) {
-		range = []
-		for (var key in anObject) {
-			if (anObject.hasOwnProperty(key)) {
-				var obj = anObject[key]
-				for (var prop in obj) {
-					if (obj.hasOwnProperty(prop)) {
-						range.push(obj[prop]);
-					}
-				}
-			}
-		}
-		return range;
-	}
-
-	queue()
-		.defer(d3.json, config.mapurl)
-		.defer(d3.json, config.dataurl)
-		.await(loadedDataCallback);
-
-	function loadedDataCallback(error, africa, africadata) {
-		countries = topojson.feature(africa, africa.objects.subunits).features;
-
-		dataRange = d3.extent(pluck(africadata, 'water'));
-		var colorScale = d3.scale.linear()
-			.domain(dataRange)
-			.interpolate(d3.interpolateRgb)
-			.range(["#ff5a00", "#47ff00"]);
-		function colorScaleOrDefault(data, id, key) {
-			if (data.hasOwnProperty(id)) {
-				return colorScale(data[id][key]);
-			} else {
-				return '#eee';
-			}
-		}
-
-		svg.selectAll(".subunit")
-			.data(countries)
-			.enter()
-				.append("path")
-				.attr("class", function(d) { return "country " + d.id; })
-				.style("fill", function(d) { return colorScaleOrDefault(africadata, d.id, 'water'); })
-				.attr("d", path);
-	}
-
-	//d3.json("africadata.json", function(error, africadata) {
-	//});
+wwmap_init(wwmap_config);
 
 	</script>
 </body>
