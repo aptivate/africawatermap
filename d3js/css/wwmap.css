@@ -1,3 +1,11 @@
 .country { fill: #eee; }
 
 .wrapper { width: 80%; margin: 5%; }
+
+.legend {
+	background-color: #fff;
+	width: 300px;
+	height: 60px;
+	border: 1px solid #bbb;
+	margin: 10px;
+}

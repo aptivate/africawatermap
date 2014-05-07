@@ -1,4 +1,4 @@
-var margin, width, mapRatio, height, projection, path, svg;
+var margin, width, mapRatio, height, projection, path, svg, colorScale;
 
 function pluck(anObject, key) {
 	range = []
@@ -19,7 +19,7 @@ function wwmapLoadedDataCallback(error, africa, africadata) {
 	countries = topojson.feature(africa, africa.objects.subunits).features;
 
 	dataRange = d3.extent(pluck(africadata, 'water'));
-	var colorScale = d3.scale.linear()
+	colorScale = d3.scale.linear()
 		.domain(dataRange)
 		.interpolate(d3.interpolateRgb)
 		.range(["#ff5a00", "#47ff00"]);
@@ -38,6 +38,16 @@ function wwmapLoadedDataCallback(error, africa, africadata) {
 			.attr("class", function(d) { return "country " + d.id; })
 			.style("fill", function(d) { return colorScaleOrDefault(africadata, d.id, 'water'); })
 			.attr("d", path);
+
+	addLegend('Water stuff');
+}
+
+function addLegend(titleText) {
+	options = {
+		title: titleText,
+		fill: true
+	};
+	colorlegend("#map-legend", colorScale, "linear", options);
 }
 
 function wwmap_init(config) {
