@@ -1,4 +1,4 @@
-var path, svg, colorScale, wwmap_config, mapSlider;
+var path, svg, colorScale, wwmap_config, mapSlider, selectedCountry;
 
 function pluck(anObject, key) {
 	range = []
@@ -13,6 +13,11 @@ function pluck(anObject, key) {
 		}
 	}
 	return range;
+}
+
+function countryClicked(d) {
+	selectedCountry = d;
+	console.log('clicked on ' + d.properties.name + ' (code ' + d.id + ')');
 }
 
 function wwmapLoadedDataCallback(error, africa, africadata) {
@@ -39,7 +44,8 @@ function wwmapLoadedDataCallback(error, africa, africadata) {
 			.style("fill", function(d) {
 				return colorScaleOrDefault(africadata, d.id, 'water');
 			})
-			.attr("d", path);
+			.attr("d", path)
+			.on("click", countryClicked);
 
 	addLegend('Water stuff');
 }
