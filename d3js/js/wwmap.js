@@ -1,4 +1,5 @@
-var path, svg, colorScale, wwmap_config, mapSlider, selectedCountry;
+var path, svg, colorScale, wwmap_config, mapSlider, selectedCountry,
+	allData;
 
 function pluck(anObject, key) {
 	range = []
@@ -18,22 +19,63 @@ function pluck(anObject, key) {
 function countryClicked(d) {
 	selectedCountry = d;
 	console.log('clicked on ' + d.properties.name + ' (code ' + d.id + ')');
+	// TODO: make this show the line map
 }
 
-function wwmapLoadedDataCallback(error, africa, africadata) {
+function getYear() {
+	// TODO: get the year from the slider
+	return 2014;
+}
+
+function extractDataForSourceAndYear(dataset, datasource, year) {
+	// datasource should be "water" or "sanitation"
+	var yearData = {};
+	// cycle through the countries
+	for (var country_code in dataset) {
+		if (dataset.hasOwnProperty(country_code)) {
+			var country_data = dataset[country_code];
+			// now get "water" or "sanitation"
+			if (country_data.hasOwnProperty(datasource)) {
+				var datadict = country_data[datasource];
+				// now get the value for this year
+				if (datadict.hasOwnProperty(year.toString())) {
+					yearData[country_code] = datadict[year.toString()];
+				}
+			}
+		}
+	}
+	return yearData;
+}
+
+function extractAllYearDataForCountryAndSource(dataset, country_code, datasource) {
+	var allYearData = {};
+	// cycle through the countries
+	if (dataset.hasOwnProperty(country_code)) {
+		var country_data = dataset[country_code];
+		// now get "water" or "sanitation"
+		if (country_data.hasOwnProperty(datasource)) {
+			allYearData = country_data[datasource];
+		}
+	}
+	return allYearData;
+}
+
+function wwmapLoadedDataCallback(error, africa, dataset) {
+	allData = dataset;
 	var countries = topojson.feature(africa, africa.objects.subunits).features;
 	var borders = topojson.mesh(africa, africa.objects.subunits,
 		function(a, b) { return true; });
-		//function(a, b) { return a !== b; });  // this leads to lake borders being omitted
 
-	//dataRange = d3.extent(pluck(africadata, 'water'));
+	var yearData = extractDataForSourceAndYear(dataset, "water", getYear());
+
+	//dataRange = d3.extent(pluck(yearData, 'water'));
 	colorScale = d3.scale.linear()
 		.domain([0, 100])  //.domain(dataRange)
 		.interpolate(d3.interpolateRgb)
 		.range([wwmap_config.waterMinColor, wwmap_config.waterMaxColor]);
-	function colorScaleOrDefault(data, id, key) {
+	function colorScaleOrDefault(data, id) {
 		if (data.hasOwnProperty(id)) {
-			return colorScale(data[id][key]);
+			return colorScale(data[id]);
 		} else {
 			return wwmap_config.noDataColor;
 		}
@@ -45,7 +87,7 @@ function wwmapLoadedDataCallback(error, africa, africadata) {
 			.append("path")
 			.attr("class", function(d) { return "country " + d.id; })
 			.style("fill", function(d) {
-				return colorScaleOrDefault(africadata, d.id, 'water');
+				return colorScaleOrDefault(yearData, d.id);
 			})
 			.attr("d", path)
 			.on("click", countryClicked);
