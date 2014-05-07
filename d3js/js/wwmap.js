@@ -1,5 +1,4 @@
-var margin, width, mapRatio, height, projection, path, svg, colorScale,
-	wwmap_config;
+var path, svg, colorScale, wwmap_config, mapSlider;
 
 function pluck(anObject, key) {
 	range = []
@@ -55,15 +54,15 @@ function addLegend(titleText) {
 
 function wwmap_init(config) {
 	wwmap_config = config;
-	margin = {top: 20, left: 20, bottom: 20, right: 20};
-	width = parseInt(d3.select('#map').style('width'));
+	var margin = {top: 20, left: 20, bottom: 20, right: 20};
+	var width = parseInt(d3.select('#map').style('width'));
 	width = (width - margin.left - margin.right) * 0.7;
-	mapRatio = 1.0;
-	height = width * mapRatio;
+	var mapRatio = 1.0;
+	var height = width * mapRatio;
 
 	//var width = 960, height = 1160;
 
-	projection = d3.geo.mercator().scale(width/2).translate([width/2, height/2]);
+	var projection = d3.geo.mercator().scale(width/2).translate([width/2, height/2]);
 	path = d3.geo.path().projection(projection);
 
 	svg = d3.select("#map").append("svg").attr("width", width).attr("height", height);
@@ -73,6 +72,6 @@ function wwmap_init(config) {
 		.defer(d3.json, config.dataurl)
 		.await(wwmapLoadedDataCallback);
 
-	d3.select('#year-slider').call(
+	mapSlider = d3.select('#year-slider').call(
 		d3.slider().axis(true).min(config.minYear).max(config.maxYear));
 }
