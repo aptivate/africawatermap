@@ -26,14 +26,15 @@
 </div>
 	<script>
 
-var wwmap_config = {
-	'minYear': 1990,
-	'maxYear': 2030,
-	'mapurl': '/data/africa.json',
-	'dataurl': '/data/africadata.json',
-}
-
-wwmap_init(wwmap_config);
+wwmap_init({
+	minYear: 1990,
+	maxYear: 2030,
+	mapurl: '/data/africa.json',
+	dataurl: '/data/africadata.json',
+	waterMinColor: "#ff5a00",
+	waterMaxColor: "#47ff00",
+	noDataColor: "#eee"
+});
 
 	</script>
 </body>
