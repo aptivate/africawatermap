@@ -18,9 +18,9 @@ function pluck(anObject, key) {
 function wwmapLoadedDataCallback(error, africa, africadata) {
 	countries = topojson.feature(africa, africa.objects.subunits).features;
 
-	dataRange = d3.extent(pluck(africadata, 'water'));
+	//dataRange = d3.extent(pluck(africadata, 'water'));
 	colorScale = d3.scale.linear()
-		.domain(dataRange)
+		.domain([0, 100])  //.domain(dataRange)
 		.interpolate(d3.interpolateRgb)
 		.range([wwmap_config.waterMinColor, wwmap_config.waterMaxColor]);
 	function colorScaleOrDefault(data, id, key) {
