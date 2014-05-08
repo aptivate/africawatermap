@@ -1,5 +1,17 @@
 var path, svg, colorScale, wwmap_config, mapSlider, selectedCountry,
-	allData;
+	allData, ie8_or_less;
+
+function is_ie8_or_less() {
+	// return true if internet explorer, and version is 8 or less
+	var myNav = navigator.userAgent.toLowerCase();
+	if (myNav.indexOf('msie') != -1) {
+		var version = parseInt(myNav.split('msie')[1]);
+		if (version <= 8) {
+			return true;
+		}
+	}
+	return false;
+}
 
 function pluck(anObject, key) {
 	range = []
@@ -62,9 +74,14 @@ function extractAllYearDataForCountryAndSource(dataset, country_code, datasource
 
 function wwmapLoadedDataCallback(error, africa, dataset) {
 	allData = dataset;
-	var countries = topojson.feature(africa, africa.objects.subunits).features;
-	var borders = topojson.mesh(africa, africa.objects.subunits,
-		function(a, b) { return true; });
+	var countries, borders;
+	if (ie8_or_less) {
+		// TODO: do geojson version
+	} else {
+		 countries = topojson.feature(africa, africa.objects.subunits).features;
+		 borders = topojson.mesh(africa, africa.objects.subunits,
+			function(a, b) { return true; });
+	}
 
 	var yearData = extractDataForSourceAndYear(dataset, "water", getYear());
 
@@ -110,6 +127,8 @@ function addLegend(titleText) {
 
 function wwmap_init(config) {
 	wwmap_config = config;
+
+	ie8_or_less = is_ie8_or_less();
 	var margin = {top: 20, left: 20, bottom: 20, right: 20};
 	var width = parseInt(d3.select('#map').style('width'));
 	width = (width - margin.left - margin.right) * 0.7;
@@ -123,8 +142,9 @@ function wwmap_init(config) {
 
 	svg = d3.select("#map").append("svg").attr("width", width).attr("height", height);
 
+	mapurl = ie8_or_less ? config.mapurl_geojson : config.mapurl_topojson;
 	queue()
-		.defer(d3.json, config.mapurl)
+		.defer(d3.json, mapurl)
 		.defer(d3.json, config.dataurl)
 		.await(wwmapLoadedDataCallback);
 

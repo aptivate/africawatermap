@@ -31,18 +31,18 @@
 	<div><p>&nbsp;</p></div>
 	<div id="year-slider"></div>
 </div>
-	<script>
 
+<script>
 wwmap_init({
 	minYear: 1990,
 	maxYear: 2030,
-	mapurl: '/data/africa.json',
+	mapurl_topojson: '/data/africa_t.json',
+	mapurl_geojson: '/data/africa_g.json',
 	dataurl: '/data/waterdata.json',
 	waterMinColor: "#ff5a00",
 	waterMaxColor: "#47ff00",
 	noDataColor: "#eee"
 });
-
-	</script>
+</script>
 </body>
 </html>
