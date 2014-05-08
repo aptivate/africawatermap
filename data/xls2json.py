@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Convert the WashWatch spreadsheet into our JSON format
+
+Usage:
+    xls2json.py [--verbose] <xlsfile>
+    xls2json.py (-h | --help)
+
+Options:
+    -h --help       Show this screen
+    -v --verbose    Output verbose javascript
+"""
 
 # script to read in Excel spreadsheet and spit out the json format we
 # need
@@ -8,6 +19,8 @@ from __future__ import unicode_literals
 
 import json
 import sys
+
+from docopt import docopt
 import xlrd
 
 NAME_CODE = {
@@ -73,6 +86,23 @@ NAME_CODE = {
 CODE_NAME = dict([(v, k) for k, v in NAME_CODE.items()])
 
 
+# we want to limit the decimal precision of the percentage figures
+# from http://stackoverflow.com/a/1733105/3189
+class PrettyFloat(float):
+    def __repr__(self):
+        return '%.1f' % self
+
+
+def pretty_floats(obj):
+    if isinstance(obj, float):
+        return PrettyFloat(obj)
+    elif isinstance(obj, dict):
+        return dict((k, pretty_floats(v)) for k, v in obj.items())
+    elif isinstance(obj, (list, tuple)):
+        return map(pretty_floats, obj)
+    return obj
+
+
 def get_year_keys(sheet):
     """ extract the years from the first row of the sheet, returns a list
     of years as numbers """
@@ -125,19 +155,17 @@ def process_sheet(sheet):
 
 
 def main(argv):
-    if len(argv) < 2:
-        xls_filename = 'mapdata.xlsx'
-    else:
-        xls_filename = argv[1]
+    opts = docopt(__doc__, argv[1:])
 
-    final_dict = {}
-    book = xlrd.open_workbook(xls_filename)
+    book = xlrd.open_workbook(opts['<xlsfile>'])
     sheet_names = {
         'wat': 'water',
         'san': 'sanitation',
         'univwat': 'universal_water',
         'univsan': 'universal_sanitation',
     }
+
+    final_dict = {}
     for name in sheet_names:
         sheet = book.sheet_by_name(name)
         data = process_sheet(sheet)
@@ -148,7 +176,14 @@ def main(argv):
                 }
             final_dict[country_code][sheet_names[name]] = data[country_code]
 
-    print json.dumps(final_dict, indent=4, sort_keys=True)
+    # limit float precision when printed
+    final_dict = pretty_floats(final_dict)
+    if opts['--verbose']:
+        # pretty print the javascript
+        print json.dumps(final_dict, indent=4, sort_keys=True)
+    else:
+        # compressed javascript
+        print json.dumps(final_dict, separators=(',', ':'))
     return 0
 
 if __name__ == '__main__':
