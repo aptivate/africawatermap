@@ -129,18 +129,17 @@ function wwmap_init(config) {
 	wwmap_config = config;
 
 	ie8_or_less = is_ie8_or_less();
-	var margin = {top: 20, left: 20, bottom: 20, right: 20};
+	
 	var width = parseInt(d3.select('#map').style('width'));
-	width = (width - margin.left - margin.right) * 0.7;
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
 
 	//var width = 960, height = 1160;
 
-	var projection = d3.geo.mercator().scale(width/2).translate([width/2, height/2]);
+	var projection = d3.geo.mercator().scale(width/1.25).translate([width/4, height/2+10]);
 	path = d3.geo.path().projection(projection);
 
-	svg = d3.select("#map").append("svg").attr("width", width).attr("height", height);
+	svg = d3.select("#map").append("svg").attr("width", width).attr("height", height).attr("class", "map-svg");
 
 	mapurl = ie8_or_less ? config.mapurl_geojson : config.mapurl_topojson;
 	queue()
