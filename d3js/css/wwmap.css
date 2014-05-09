@@ -2,16 +2,40 @@
 
 .country-border {
 	fill: none;
-	stroke: #bbb;
+	stroke: #fff;
 	stroke-linejoin: round;
 }
 
-.wrapper { width: 80%; margin: 5%; }
+#map {
+	margin-top:5%;
+	margin-bottom:10%;
+	max-width:550px;
+}
+
+.wrapper { 
+	width: auto; 
+	display:block;
+	position:relative;
+	overflow:visible;
+	padding:5% 5% 10%;
+	}
+.wrapper {
+	border:5px solid #D3D3D4;
+	
+}
+
+.map-svg {
+	overflow:visible;
+}
 
 .legend {
 	background-color: #fff;
-	width: 300px;
+	width: 100%;
+	max-width:550px;
 	height: 60px;
 	border: 1px solid #bbb;
-	margin: 10px;
+}
+
+#year-slider {
+	max-width:550px;
 }
