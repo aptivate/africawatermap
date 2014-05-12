@@ -1,5 +1,5 @@
 var path, mapsvg, colorScale, wwmap_config, mapSlider, selectedCountry,
-	allData, ie8_or_less, tooltipdiv, selectedYear;
+	allData, ie8_or_less, tooltipdiv, selectedYear, countryInfo;
 
 function is_ie8_or_less() {
 	// return true if internet explorer, and version is 8 or less
@@ -31,13 +31,13 @@ function pluck(anObject, key) {
 function countryClicked(d) {
 	selectedCountry = d;
 	console.log('clicked on ' + d.properties.name + ' (code ' + d.id + ')');
+	plotAllYearData(d.id, "water");
 	// TODO: make this show the line map
 	// TODO: change border for this country - make thicker, change colour
 }
 
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id);
-	console.log('hover over ' + d.properties.name + ' (value ' + coverage + ')');
 	tooltipdiv.transition()
 		.duration(200)
 		.style("opacity", 0.9);
@@ -97,17 +97,64 @@ function extractDataForSourceAndYear(dataset, datasource, year) {
 	return yearData;
 }
 
-function extractAllYearDataForCountryAndSource(dataset, country_code, datasource) {
-	var allYearData = {};
+function extractAllYearDataForCountryAndSource(country_code, datasource) {
 	// cycle through the countries
-	if (dataset.hasOwnProperty(country_code)) {
-		var country_data = dataset[country_code];
+	if (allData.hasOwnProperty(country_code)) {
+		var country_data = allData[country_code];
 		// now get "water" or "sanitation"
 		if (country_data.hasOwnProperty(datasource)) {
-			allYearData = country_data[datasource];
+			return country_data[datasource];
 		}
 	}
-	return allYearData;
+	return {};
+}
+
+/* Expects a {"1990": 43.1, "1991": 43.7, ...}
+ * and will return [43.1, 43.7, ...]
+ */
+function convertAllYearDataToArray(dataset) {
+	var yearArray = [];
+	for (var year = wwmap_config.minYear; year <= wwmap_config.maxYear; year++) {
+		yearArray.push(dataset[year.toString()]);
+	}
+	return yearArray;
+}
+
+function plotAllYearData(country_code, datasource) {
+	var dataset = extractAllYearDataForCountryAndSource(country_code, datasource);
+	var dataSequence = convertAllYearDataToArray(dataset);
+	var margin = 20;
+	var y = d3.scale.linear()
+		.domain([0, 100])
+		.range([0 + margin, countryInfo.height - margin]);
+	var x = d3.scale.linear()
+		.domain([wwmap_config.minYear, wwmap_config.maxYear])
+		.range([0 + margin, countryInfo.width - margin]);
+
+	var vis = d3.select("#country-info")
+		.append("svg:svg")
+		.attr("width", countryInfo.width)
+		.attr("height", countryInfo.height);
+
+	var g = vis.append("svg:g")
+		.attr("transform", "translate(0, " + countryInfo.height.toString() + ")");
+
+	var line = d3.svg.line()
+		.x(function(d,i) { return x(i); })
+		.y(function(d) { return -1 * y(d); });
+
+	g.append("svg:path").attr("d", line(dataSequence));
+	// the axes
+	g.append("svg:line")
+		.attr("x1", x(wwmap_config.minYear))
+		.attr("y1", -1 * y(0))
+		.attr("x2", x(wwmap_config.maxYear))
+		.attr("y2", -1 * y(0));
+	g.append("svg:line")
+		.attr("x1", x(wwmap_config.minYear))
+		.attr("y1", -1 * y(0))
+		.attr("x2", x(wwmap_config.minYear))
+		.attr("y2", -1 * y(100));
 }
 
 function wwmapLoadedDataCallback(error, africa, dataset) {
@@ -179,6 +226,8 @@ function wwmap_init(config) {
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
 	if (ie8_or_less) { height = 500; width = 500;}
+
+	countryInfo = {height: 140, width: 240};
 
 	//var width = 960, height = 1160;
 

@@ -36,6 +36,19 @@
 	border: 1px solid #bbb;
 }
 
+#country-info path {
+	stroke: steelblue;
+	stroke-width: 2;
+	fill: none;
+}
+
+#country-info line { stroke: black; }
+
+#country-info text {
+	font-family: sans-serif;
+	font-size: 9pt;
+}
+
 div.tooltip {
 	position: absolute;
 	text-align: left;
