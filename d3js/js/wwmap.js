@@ -62,6 +62,13 @@ function getSource() {
 	return "water";
 }
 
+function getCountryName(country_code) {
+	if (allData.hasOwnProperty(country_code)) {
+		return allData[country_code]["name"];
+	}
+	return "unknown"
+}
+
 function valueForCountry(country_code) {
 	datasource = getSource();
 	year = getYear().toString();
@@ -131,8 +138,20 @@ function plotAllYearData(country_code, datasource) {
 		.domain([wwmap_config.minYear, wwmap_config.maxYear])
 		.range([0 + margin, countryInfo.width - margin]);
 
-	var vis = d3.select("#country-info")
-		.append("svg:svg")
+	// remove everything inside the country-info div
+	d3.select("#country-info").selectAll("*").remove();
+	// put title stuff in
+	var country_info = d3.select("#country-info");
+	country_info.append("h2")
+		.text(getCountryName(country_code));
+	country_info.append("p")
+		.text(valueForCountry(country_code).toString() +
+			  "% of people have access to water in " +
+			  getYear().toString());
+
+	// add the graph
+	var vis = country-info.append("svg:svg")
+		.attr("id", "country-info-graph")
 		.attr("width", countryInfo.width)
 		.attr("height", countryInfo.height);
 
@@ -143,6 +162,7 @@ function plotAllYearData(country_code, datasource) {
 		.x(function(d,i) { return x(i + wwmap_config.minYear); })
 		.y(function(d) { return -1 * y(d); });
 
+	// the plotted line
 	g.append("svg:path").attr("d", line(dataSequence));
 	// the axes
 	g.append("svg:line")
@@ -155,6 +175,42 @@ function plotAllYearData(country_code, datasource) {
 		.attr("y1", -1 * y(0))
 		.attr("x2", x(wwmap_config.minYear))
 		.attr("y2", -1 * y(100));
+
+	// the ticks on the axes
+	g.selectAll(".xLabel")
+		.data(wwmap_config.yearsOnGraph)
+		.enter().append("svg:text")
+		.attr("class", "xLabel")
+		.text(String)
+		.attr("x", function(d) { return x(d); })
+		.attr("y", 0)
+		.attr("text-anchor", "middle");
+	g.selectAll(".yLabel")
+		.data(y.ticks(3))
+		.enter().append("svg:text")
+		.attr("class", "yLabel")
+		.text(String)
+		.attr("x", 0)
+		.attr("y", function(d) { return -1 * y(d); })
+		.attr("text-anchor", "right")
+		.attr("dy", 4);
+
+	g.selectAll(".xTicks")
+		.data(wwmap_config.yearsOnGraph)
+		.enter().append("svg:line")
+		.attr("class", "xTicks")
+		.attr("x1", function(d) { return x(d); })
+		.attr("y1", -1 * y(0))
+		.attr("x2", function(d) { return x(d); })
+		.attr("y2", -1 * y(-5));
+	g.selectAll(".yTicks")
+		.data(y.ticks(3))
+		.enter().append("svg:line")
+		.attr("class", "yTicks")
+		.attr("x1", -1 * x(wwmap_config.minYear))
+		.attr("y1", function(d) { return -1 * y(d); })
+		.attr("x2", -1 * x(wwmap_config.minYear-3))
+		.attr("y2", function(d) { return -1 * y(d); });
 }
 
 function wwmapLoadedDataCallback(error, africa, dataset) {
@@ -204,6 +260,9 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 	}
 
 	addLegend('Water stuff');
+
+	// TODO: make this graph for all of Africa
+	plotAllYearData("ZA", "water");
 }
 
 function addLegend(titleText) {
