@@ -91,7 +91,7 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 	colorScale = d3.scale.linear()
 		.domain([0, 100])  //.domain(dataRange)
 		.interpolate(d3.interpolateRgb)
-		.range([wwmap_config.waterMinColor, wwmap_config.waterMaxColor]);
+		.range(wwmap_config.waterColorRange);
 	function colorScaleOrDefault(data, id) {
 		if (data.hasOwnProperty(id)) {
 			return colorScale(data[id]);
@@ -135,7 +135,6 @@ function wwmap_init(config) {
 	ie8_or_less = is_ie8_or_less();
 	
 	var width = parseInt(d3.select('#map').style('width'));
-	width = (width - margin.left - margin.right) * 0.7;
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
 	if (ie8_or_less) { height = 500; width = 500;}
