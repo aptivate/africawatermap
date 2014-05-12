@@ -1,3 +1,29 @@
+.wrapper {
+	width: auto;
+	display:block;
+	position:relative;
+	overflow:visible;
+	padding:5% 5% 10%;
+	}
+.wrapper {
+	border:5px solid #D3D3D4;
+}
+
+section.mainmap {
+	padding-right: 300px;
+	width:100%;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+aside.info {
+	position:absolute;
+	right:20px;
+	top:0;
+	width:300px;
+}
+
 .country { fill: #eee; }
 
 .country-border {
@@ -10,18 +36,6 @@
 	margin-top:5%;
 	margin-bottom:10%;
 	max-width:550px;
-}
-
-.wrapper { 
-	width: auto; 
-	display:block;
-	position:relative;
-	overflow:visible;
-	padding:5% 5% 10%;
-	}
-.wrapper {
-	border:5px solid #D3D3D4;
-	
 }
 
 .map-svg {
