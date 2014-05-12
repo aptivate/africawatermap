@@ -76,7 +76,9 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 	allData = dataset;
 	var countries, borders;
 	if (ie8_or_less) {
-		// TODO: do geojson version
+		countries = africa.features;
+		// TODO: do geojson version of borders
+		borders = null;
 	} else {
 		 countries = topojson.feature(africa, africa.objects.subunits).features;
 		 borders = topojson.mesh(africa, africa.objects.subunits,
@@ -109,10 +111,12 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 			.attr("d", path)
 			.on("click", countryClicked);
 
+	if (borders != null) {
 	svg.append("path")
 		.datum(borders)
 		.attr("d", path)
 		.attr("class", "country-border");
+	}
 
 	addLegend('Water stuff');
 }
@@ -131,8 +135,10 @@ function wwmap_init(config) {
 	ie8_or_less = is_ie8_or_less();
 	
 	var width = parseInt(d3.select('#map').style('width'));
+	width = (width - margin.left - margin.right) * 0.7;
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
+	if (ie8_or_less) { height = 500; width = 500;}
 
 	//var width = 960, height = 1160;
 
@@ -147,6 +153,8 @@ function wwmap_init(config) {
 		.defer(d3.json, config.dataurl)
 		.await(wwmapLoadedDataCallback);
 
+	if (!ie8_or_less) {
 	mapSlider = d3.select('#year-slider').call(
 		d3.slider().axis(true).min(config.minYear).max(config.maxYear));
+	}
 }
