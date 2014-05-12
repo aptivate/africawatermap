@@ -135,6 +135,14 @@ function convertAllYearDataToArray(dataset) {
 	return yearArray;
 }
 
+function addLegend(titleText) {
+	options = {
+		title: titleText,
+		fill: true
+	};
+	colorlegend("#map-legend", colorScale, "linear", options);
+}
+
 function plotAllYearData(country_code, datasource) {
 	var margin = 20;
 	var y = d3.scale.linear()
@@ -239,15 +247,9 @@ function plotAllYearData(country_code, datasource) {
 function wwmapLoadedDataCallback(error, africa, dataset) {
 	allData = dataset;
 	var countries, borders;
-	if (ie8_or_less) {
-		countries = africa.features;
-		// TODO: do geojson version of borders
-		borders = null;
-	} else {
-		 countries = topojson.feature(africa, africa.objects.subunits).features;
-		 borders = topojson.mesh(africa, africa.objects.subunits,
-			function(a, b) { return true; });
-	}
+	countries = topojson.feature(africa, africa.objects.subunits).features;
+	borders = topojson.mesh(africa, africa.objects.subunits,
+		function(a, b) { return true; });
 
 	var yearData = extractDataForSourceAndYear(dataset, "water", getYear());
 
@@ -275,25 +277,10 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 			.on("mouseover", hoverCountry)
 			.on("mouseout", unhoverCountry);
 
-	if (borders != null) {
 	mapsvg.append("path")
 		.datum(borders)
 		.attr("d", path)
 		.attr("class", "country-border");
-	}
-
-	addLegend('Water stuff');
-
-	// TODO: make this graph for all of Africa
-	plotAllYearData("ZA", "water");
-}
-
-function addLegend(titleText) {
-	options = {
-		title: titleText,
-		fill: true
-	};
-	colorlegend("#map-legend", colorScale, "linear", options);
 }
 
 function wwmap_init(config) {
@@ -305,7 +292,6 @@ function wwmap_init(config) {
 	var width = parseInt(d3.select('#map').style('width'));
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
-	if (ie8_or_less) { height = 500; width = 500;}
 
 	countryInfo = {height: 140, width: 240};
 
@@ -324,11 +310,15 @@ function wwmap_init(config) {
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 
-	mapurl = ie8_or_less ? config.mapurl_geojson : config.mapurl_topojson;
 	queue()
-		.defer(d3.json, mapurl)
+		.defer(d3.json, config.mapurl_topojson)
 		.defer(d3.json, config.dataurl)
 		.await(wwmapLoadedDataCallback);
+
+	addLegend('Water stuff');
+
+	// TODO: make this graph for all of Africa
+	plotAllYearData("ZA", "water");
 
 	d3.select("#year-slider-text")
 		.text(config.thisYear.toString());
