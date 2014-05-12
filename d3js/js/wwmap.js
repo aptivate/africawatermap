@@ -172,10 +172,8 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 
 	var yearData = extractDataForSourceAndYear(dataset, "water", getYear());
 
-	//dataRange = d3.extent(pluck(yearData, 'water'));
-	colorScale = d3.scale.linear()
-		.domain([0, 100])  //.domain(dataRange)
-		.interpolate(d3.interpolateRgb)
+	colorScale = d3.scale.threshold()
+		.domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 		.range(wwmap_config.waterColorRange);
 	function colorScaleOrDefault(data, id) {
 		if (data.hasOwnProperty(id)) {
