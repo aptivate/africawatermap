@@ -42,6 +42,8 @@
 	fill: none;
 }
 
+#country-info path.universal { stroke: orange; }
+
 #country-info line { stroke: black; }
 
 #country-info text {

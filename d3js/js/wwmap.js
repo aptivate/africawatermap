@@ -122,14 +122,14 @@ function extractAllYearDataForCountryAndSource(country_code, datasource) {
 function convertAllYearDataToArray(dataset) {
 	var yearArray = [];
 	for (var year = wwmap_config.minYear; year <= wwmap_config.maxYear; year++) {
-		yearArray.push(dataset[year.toString()]);
+		if (dataset.hasOwnProperty(year.toString())) {
+			yearArray.push(dataset[year.toString()]);
+		}
 	}
 	return yearArray;
 }
 
 function plotAllYearData(country_code, datasource) {
-	var dataset = extractAllYearDataForCountryAndSource(country_code, datasource);
-	var dataSequence = convertAllYearDataToArray(dataset);
 	var margin = 20;
 	var y = d3.scale.linear()
 		.domain([0, 100])
@@ -150,7 +150,7 @@ function plotAllYearData(country_code, datasource) {
 			  getYear().toString());
 
 	// add the graph
-	var vis = country-info.append("svg:svg")
+	var vis = country_info.append("svg:svg")
 		.attr("id", "country-info-graph")
 		.attr("width", countryInfo.width)
 		.attr("height", countryInfo.height);
@@ -162,8 +162,24 @@ function plotAllYearData(country_code, datasource) {
 		.x(function(d,i) { return x(i + wwmap_config.minYear); })
 		.y(function(d) { return -1 * y(d); });
 
-	// the plotted line
+	var line_to_univ = d3.svg.line()
+		.x(function(d,i) { return x(i + wwmap_config.thisYear); })
+		.y(function(d) { return -1 * y(d); });
+
+	// the plotted line for current projection
+	var dataset = extractAllYearDataForCountryAndSource(country_code, datasource);
+	var dataSequence = convertAllYearDataToArray(dataset);
 	g.append("svg:path").attr("d", line(dataSequence));
+	// the plotted line to achieve universal access
+	// but only plot it if we won't reach it anyway
+	if (dataset[wwmap_config.maxYear.toString()] < 99.9) {
+		dataset = extractAllYearDataForCountryAndSource(
+			country_code, "universal_" + datasource);
+		dataSequence = convertAllYearDataToArray(dataset);
+		g.append("svg:path")
+			.attr("d", line_to_univ(dataSequence))
+			.attr("class", "universal");
+	}
 	// the axes
 	g.append("svg:line")
 		.attr("x1", x(wwmap_config.minYear))
