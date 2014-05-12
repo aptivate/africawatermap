@@ -140,7 +140,7 @@ function plotAllYearData(country_code, datasource) {
 		.attr("transform", "translate(0, " + countryInfo.height.toString() + ")");
 
 	var line = d3.svg.line()
-		.x(function(d,i) { return x(i); })
+		.x(function(d,i) { return x(i + wwmap_config.minYear); })
 		.y(function(d) { return -1 * y(d); });
 
 	g.append("svg:path").attr("d", line(dataSequence));
