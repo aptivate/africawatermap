@@ -52,6 +52,12 @@ function unhoverCountry(d) {
 		.style("opacity", 0);
 }
 
+/* called by the slider */
+function setYear(ext, value) {
+	selectedYear = value;
+	d3.select("#year-slider-text").text(value.toString());
+}
+
 function getYear() {
 	// TODO: get the year from the slider
 	return selectedYear;
@@ -161,18 +167,19 @@ function plotAllYearData(country_code, datasource) {
 	var line = d3.svg.line()
 		.x(function(d,i) { return x(i + wwmap_config.minYear); })
 		.y(function(d) { return -1 * y(d); });
-
-	var line_to_univ = d3.svg.line()
-		.x(function(d,i) { return x(i + wwmap_config.thisYear); })
-		.y(function(d) { return -1 * y(d); });
-
 	// the plotted line for current projection
 	var dataset = extractAllYearDataForCountryAndSource(country_code, datasource);
 	var dataSequence = convertAllYearDataToArray(dataset);
 	g.append("svg:path").attr("d", line(dataSequence));
+
 	// the plotted line to achieve universal access
 	// but only plot it if we won't reach it anyway
 	if (dataset[wwmap_config.maxYear.toString()] < 99.9) {
+		// need a new line function to reflect that this starts at this
+		// year rather than a while ago
+		var line_to_univ = d3.svg.line()
+			.x(function(d,i) { return x(i + wwmap_config.thisYear); })
+			.y(function(d) { return -1 * y(d); });
 		dataset = extractAllYearDataForCountryAndSource(
 			country_code, "universal_" + datasource);
 		dataSequence = convertAllYearDataToArray(dataset);
@@ -323,8 +330,14 @@ function wwmap_init(config) {
 		.defer(d3.json, config.dataurl)
 		.await(wwmapLoadedDataCallback);
 
-	if (!ie8_or_less) {
+	d3.select("#year-slider-text")
+		.text(config.thisYear.toString());
 	mapSlider = d3.select('#year-slider').call(
-		d3.slider().axis(true).min(config.minYear).max(config.maxYear));
-	}
+		d3.slider()
+			.axis(true)
+			.min(config.minYear)
+			.max(config.maxYear)
+			.step(1)
+			.value(config.thisYear)
+			.on("slide", setYear));
 }
