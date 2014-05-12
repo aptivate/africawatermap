@@ -1,5 +1,7 @@
-var path, mapsvg, colorScale, wwmap_config, mapSlider, selectedCountry,
-	allData, ie8_or_less, tooltipdiv, selectedYear, countryInfo;
+var wwmap_config, allData, ie8_or_less,
+	countryInfo,
+	selectedCountry, selectedYear, selectedSource,
+	path, mapsvg, colorScale, mapSlider, tooltipdiv;
 
 function is_ie8_or_less() {
 	// return true if internet explorer, and version is 8 or less
@@ -29,15 +31,16 @@ function pluck(anObject, key) {
 }
 
 function countryClicked(d) {
-	selectedCountry = d;
+	selectedCountry = d.id;
 	console.log('clicked on ' + d.properties.name + ' (code ' + d.id + ')');
-	plotAllYearData(d.id, "water");
+	plotAllYearData();
 	// TODO: make this show the line map
 	// TODO: change border for this country - make thicker, change colour
 }
 
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id);
+	if (coverage == null) { return; }
 	tooltipdiv.transition()
 		.duration(200)
 		.style("opacity", 0.9);
@@ -52,10 +55,17 @@ function unhoverCountry(d) {
 		.style("opacity", 0);
 }
 
+/* update everything that varies by year */
+function updateDisplayForYear() {
+	d3.select("#year-slider-text").text(selectedYear.toString());
+	setCountryInfoAccessText();
+	updateMapColors();
+}
+
 /* called by the slider */
 function setYear(ext, value) {
 	selectedYear = value;
-	d3.select("#year-slider-text").text(value.toString());
+	updateDisplayForYear();
 }
 
 function getYear() {
@@ -90,13 +100,15 @@ function valueForCountry(country_code) {
 	return null;
 }
 
-function extractDataForSourceAndYear(dataset, datasource, year) {
+function extractDataForSourceAndYear() {
+	datasource = getSource();
+	year = getYear();
 	// datasource should be "water" or "sanitation"
 	var yearData = {};
 	// cycle through the countries
-	for (var country_code in dataset) {
-		if (dataset.hasOwnProperty(country_code)) {
-			var country_data = dataset[country_code];
+	for (var country_code in allData) {
+		if (allData.hasOwnProperty(country_code)) {
+			var country_data = allData[country_code];
 			// now get "water" or "sanitation"
 			if (country_data.hasOwnProperty(datasource)) {
 				var datadict = country_data[datasource];
@@ -143,7 +155,14 @@ function addLegend(titleText) {
 	colorlegend("#map-legend", colorScale, "linear", options);
 }
 
-function plotAllYearData(country_code, datasource) {
+function setCountryInfoAccessText() {
+	d3.select("#country-info-access-text")
+		.text(valueForCountry(selectedCountry).toString() +
+			"% of people have access to water in " +
+			getYear().toString());
+}
+
+function plotAllYearData() {
 	var margin = 20;
 	var y = d3.scale.linear()
 		.domain([0, 100])
@@ -157,11 +176,10 @@ function plotAllYearData(country_code, datasource) {
 	// put title stuff in
 	var country_info = d3.select("#country-info");
 	country_info.append("h2")
-		.text(getCountryName(country_code));
+		.text(getCountryName(selectedCountry));
 	country_info.append("p")
-		.text(valueForCountry(country_code).toString() +
-			  "% of people have access to water in " +
-			  getYear().toString());
+		.attr("id", "country-info-access-text");
+	setCountryInfoAccessText();
 
 	// add the graph
 	var vis = country_info.append("svg:svg")
@@ -176,7 +194,7 @@ function plotAllYearData(country_code, datasource) {
 		.x(function(d,i) { return x(i + wwmap_config.minYear); })
 		.y(function(d) { return -1 * y(d); });
 	// the plotted line for current projection
-	var dataset = extractAllYearDataForCountryAndSource(country_code, datasource);
+	var dataset = extractAllYearDataForCountryAndSource(selectedCountry, selectedSource);
 	var dataSequence = convertAllYearDataToArray(dataset);
 	g.append("svg:path").attr("d", line(dataSequence));
 
@@ -189,7 +207,7 @@ function plotAllYearData(country_code, datasource) {
 			.x(function(d,i) { return x(i + wwmap_config.thisYear); })
 			.y(function(d) { return -1 * y(d); });
 		dataset = extractAllYearDataForCountryAndSource(
-			country_code, "universal_" + datasource);
+			selectedCountry, "universal_" + selectedSource);
 		dataSequence = convertAllYearDataToArray(dataset);
 		g.append("svg:path")
 			.attr("d", line_to_univ(dataSequence))
@@ -244,49 +262,62 @@ function plotAllYearData(country_code, datasource) {
 		.attr("y2", function(d) { return -1 * y(d); });
 }
 
+function colorScaleOrDefault(data, id) {
+	if (data.hasOwnProperty(id)) {
+		return colorScale(data[id]);
+	} else {
+		return wwmap_config.noDataColor;
+	}
+}
+
+function updateMapColors() {
+	var yearData = extractDataForSourceAndYear();
+	mapsvg.selectAll(".country")
+		.style("fill", function(d) {
+			return colorScaleOrDefault(yearData, d.id);
+		})
+}
+
 function wwmapLoadedDataCallback(error, africa, dataset) {
 	allData = dataset;
-	var countries, borders;
-	countries = topojson.feature(africa, africa.objects.subunits).features;
-	borders = topojson.mesh(africa, africa.objects.subunits,
+	var countries = topojson.feature(africa, africa.objects.subunits).features;
+	var borders = topojson.mesh(africa, africa.objects.subunits,
 		function(a, b) { return true; });
 
-	var yearData = extractDataForSourceAndYear(dataset, "water", getYear());
-
 	colorScale = d3.scale.threshold()
-		.domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+		.domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 101])
 		.range(wwmap_config.waterColorRange);
-	function colorScaleOrDefault(data, id) {
-		if (data.hasOwnProperty(id)) {
-			return colorScale(data[id]);
-		} else {
-			return wwmap_config.noDataColor;
-		}
-	}
 
+	var yearData = extractDataForSourceAndYear();
 	mapsvg.selectAll(".subunit")
 		.data(countries)
 		.enter()
 			.append("path")
-			.attr("class", function(d) { return "country " + d.id; })
-			.style("fill", function(d) {
-				return colorScaleOrDefault(yearData, d.id);
-			})
 			.attr("d", path)
+			.attr("class", function(d) { return "country " + d.id; })
 			.on("click", countryClicked)
 			.on("mouseover", hoverCountry)
 			.on("mouseout", unhoverCountry);
+
+	updateMapColors();
 
 	mapsvg.append("path")
 		.datum(borders)
 		.attr("d", path)
 		.attr("class", "country-border");
+
+	addLegend('Water stuff');
+
+	// TODO: make this graph for all of Africa
+	plotAllYearData();
 }
 
 function wwmap_init(config) {
 	wwmap_config = config;
 
 	ie8_or_less = is_ie8_or_less();
+	selectedCountry = "ZA";
+	selectedSource = "water";
 	selectedYear = 2014;
 
 	var width = parseInt(d3.select('#map').style('width'));
@@ -314,11 +345,6 @@ function wwmap_init(config) {
 		.defer(d3.json, config.mapurl_topojson)
 		.defer(d3.json, config.dataurl)
 		.await(wwmapLoadedDataCallback);
-
-	addLegend('Water stuff');
-
-	// TODO: make this graph for all of Africa
-	plotAllYearData("ZA", "water");
 
 	d3.select("#year-slider-text")
 		.text(config.thisYear.toString());
