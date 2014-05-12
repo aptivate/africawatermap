@@ -1,3 +1,5 @@
+var wwMap = (function() {
+
 var wwmap_config, allData, ie8_or_less,
 	countryInfo,
 	selectedCountry, selectedYear, selectedSource,
@@ -357,3 +359,7 @@ function wwmap_init(config) {
 			.value(config.thisYear)
 			.on("slide", setYear));
 }
+
+return {wwmap_init: wwmap_init};
+
+})();
