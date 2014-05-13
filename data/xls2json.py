@@ -72,6 +72,7 @@ NAME_CODE = {
     "Somalia": "SO",
     "South Africa": "ZA",
     "South Sudan": "SS",
+    "Sub-Saharan Africa": "Africa",
     "Sudan": "SD",
     "Swaziland": "SW",
     "Togo": "TG",
