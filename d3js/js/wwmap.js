@@ -98,6 +98,7 @@ function setSource(source) {
 	// update everything that varies by source
 	setCountryInfoAccessText();
 	updateMapColors();
+	plotAllYearData();
 }
 
 function getCountryName(country_code) {
