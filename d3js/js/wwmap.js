@@ -61,17 +61,25 @@ function updateSliderYear() {
 	d3.select("a.d3-slider-handle").text(selectedYear.toString());
 }
 
-/* update everything that varies by year */
-function updateDisplayForYear() {
-	updateSliderYear();
-	setCountryInfoAccessText();
-	updateMapColors();
+function updateColorScale() {
+	var colorRange;
+	if (selectedSource == "water") {
+		colorRange = config.waterColorRange;
+	} else {
+		colorRange = config.sanitationColorRange;
+	}
+	colorScale = d3.scale.threshold()
+		.domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 101])
+		.range(colorRange);
 }
 
 /* called by the slider */
 function setYear(ext, value) {
 	selectedYear = value;
-	updateDisplayForYear();
+	// update everything that varies by year
+	updateSliderYear();
+	setCountryInfoAccessText();
+	updateMapColors();
 }
 
 function getYear() {
@@ -79,9 +87,11 @@ function getYear() {
 	return selectedYear;
 }
 
-function getSource() {
-	// TODO: get the year from the slider
-	return "water";
+function setSource(source) {
+	selectedSource = source;
+	// update everything that varies by source
+	setCountryInfoAccessText();
+	updateMapColors();
 }
 
 function getCountryName(country_code) {
@@ -92,13 +102,12 @@ function getCountryName(country_code) {
 }
 
 function valueForCountry(country_code) {
-	datasource = getSource();
 	year = getYear().toString();
 	if (allData.hasOwnProperty(country_code)) {
 		// now get "water" or "sanitation"
-		if (allData[country_code].hasOwnProperty(datasource)) {
-			if (allData[country_code][datasource].hasOwnProperty(year)) {
-				return allData[country_code][datasource][year];
+		if (allData[country_code].hasOwnProperty(selectedSource)) {
+			if (allData[country_code][selectedSource].hasOwnProperty(year)) {
+				return allData[country_code][selectedSource][year];
 			}
 		}
 	}
@@ -107,17 +116,16 @@ function valueForCountry(country_code) {
 }
 
 function extractDataForSourceAndYear() {
-	datasource = getSource();
 	year = getYear();
-	// datasource should be "water" or "sanitation"
+	// selectedSource should be "water" or "sanitation"
 	var yearData = {};
 	// cycle through the countries
 	for (var country_code in allData) {
 		if (allData.hasOwnProperty(country_code)) {
 			var country_data = allData[country_code];
 			// now get "water" or "sanitation"
-			if (country_data.hasOwnProperty(datasource)) {
-				var datadict = country_data[datasource];
+			if (country_data.hasOwnProperty(selectedSource)) {
+				var datadict = country_data[selectedSource];
 				// now get the value for this year
 				if (datadict.hasOwnProperty(year.toString())) {
 					yearData[country_code] = datadict[year.toString()];
@@ -164,7 +172,7 @@ function addLegend(titleText) {
 function setCountryInfoAccessText() {
 	d3.select("#country-info-access-text")
 		.text(valueForCountry(selectedCountry).toString() +
-			"% of people have access to water in " +
+			"% of people have access to " + selectedSource + " in " +
 			getYear().toString());
 }
 
@@ -290,9 +298,7 @@ function loadedDataCallback(error, africa, dataset) {
 	var borders = topojson.mesh(africa, africa.objects.subunits,
 		function(a, b) { return true; });
 
-	colorScale = d3.scale.threshold()
-		.domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 101])
-		.range(config.waterColorRange);
+	updateColorScale();
 
 	var yearData = extractDataForSourceAndYear();
 	mapsvg.selectAll(".subunit")
@@ -338,6 +344,20 @@ function init(mapconfig) {
 		.scale(width/1.25)
 		.translate([width/4, height/2+10]);
 	path = d3.geo.path().projection(projection);
+
+	var mapdiv = d3.select("#map").append("div");
+	mapdiv.append("a")
+		.attr("href", "#")
+		.attr("id", "water")
+		.attr("class", "source currentsource")
+		.text("Water")
+		.on("click", function(d) { setSource("water"); });
+	mapdiv.append("a")
+		.attr("href", "#")
+		.attr("id", "sanitation")
+		.attr("class", "source")
+		.text("Sanitation")
+		.on("click", function(d) { setSource("sanitation"); });
 
 	mapsvg = d3.select("#map").append("svg")
 		.attr("width", width)
