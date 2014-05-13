@@ -32,11 +32,23 @@ function pluck(anObject, key) {
 	return range;
 }
 
+function isDataForCountry(country_code) {
+	if (allData.hasOwnProperty(country_code)) {
+		if (allData[country_code].hasOwnProperty(selectedSource + "_initial") &&
+		    allData[country_code].hasOwnProperty(selectedSource + "_increase")) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function countryClicked(d) {
-	selectedCountry = d.id;
-	console.log('clicked on ' + d.properties.name + ' (code ' + d.id + ')');
-	plotAllYearData();
-	// TODO: change border for this country - make thicker, change colour
+	// don't select countries we don't have data for
+	if (isDataForCountry(d.id)) {
+		selectedCountry = d.id;
+		plotAllYearData();
+		// TODO: change border for this country - make thicker, change colour
+	}
 }
 
 function hoverCountry(d) {
@@ -96,16 +108,12 @@ function getCountryName(country_code) {
 }
 
 function valueForCountry(country_code, year) {
-	if (allData.hasOwnProperty(country_code)) {
-		// now get "water" or "sanitation"
-		if (allData[country_code].hasOwnProperty(selectedSource + "_initial") &&
-		    allData[country_code].hasOwnProperty(selectedSource + "_increase")) {
-			var initial = allData[country_code][selectedSource + "_initial"];
-			var increase = allData[country_code][selectedSource + "_increase"];
-			var numYears = year - config.minYear;
-			// don't return a value > 100
-			return Math.min(100, initial + (numYears * increase));
-		}
+	if (isDataForCountry(country_code)) {
+		var initial = allData[country_code][selectedSource + "_initial"];
+		var increase = allData[country_code][selectedSource + "_increase"];
+		var numYears = year - config.minYear;
+		// don't return a value > 100
+		return Math.min(100, initial + (numYears * increase));
 	}
 	// catch all exit
 	return null;
@@ -113,17 +121,13 @@ function valueForCountry(country_code, year) {
 
 /* finds the year when the percent = 100 */
 function findYear100(country_code) {
-	if (allData.hasOwnProperty(country_code)) {
-		// now get "water" or "sanitation"
-		if (allData[country_code].hasOwnProperty(selectedSource + "_initial") &&
-		    allData[country_code].hasOwnProperty(selectedSource + "_increase")) {
-			var initial = allData[country_code][selectedSource + "_initial"];
-			var increase = allData[country_code][selectedSource + "_increase"];
-			if (increase <= 0) {
-				return null;
-			}
-			return Math.round((100 - initial) / increase) + config.minYear;
+	if (isDataForCountry(country_code)) {
+		var initial = allData[country_code][selectedSource + "_initial"];
+		var increase = allData[country_code][selectedSource + "_increase"];
+		if (increase <= 0) {
+			return null;
 		}
+		return Math.round((100 - initial) / increase) + config.minYear;
 	}
 	return null;
 }
