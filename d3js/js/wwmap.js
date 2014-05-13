@@ -36,7 +36,6 @@ function countryClicked(d) {
 	selectedCountry = d.id;
 	console.log('clicked on ' + d.properties.name + ' (code ' + d.id + ')');
 	plotAllYearData();
-	// TODO: make this show the line map
 	// TODO: change border for this country - make thicker, change colour
 }
 
@@ -46,7 +45,7 @@ function hoverCountry(d) {
 	tooltipdiv.transition()
 		.duration(200)
 		.style("opacity", 0.9);
-	tooltipdiv.html(d.properties.name + "<br />" + coverage.toString() + "%")
+	tooltipdiv.html(d.properties.name + "<br />" + coverage.toFixed(1) + "%")
 		.style("left", (d3.event.pageX) + "px")
 		.style("top", (d3.event.pageY - 28) + "px");
 }
@@ -167,7 +166,7 @@ function addLegend(titleText) {
 
 function setCountryInfoAccessText() {
 	d3.select("#country-info-access-text")
-		.text(valueForCountry(selectedCountry, selectedYear).toString() +
+		.text(valueForCountry(selectedCountry, selectedYear).toFixed(1) +
 			"% of people have access to " + selectedSource + " in " +
 			selectedYear.toString());
 }
