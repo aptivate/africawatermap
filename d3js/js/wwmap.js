@@ -345,18 +345,9 @@ function init(mapconfig) {
 		.translate([width/4, height/2+10]);
 	path = d3.geo.path().projection(projection);
 
-	var mapdiv = d3.select("#map").append("div");
-	mapdiv.append("a")
-		.attr("href", "#")
-		.attr("id", "water")
-		.attr("class", "source currentsource")
-		.text("Water")
+	d3.select("#select-water-source")
 		.on("click", function(d) { setSource("water"); });
-	mapdiv.append("a")
-		.attr("href", "#")
-		.attr("id", "sanitation")
-		.attr("class", "source")
-		.text("Sanitation")
+	d3.select("#select-sanitation-source")
 		.on("click", function(d) { setSource("sanitation"); });
 
 	mapsvg = d3.select("#map").append("svg")
