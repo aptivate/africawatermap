@@ -112,6 +112,23 @@ function valueForCountry(country_code, year) {
 	return null;
 }
 
+/* finds the year when the percent = 100 */
+function findYear100(country_code) {
+	if (allData.hasOwnProperty(country_code)) {
+		// now get "water" or "sanitation"
+		if (allData[country_code].hasOwnProperty(selectedSource + "_initial") &&
+		    allData[country_code].hasOwnProperty(selectedSource + "_increase")) {
+			var initial = allData[country_code][selectedSource + "_initial"];
+			var increase = allData[country_code][selectedSource + "_increase"];
+			if (increase <= 0) {
+				return null;
+			}
+			return Math.round((100 - initial) / increase) + config.minYear;
+		}
+	}
+	return null;
+}
+
 function extractDataForSourceAndYear() {
 	// selectedSource should be "water" or "sanitation"
 	var yearData = {};
@@ -195,17 +212,33 @@ function plotAllYearData() {
 		.attr("x2", x(config.thisYear))
 		.attr("y2", -1 * y(thisYearValue));
 
-	// TODO: handle 100% before maxYear
-	g.append("svg:line")
-		.attr("class", "projection")
-		.attr("x1", x(config.thisYear))
-		.attr("y1", -1 * y(thisYearValue))
-		.attr("x2", x(config.maxYear))
-		.attr("y2", -1 * y(maxYearValue));
+	if (maxYearValue > 99.9) {
+		// handle the case where we hit 100% before maxYear
+		var year100 = findYear100(selectedCountry);
+		g.append("svg:line")
+			.attr("class", "projection")
+			.attr("x1", x(config.thisYear))
+			.attr("y1", -1 * y(thisYearValue))
+			.attr("x2", x(year100))
+			.attr("y2", -1 * y(100));
 
-	// the plotted line to achieve universal access
-	// but only plot it if we won't reach it anyway
-	if (maxYearValue < 99.9) {
+		g.append("svg:line")
+			.attr("class", "projection")
+			.attr("x1", x(year100))
+			.attr("y1", -1 * y(100))
+			.attr("x2", x(config.maxYear))
+			.attr("y2", -1 * y(100));
+
+	} else {
+		g.append("svg:line")
+			.attr("class", "projection")
+			.attr("x1", x(config.thisYear))
+			.attr("y1", -1 * y(thisYearValue))
+			.attr("x2", x(config.maxYear))
+			.attr("y2", -1 * y(maxYearValue));
+
+		// the plotted line to achieve universal access
+		// but only plot it if we won't reach it anyway
 		g.append("svg:line")
 			.attr("class", "universal")
 			.attr("x1", x(config.thisYear))
