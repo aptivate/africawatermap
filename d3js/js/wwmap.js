@@ -351,7 +351,7 @@ function init(mapconfig) {
 	config = mapconfig;
 
 	ie8_or_less = is_ie8_or_less();
-	selectedCountry = "ZA";
+	selectedCountry = "Africa";
 	selectedSource = "water";
 	selectedYear = config.thisYear;
 
