@@ -57,9 +57,13 @@ function unhoverCountry(d) {
 		.style("opacity", 0);
 }
 
+function updateSliderYear() {
+	d3.select("a.d3-slider-handle").text(selectedYear.toString());
+}
+
 /* update everything that varies by year */
 function updateDisplayForYear() {
-	d3.select("#year-slider-text").text(selectedYear.toString());
+	updateSliderYear();
 	setCountryInfoAccessText();
 	updateMapColors();
 }
@@ -320,7 +324,7 @@ function init(mapconfig) {
 	ie8_or_less = is_ie8_or_less();
 	selectedCountry = "ZA";
 	selectedSource = "water";
-	selectedYear = 2014;
+	selectedYear = config.thisYear;
 
 	var width = parseInt(d3.select('#map').style('width'));
 	var mapRatio = 1.0;
@@ -348,16 +352,15 @@ function init(mapconfig) {
 		.defer(d3.json, config.dataurl)
 		.await(loadedDataCallback);
 
-	d3.select("#year-slider-text")
-		.text(config.thisYear.toString());
 	mapSlider = d3.select('#year-slider').call(
 		d3.slider()
 			.axis(true)
 			.min(config.minYear)
 			.max(config.maxYear)
 			.step(1)
-			.value(config.thisYear)
+			.value(selectedYear)
 			.on("slide", setYear));
+	updateSliderYear();
 }
 
 return {init: init};
