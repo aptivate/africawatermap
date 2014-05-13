@@ -24,6 +24,10 @@ aside.info {
 	width:300px;
 }
 
+section.year-slider-section {
+	width:95%;
+}
+
 .country { fill: #eee; }
 
 .country-border {
