@@ -1,6 +1,6 @@
 var wwMap = (function() {
 
-var wwmap_config, allData, ie8_or_less,
+var config, allData, ie8_or_less,
 	countryInfo,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv;
@@ -141,7 +141,7 @@ function extractAllYearDataForCountryAndSource(country_code, datasource) {
  */
 function convertAllYearDataToArray(dataset) {
 	var yearArray = [];
-	for (var year = wwmap_config.minYear; year <= wwmap_config.maxYear; year++) {
+	for (var year = config.minYear; year <= config.maxYear; year++) {
 		if (dataset.hasOwnProperty(year.toString())) {
 			yearArray.push(dataset[year.toString()]);
 		}
@@ -170,7 +170,7 @@ function plotAllYearData() {
 		.domain([0, 100])
 		.range([0 + margin, countryInfo.height - margin]);
 	var x = d3.scale.linear()
-		.domain([wwmap_config.minYear, wwmap_config.maxYear])
+		.domain([config.minYear, config.maxYear])
 		.range([0 + margin, countryInfo.width - margin]);
 
 	// remove everything inside the country-info div
@@ -193,7 +193,7 @@ function plotAllYearData() {
 		.attr("transform", "translate(0, " + countryInfo.height.toString() + ")");
 
 	var line = d3.svg.line()
-		.x(function(d,i) { return x(i + wwmap_config.minYear); })
+		.x(function(d,i) { return x(i + config.minYear); })
 		.y(function(d) { return -1 * y(d); });
 	// the plotted line for current projection
 	var dataset = extractAllYearDataForCountryAndSource(selectedCountry, selectedSource);
@@ -202,11 +202,11 @@ function plotAllYearData() {
 
 	// the plotted line to achieve universal access
 	// but only plot it if we won't reach it anyway
-	if (dataset[wwmap_config.maxYear.toString()] < 99.9) {
+	if (dataset[config.maxYear.toString()] < 99.9) {
 		// need a new line function to reflect that this starts at this
 		// year rather than a while ago
 		var line_to_univ = d3.svg.line()
-			.x(function(d,i) { return x(i + wwmap_config.thisYear); })
+			.x(function(d,i) { return x(i + config.thisYear); })
 			.y(function(d) { return -1 * y(d); });
 		dataset = extractAllYearDataForCountryAndSource(
 			selectedCountry, "universal_" + selectedSource);
@@ -217,19 +217,19 @@ function plotAllYearData() {
 	}
 	// the axes
 	g.append("svg:line")
-		.attr("x1", x(wwmap_config.minYear))
+		.attr("x1", x(config.minYear))
 		.attr("y1", -1 * y(0))
-		.attr("x2", x(wwmap_config.maxYear))
+		.attr("x2", x(config.maxYear))
 		.attr("y2", -1 * y(0));
 	g.append("svg:line")
-		.attr("x1", x(wwmap_config.minYear))
+		.attr("x1", x(config.minYear))
 		.attr("y1", -1 * y(0))
-		.attr("x2", x(wwmap_config.minYear))
+		.attr("x2", x(config.minYear))
 		.attr("y2", -1 * y(100));
 
 	// the ticks on the axes
 	g.selectAll(".xLabel")
-		.data(wwmap_config.yearsOnGraph)
+		.data(config.yearsOnGraph)
 		.enter().append("svg:text")
 		.attr("class", "xLabel")
 		.text(String)
@@ -247,7 +247,7 @@ function plotAllYearData() {
 		.attr("dy", 4);
 
 	g.selectAll(".xTicks")
-		.data(wwmap_config.yearsOnGraph)
+		.data(config.yearsOnGraph)
 		.enter().append("svg:line")
 		.attr("class", "xTicks")
 		.attr("x1", function(d) { return x(d); })
@@ -258,9 +258,9 @@ function plotAllYearData() {
 		.data(y.ticks(3))
 		.enter().append("svg:line")
 		.attr("class", "yTicks")
-		.attr("x1", -1 * x(wwmap_config.minYear))
+		.attr("x1", -1 * x(config.minYear))
 		.attr("y1", function(d) { return -1 * y(d); })
-		.attr("x2", -1 * x(wwmap_config.minYear-3))
+		.attr("x2", -1 * x(config.minYear-3))
 		.attr("y2", function(d) { return -1 * y(d); });
 }
 
@@ -268,7 +268,7 @@ function colorScaleOrDefault(data, id) {
 	if (data.hasOwnProperty(id)) {
 		return colorScale(data[id]);
 	} else {
-		return wwmap_config.noDataColor;
+		return config.noDataColor;
 	}
 }
 
@@ -280,7 +280,7 @@ function updateMapColors() {
 		})
 }
 
-function wwmapLoadedDataCallback(error, africa, dataset) {
+function loadedDataCallback(error, africa, dataset) {
 	allData = dataset;
 	var countries = topojson.feature(africa, africa.objects.subunits).features;
 	var borders = topojson.mesh(africa, africa.objects.subunits,
@@ -288,7 +288,7 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 
 	colorScale = d3.scale.threshold()
 		.domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 101])
-		.range(wwmap_config.waterColorRange);
+		.range(config.waterColorRange);
 
 	var yearData = extractDataForSourceAndYear();
 	mapsvg.selectAll(".subunit")
@@ -314,8 +314,8 @@ function wwmapLoadedDataCallback(error, africa, dataset) {
 	plotAllYearData();
 }
 
-function wwmap_init(config) {
-	wwmap_config = config;
+function init(mapconfig) {
+	config = mapconfig;
 
 	ie8_or_less = is_ie8_or_less();
 	selectedCountry = "ZA";
@@ -346,7 +346,7 @@ function wwmap_init(config) {
 	queue()
 		.defer(d3.json, config.mapurl_topojson)
 		.defer(d3.json, config.dataurl)
-		.await(wwmapLoadedDataCallback);
+		.await(loadedDataCallback);
 
 	d3.select("#year-slider-text")
 		.text(config.thisYear.toString());
@@ -360,6 +360,6 @@ function wwmap_init(config) {
 			.on("slide", setYear));
 }
 
-return {wwmap_init: wwmap_init};
+return {init: init};
 
 })();
