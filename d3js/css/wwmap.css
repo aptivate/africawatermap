@@ -54,15 +54,20 @@ section.year-slider-section {
 	border: 1px solid #bbb;
 }
 
-#country-info path {
-	stroke: steelblue;
+#country-info line {
 	stroke-width: 2;
 	fill: none;
+	stroke: black;
 }
 
-#country-info path.universal { stroke: orange; }
+#country-info line.axis {
+	stroke-width: 2;
+}
 
-#country-info line { stroke: black; }
+#country-info line.history { stroke: steelblue; }
+#country-info line.projection { stroke: darkgrey; }
+#country-info line.universal { stroke: orange; }
+
 
 #country-info text {
 	font-family: sans-serif;

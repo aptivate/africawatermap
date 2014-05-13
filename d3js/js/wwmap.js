@@ -41,7 +41,7 @@ function countryClicked(d) {
 }
 
 function hoverCountry(d) {
-	var coverage = valueForCountry(d.id);
+	var coverage = valueForCountry(d.id, selectedYear);
 	if (coverage == null) { return; }
 	tooltipdiv.transition()
 		.duration(200)
@@ -82,11 +82,6 @@ function setYear(ext, value) {
 	updateMapColors();
 }
 
-function getYear() {
-	// TODO: get the year from the slider
-	return selectedYear;
-}
-
 function setSource(source) {
 	selectedSource = source;
 	// update everything that varies by source
@@ -101,14 +96,16 @@ function getCountryName(country_code) {
 	return "unknown"
 }
 
-function valueForCountry(country_code) {
-	year = getYear().toString();
+function valueForCountry(country_code, year) {
 	if (allData.hasOwnProperty(country_code)) {
 		// now get "water" or "sanitation"
-		if (allData[country_code].hasOwnProperty(selectedSource)) {
-			if (allData[country_code][selectedSource].hasOwnProperty(year)) {
-				return allData[country_code][selectedSource][year];
-			}
+		if (allData[country_code].hasOwnProperty(selectedSource + "_initial") &&
+		    allData[country_code].hasOwnProperty(selectedSource + "_increase")) {
+			var initial = allData[country_code][selectedSource + "_initial"];
+			var increase = allData[country_code][selectedSource + "_increase"];
+			var numYears = year - config.minYear;
+			// don't return a value > 100
+			return Math.min(100, initial + (numYears * increase));
 		}
 	}
 	// catch all exit
@@ -116,36 +113,18 @@ function valueForCountry(country_code) {
 }
 
 function extractDataForSourceAndYear() {
-	year = getYear();
 	// selectedSource should be "water" or "sanitation"
 	var yearData = {};
 	// cycle through the countries
 	for (var country_code in allData) {
 		if (allData.hasOwnProperty(country_code)) {
-			var country_data = allData[country_code];
-			// now get "water" or "sanitation"
-			if (country_data.hasOwnProperty(selectedSource)) {
-				var datadict = country_data[selectedSource];
-				// now get the value for this year
-				if (datadict.hasOwnProperty(year.toString())) {
-					yearData[country_code] = datadict[year.toString()];
-				}
+			var value = valueForCountry(country_code, selectedYear);
+			if (value != null) {
+				yearData[country_code] = value;
 			}
 		}
 	}
 	return yearData;
-}
-
-function extractAllYearDataForCountryAndSource(country_code, datasource) {
-	// cycle through the countries
-	if (allData.hasOwnProperty(country_code)) {
-		var country_data = allData[country_code];
-		// now get "water" or "sanitation"
-		if (country_data.hasOwnProperty(datasource)) {
-			return country_data[datasource];
-		}
-	}
-	return {};
 }
 
 /* Expects a {"1990": 43.1, "1991": 43.7, ...}
@@ -171,9 +150,9 @@ function addLegend(titleText) {
 
 function setCountryInfoAccessText() {
 	d3.select("#country-info-access-text")
-		.text(valueForCountry(selectedCountry).toString() +
+		.text(valueForCountry(selectedCountry, selectedYear).toString() +
 			"% of people have access to " + selectedSource + " in " +
-			getYear().toString());
+			selectedYear.toString());
 }
 
 function plotAllYearData() {
@@ -204,36 +183,45 @@ function plotAllYearData() {
 	var g = vis.append("svg:g")
 		.attr("transform", "translate(0, " + countryInfo.height.toString() + ")");
 
-	var line = d3.svg.line()
-		.x(function(d,i) { return x(i + config.minYear); })
-		.y(function(d) { return -1 * y(d); });
-	// the plotted line for current projection
-	var dataset = extractAllYearDataForCountryAndSource(selectedCountry, selectedSource);
-	var dataSequence = convertAllYearDataToArray(dataset);
-	g.append("svg:path").attr("d", line(dataSequence));
+	var minYearValue = valueForCountry(selectedCountry, config.minYear);
+	var thisYearValue = valueForCountry(selectedCountry, config.thisYear);
+	var maxYearValue = valueForCountry(selectedCountry, config.maxYear);
+
+	// the graph lines
+	g.append("svg:line")
+		.attr("class", "history")
+		.attr("x1", x(config.minYear))
+		.attr("y1", -1 * y(minYearValue))
+		.attr("x2", x(config.thisYear))
+		.attr("y2", -1 * y(thisYearValue));
+
+	// TODO: handle 100% before maxYear
+	g.append("svg:line")
+		.attr("class", "projection")
+		.attr("x1", x(config.thisYear))
+		.attr("y1", -1 * y(thisYearValue))
+		.attr("x2", x(config.maxYear))
+		.attr("y2", -1 * y(maxYearValue));
 
 	// the plotted line to achieve universal access
 	// but only plot it if we won't reach it anyway
-	if (dataset[config.maxYear.toString()] < 99.9) {
-		// need a new line function to reflect that this starts at this
-		// year rather than a while ago
-		var line_to_univ = d3.svg.line()
-			.x(function(d,i) { return x(i + config.thisYear); })
-			.y(function(d) { return -1 * y(d); });
-		dataset = extractAllYearDataForCountryAndSource(
-			selectedCountry, "universal_" + selectedSource);
-		dataSequence = convertAllYearDataToArray(dataset);
-		g.append("svg:path")
-			.attr("d", line_to_univ(dataSequence))
-			.attr("class", "universal");
+	if (maxYearValue < 99.9) {
+		g.append("svg:line")
+			.attr("class", "universal")
+			.attr("x1", x(config.thisYear))
+			.attr("y1", -1 * y(thisYearValue))
+			.attr("x2", x(config.maxYear))
+			.attr("y2", -1 * y(100));
 	}
 	// the axes
 	g.append("svg:line")
+		.attr("class", "axis")
 		.attr("x1", x(config.minYear))
 		.attr("y1", -1 * y(0))
 		.attr("x2", x(config.maxYear))
 		.attr("y2", -1 * y(0));
 	g.append("svg:line")
+		.attr("class", "axis")
 		.attr("x1", x(config.minYear))
 		.attr("y1", -1 * y(0))
 		.attr("x2", x(config.minYear))
@@ -300,7 +288,6 @@ function loadedDataCallback(error, africa, dataset) {
 
 	updateColorScale();
 
-	var yearData = extractDataForSourceAndYear();
 	mapsvg.selectAll(".subunit")
 		.data(countries)
 		.enter()
