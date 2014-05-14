@@ -354,7 +354,7 @@ function init(mapconfig) {
 
 	ie8_or_less = is_ie8_or_less();
 	selectedCountry = "Africa";
-	selectedSource = "water";
+	selectedSource = config.initialSource;
 	selectedYear = config.thisYear;
 
 	var width = parseInt(d3.select('#map').style('width'));
