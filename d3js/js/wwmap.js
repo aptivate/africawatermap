@@ -97,6 +97,7 @@ function setSource(source) {
 	selectedSource = source;
 	// update everything that varies by source
 	setCountryInfoAccessText();
+	updateColorScale();
 	updateMapColors();
 	plotAllYearData();
 }
