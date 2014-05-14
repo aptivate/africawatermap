@@ -26,17 +26,30 @@
 </head>
 <body>
 <div class="wrapper">
-	<div id="map"></div>
-	<div id="country-info"></div>
-	<div id="map-legend" class="legend"></div>
-	<div><p>&nbsp;</p></div>
-	<div id="year-slider"></div>
+	<section class="mainmap">
+		<div id="map">
+			<div id="select-source">
+				<a href="#" id="select-water-source" class="source current-source">Water</a>
+				<a href="#" id="select-sanitation-source" class="source">Sanitation</a>
+			</div>
+		</div>
+	</section>
+	<aside class="info">
+		<div id="country-info"></div>
+		<div id="map-legend" class="legend"></div>
+		<div><p>&nbsp;</p></div>
+	</aside>
+	<section class="year-slider-section">
+		<div id="year-slider"></div>
+	</section>
 </div>
 
 <script>
-wwmap_init({
+wwMap.init({
 	minYear: 1990,
+	thisYear: 2014,
 	maxYear: 2030,
+	yearsOnGraph: [1990, 2000, 2014, 2030],
 	mapurl_topojson: '/data/africa_t.json',
 	mapurl_geojson: '/data/africa_g.json',
 	dataurl: '/data/waterdata.json',

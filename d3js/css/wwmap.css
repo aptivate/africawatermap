@@ -1,3 +1,33 @@
+.wrapper {
+	width: auto;
+	display:block;
+	position:relative;
+	overflow:visible;
+	padding:5% 5% 10%;
+	}
+.wrapper {
+	border:5px solid #D3D3D4;
+}
+
+section.mainmap {
+	padding-right: 300px;
+	width:100%;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+aside.info {
+	position:absolute;
+	right:20px;
+	top:0;
+	width:300px;
+}
+
+section.year-slider-section {
+	width:95%;
+}
+
 .country { fill: #eee; }
 
 .country-border {
@@ -12,18 +42,6 @@
 	max-width:550px;
 }
 
-.wrapper { 
-	width: auto; 
-	display:block;
-	position:relative;
-	overflow:visible;
-	padding:5% 5% 10%;
-	}
-.wrapper {
-	border:5px solid #D3D3D4;
-	
-}
-
 .map-svg {
 	overflow:visible;
 }
@@ -36,13 +54,20 @@
 	border: 1px solid #bbb;
 }
 
-#country-info path {
-	stroke: steelblue;
+#country-info line {
 	stroke-width: 2;
 	fill: none;
+	stroke: black;
 }
 
-#country-info line { stroke: black; }
+#country-info line.axis {
+	stroke-width: 2;
+}
+
+#country-info line.history { stroke: steelblue; }
+#country-info line.projection { stroke: darkgrey; }
+#country-info line.universal { stroke: orange; }
+
 
 #country-info text {
 	font-family: sans-serif;
@@ -64,4 +89,12 @@ div.tooltip {
 
 #year-slider {
 	max-width:550px;
+}
+
+#year-slider > a.d3-slider-handle {
+	width: 4em;
+	height: 2em;
+	line-height: 2em;
+	top: -0.7em;
+	text-align:center;
 }

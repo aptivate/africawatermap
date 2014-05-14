@@ -4,7 +4,7 @@
 Convert the WashWatch spreadsheet into our JSON format
 
 Usage:
-    xls2json.py [--verbose] <xlsfile>
+    xls2json.py [--verbose] <xlsPercentFile> <xlsAbsoluteFile>
     xls2json.py (-h | --help)
 
 Options:
@@ -72,6 +72,7 @@ NAME_CODE = {
     "Somalia": "SO",
     "South Africa": "ZA",
     "South Sudan": "SS",
+    "Sub-Saharan Africa": "Africa",
     "Sudan": "SD",
     "Swaziland": "SW",
     "Togo": "TG",
@@ -90,7 +91,7 @@ CODE_NAME = dict([(v, k) for k, v in NAME_CODE.items()])
 # from http://stackoverflow.com/a/1733105/3189
 class PrettyFloat(float):
     def __repr__(self):
-        return '%.1f' % self
+        return '%.3f' % self
 
 
 def pretty_floats(obj):
@@ -103,87 +104,87 @@ def pretty_floats(obj):
     return obj
 
 
-def get_year_keys(sheet):
-    """ extract the years from the first row of the sheet, returns a list
-    of years as numbers """
-    year_keys = []
-    for curr_cell in xrange(2, sheet.ncols):
-        try:
-            year = int(sheet.cell_value(0, curr_cell))
-        except:
-            year = None
-        year_keys.append(year)
-    return year_keys
+def add_data_for_cell(sheet, row, col, datadict, key):
+    if sheet.cell_type(row, col) == xlrd.XL_CELL_NUMBER:
+        datadict[key] = sheet.cell_value(row, col)
 
 
-def row_has_data(sheet, row_num):
-    """ returns True if row has data """
-    first_value = sheet.cell_value(row_num, 2)
-    if not first_value or first_value == 'NODATA':
-        return False
-    try:
-        first_value = float(first_value)
-        if first_value > 0:
-            return True
-    except:
-        pass
-    return False
-
-
-def process_sheet(sheet):
+def process_percent_sheet(sheet, data):
     """ returns dictionary, key is country code, value is dictionary of
     year: value, or None if no data """
-    sheet_dict = {}
-    year_keys = get_year_keys(sheet)
+    col_key_mapping = [
+        (6, 'water_initial'),
+        (7, 'water_increase'),
+        (8, 'sanitation_initial'),
+        (9, 'sanitation_increase')
+    ]
+
     for curr_row in xrange(1, sheet.nrows):
-        country_name = sheet.cell_value(curr_row, 1)
+        country_name = sheet.cell_value(curr_row, 0)
         if country_name in NAME_CODE and NAME_CODE[country_name]:
             country_code = NAME_CODE[country_name]
         else:
             #print "%s not found" % country_name
             continue
-        if not row_has_data(sheet, curr_row):
+
+        if country_code not in data:
+            data[country_code] = {'name': CODE_NAME[country_code]}
+
+        for col, key in col_key_mapping:
+            add_data_for_cell(sheet, curr_row, col, data[country_code], key)
+
+    return data
+
+
+def process_absolute_sheet(sheet, data):
+    """ returns dictionary, key is country code, value is dictionary of
+    year: value, or None if no data """
+    col_key_mapping = [
+        (1, 'water_pop_current'),
+        (2, 'water_pop_universal'),
+        (3, 'sanitation_pop_current'),
+        (4, 'sanitation_pop_universal')
+    ]
+
+    for curr_row in xrange(2, sheet.nrows):
+        country_name = sheet.cell_value(curr_row, 0)
+        if country_name in NAME_CODE and NAME_CODE[country_name]:
+            country_code = NAME_CODE[country_name]
+        else:
+            #print "%s not found" % country_name
             continue
 
-        sheet_dict[country_code] = {}
-        for index, year in enumerate(year_keys):
-            value = float(sheet.cell_value(curr_row, index + 2))
-            # some values are over 100, don't let that happen
-            value = min(value, 100.0)
-            sheet_dict[country_code][year] = value
-    return sheet_dict
+        if country_code not in data:
+            data[country_code] = {'name': CODE_NAME[country_code]}
+
+        for col, key in col_key_mapping:
+            add_data_for_cell(sheet, curr_row, col, data[country_code], key)
+
+    return data
 
 
 def main(argv):
     opts = docopt(__doc__, argv[1:])
 
-    book = xlrd.open_workbook(opts['<xlsfile>'])
-    sheet_names = {
-        'wat': 'water',
-        'san': 'sanitation',
-        'univwat': 'universal_water',
-        'univsan': 'universal_sanitation',
-    }
+    data = {}
 
-    final_dict = {}
-    for name in sheet_names:
-        sheet = book.sheet_by_name(name)
-        data = process_sheet(sheet)
-        for country_code in data:
-            if country_code not in final_dict:
-                final_dict[country_code] = {
-                    'name': CODE_NAME[country_code]
-                }
-            final_dict[country_code][sheet_names[name]] = data[country_code]
+    #xls2json.py [--verbose] <xlsPercentFile> <xlsAbsoluteFile>
+    percent_book = xlrd.open_workbook(opts['<xlsPercentFile>'])
+    percent_sheet = percent_book.sheet_by_index(0)
+    data = process_percent_sheet(percent_sheet, data)
+
+    absolute_book = xlrd.open_workbook(opts['<xlsAbsoluteFile>'])
+    absolute_sheet = absolute_book.sheet_by_index(0)
+    data = process_absolute_sheet(absolute_sheet, data)
 
     # limit float precision when printed
-    final_dict = pretty_floats(final_dict)
+    data = pretty_floats(data)
     if opts['--verbose']:
         # pretty print the javascript
-        print json.dumps(final_dict, indent=4, sort_keys=True)
+        print json.dumps(data, indent=4, sort_keys=True)
     else:
         # compressed javascript
-        print json.dumps(final_dict, separators=(',', ':'))
+        print json.dumps(data, separators=(',', ':'))
     return 0
 
 if __name__ == '__main__':
