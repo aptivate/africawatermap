@@ -33,6 +33,75 @@ function pluck(anObject, key) {
 	return range;
 }
 
+/* draw circle and 2 rectangles
+ *
+ * svg - svg object to draw person on
+ * x, y - position of top left corner of person
+ * height - in pixels of person.  width with padding will be half
+ * class to apply to person (for CSS color styling)
+ */
+function drawPerson(svg, x, y, height, personClass) {
+	var css_class;
+	if (personClass) {
+		css_class = "person " + personClass;
+	} else {
+		css_class = "person";
+	}
+	svg.append("circle")
+		.attr("cx", x + 0.2*height)
+		.attr("cy", y + 0.15*height)
+		.attr("r", 0.15*height)
+		.attr("class", css_class);
+
+	svg.append("rect")
+		.attr("x", x)
+		.attr("y", y + 0.25*height)
+		.attr("width", 0.4*height)
+		.attr("height", 0.45*height)
+		.attr("class", css_class);
+
+	svg.append("rect")
+		.attr("x", x + 0.1*height)
+		.attr("y", y + 0.7*height)
+		.attr("width", 0.2*height)
+		.attr("height", 0.3*height)
+		.attr("class", css_class);
+}
+
+function drawPeopleRow(numPeople, svg, x, y, height, personClass) {
+	for (var i = 0; i < numPeople; i++) {
+		drawPerson(svg, x + i*height/2, y, height, personClass);
+	}
+}
+
+function drawPeople(numPeople, current_or_target) {
+	var divClass, personClass;
+	if (current_or_target == "current") {
+		divClass = ".currently > .targets-people";
+		personClass = "current";
+	} else {
+		divClass = ".for-target > .targets-people";
+		personClass = "target";
+	}
+	// remove everything inside the country-targets div
+	d3.select(divClass).selectAll("*").remove();
+
+	var country_targets = d3.select(divClass);
+
+	// add the graph
+	var vis = country_targets.append("svg:svg")
+		.attr("id", "country-targets-vis")
+		.attr("width", 200)
+		.attr("height", 100);
+
+	drawPeopleRow(numPeople, vis, 0, 0, 50, personClass);
+}
+
+function testDrawPeople2() {
+	drawPeople(2, "current");
+	drawPeople(3, "target");
+}
+
 function isDataForCountry(country_code) {
 	if (allData.hasOwnProperty(country_code)) {
 		if (allData[country_code].hasOwnProperty(selectedSource + "_initial") &&
@@ -400,7 +469,6 @@ function loadedDataCallback(error, africa, dataset) {
 
 	updateLegend();
 
-	// TODO: make this graph for all of Africa
 	plotAllYearData();
 }
 
@@ -434,6 +502,8 @@ function init(mapconfig) {
 		.on("click", function(d) { setSource("water"); });
 	d3.select("#select-sanitation-source")
 		.on("click", function(d) { setSource("sanitation"); });
+
+	testDrawPeople2();
 
 	mapsvg = d3.select("#map").append("svg")
 		.attr("width", width)

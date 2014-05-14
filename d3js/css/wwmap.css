@@ -43,6 +43,10 @@ section.year-slider-section {
 	stroke-linejoin: round;
 }
 
+.person {
+	fill: #aaa;
+}
+
 #map {
 	margin-top:5%;
 	margin-bottom:10%;
