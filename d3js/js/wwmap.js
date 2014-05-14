@@ -1,6 +1,6 @@
 var wwMap = (function() {
 
-var config, allData, ie8_or_less,
+var config, allData, mapData, ie8_or_less,
 	countryInfo, sidebarWidth,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv,
@@ -43,12 +43,25 @@ function isDataForCountry(country_code) {
 	return false;
 }
 
+function addBorderToSelectedCountry() {
+	// remove any old selected border
+	d3.select(".selected-country-border").remove();
+
+	// add a border to just this country
+	var selectedBorder = topojson.mesh(mapData, mapData.objects.subunits,
+		function(a, b) { return (a.id == selectedCountry || b.id == selectedCountry); });
+	mapsvg.append("path")
+		.datum(selectedBorder)
+		.attr("d", path)
+		.attr("class", "selected-country-border");
+}
+
 function countryClicked(d) {
 	// don't select countries we don't have data for
 	if (isDataForCountry(d.id)) {
 		selectedCountry = d.id;
 		plotAllYearData();
-		// TODO: change border for this country - make thicker, change colour
+		addBorderToSelectedCountry();
 	}
 }
 
@@ -361,6 +374,7 @@ function updateMapColors() {
 
 function loadedDataCallback(error, africa, dataset) {
 	allData = dataset;
+	mapData = africa;
 	var countries = topojson.feature(africa, africa.objects.subunits).features;
 	var borders = topojson.mesh(africa, africa.objects.subunits,
 		function(a, b) { return true; });

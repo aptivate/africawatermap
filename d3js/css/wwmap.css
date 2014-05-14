@@ -36,6 +36,13 @@ section.year-slider-section {
 	stroke-linejoin: round;
 }
 
+.selected-country-border {
+	fill: none;
+	stroke: orange;
+	stroke-width: 3;
+	stroke-linejoin: round;
+}
+
 #map {
 	margin-top:5%;
 	margin-bottom:10%;
