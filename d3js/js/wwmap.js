@@ -1,9 +1,10 @@
 var wwMap = (function() {
 
 var config, allData, ie8_or_less,
-	countryInfo,
+	countryInfo, sidebarWidth,
 	selectedCountry, selectedYear, selectedSource,
-	path, mapsvg, colorScale, mapSlider, tooltipdiv;
+	path, mapsvg, colorScale, mapSlider, tooltipdiv,
+	colorDomain, extColorDomain;
 
 function is_ie8_or_less() {
 	// return true if internet explorer, and version is 8 or less
@@ -80,7 +81,7 @@ function updateColorScale() {
 		colorRange = config.sanitationColorRange;
 	}
 	colorScale = d3.scale.threshold()
-		.domain([10, 20, 30, 40, 50, 60, 70, 80, 90, 101])
+		.domain(colorDomain)
 		.range(colorRange);
 }
 
@@ -98,6 +99,7 @@ function setSource(source) {
 	// update everything that varies by source
 	setCountryInfoAccessText();
 	updateColorScale();
+	updateLegend();
 	updateMapColors();
 	plotAllYearData();
 }
@@ -162,12 +164,46 @@ function convertAllYearDataToArray(dataset) {
 	return yearArray;
 }
 
-function addLegend(titleText) {
-	options = {
-		title: titleText,
-		fill: true
-	};
-	colorlegend("#map-legend", colorScale, "linear", options);
+function updateLegend() {
+	// remove the old legend, if any
+	d3.select("#map-legend-svg").selectAll("*").remove();
+
+	var lenScale = extColorDomain.length;
+	// subtract lenScale for 1 px separator between boxes
+	// subtract 20 to allow for 10px margin either side
+	// divide by lenScale for size of each
+	var ls_w = Math.floor((sidebarWidth - lenScale - 20) / lenScale);
+	var ls_h = ls_w;
+	var legend_width = (ls_w + 1) * (lenScale + 1);
+
+	// create the new legend
+	var legend_svg = d3.select("#map-legend-svg")
+		.append("svg")
+		.attr("width", legend_width)
+		.attr("height", ls_h)
+		.style("margin", "auto 10px");
+	
+	var legend = legend_svg.selectAll("g.legend")
+		.data(extColorDomain)
+		.enter().append("g")
+		.attr("class", "legend");
+	
+	legend.append("rect")
+		.attr("x", function(d, i) { return (ls_w + 1) * i; })
+		.attr("y", 0)
+		.attr("width", ls_w)
+		.attr("height", ls_h)
+		.style("fill", function(d, i) { return colorScale(d); })
+		.style("opacity", 0.8);
+
+	if (selectedSource == 'water') {
+		title = "access to water";
+	} else {
+		title = "access to sanitation";
+	}
+	d3.select("#map-legend-label")
+		.text(title)
+		.style("width", legend_width);
 }
 
 function setCountryInfoAccessText() {
@@ -343,7 +379,7 @@ function loadedDataCallback(error, africa, dataset) {
 		.attr("d", path)
 		.attr("class", "country-border");
 
-	addLegend('Water stuff');
+	updateLegend();
 
 	// TODO: make this graph for all of Africa
 	plotAllYearData();
@@ -360,7 +396,12 @@ function init(mapconfig) {
 	var width = parseInt(d3.select('#map').style('width'));
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
+	sidebarWidth = parseInt(d3.select('aside.info').style('width'));
 
+	colorDomain = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101];
+	extColorDomain = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+	// dimensions of line graph
 	countryInfo = {height: 140, width: 240};
 
 	//var width = 960, height = 1160;

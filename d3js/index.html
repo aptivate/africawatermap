@@ -12,7 +12,6 @@
 	<!--<![endif]-->
 	<script src="http://d3js.org/queue.v1.min.js"></script>
 	<script src="/js/d3.slider.min.js"></script>
-	<script src="/js/colorlegend.min.js"></script>
 	<script src="/js/wwmap.js"></script>
 </head>
 <body>
@@ -27,7 +26,16 @@
 	</section>
 	<aside class="info">
 		<div id="country-info"></div>
-		<div id="map-legend" class="legend"></div>
+		<div id="map-legend" class="legend">
+			<div id="map-legend-svg"></div>
+			<div id="map-legend-text">
+				<p>
+					<span class="legend-number">0</span> <span class="legend-percent">%</span>
+					<span id="map-legend-label" class="legend-text"></span>
+					<span class="legend-number">100</span> <span class="legend-percent">%</span>
+				</p>
+			</div>
+		</div>
 		<div><p>&nbsp;</p></div>
 	</aside>
 	<section class="year-slider-section">
