@@ -137,8 +137,11 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 		personClass = "target";
 	}
 
+	areaWidth = config.personFullHeight * 2.6;
+	areaHeight = config.personFullHeight * 1.2;
+
 	drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
-		config.peopleAreaWidth, config.peopleAreaHeight, config.personFullHeight);
+		areaWidth, areaHeight, config.personFullHeight);
 }
 
 function updatePersonKey(peopleUnits) {
