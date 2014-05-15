@@ -130,7 +130,7 @@ function extraPercentToHitTarget(country_code) {
 		}
 		return (100 - maxYearValue) / (config.maxYear - config.thisYear);
 	}
-	return null;
+	return -1;
 }
 
 /* should we use k or m (thousands or millions)?
@@ -495,7 +495,6 @@ function plotAllYearData() {
  */
 function updateTargetPanel() {
 	if (isTargetDataForCountry(selectedCountry)) {
-		var extraPercent = extraPercentToHitTarget(selectedCountry);
 		var popCurrent = allData[selectedCountry][selectedSource + "_pop_current"];
 		var popUniversal = allData[selectedCountry][selectedSource + "_pop_universal"] - popCurrent;
 		// popUniversal is relative, but don't allow popUniversal to be negative
@@ -514,6 +513,15 @@ function updateTargetPanel() {
 		} else {
 			d3.select(".for-target .targets-number-digits").text("0");
 			d3.select(".for-target .targets-number-unit").text("");
+		}
+
+		// now do the extra percent bit
+		var extraPercent = extraPercentToHitTarget(selectedCountry);
+		if (extraPercent > 0) {
+			d3.select(".targets-percent").style("visibility", "visible");
+			d3.select(".targets-percent-digits").text(extraPercent.toFixed(1));
+		} else {
+			d3.select(".targets-percent").style("visibility", "hidden");
 		}
 	} else {
 		// no data, so clear the panel
