@@ -81,6 +81,12 @@ section.year-slider-section {
 .person.target { fill: orange; }
 .person.key { fill: #aaa; }
 
+#map-legend-label { text-align: center; }
+.zero-percent { float: left; }
+.hundred-percent { float: right; }
+.legend-number { font-size: 2em; font-weight: bold; }
+.legend-percent { font-size: 0.8em; }
+
 #map {
 	margin-top:5%;
 	margin-bottom:10%;
@@ -142,4 +148,5 @@ div.tooltip {
 	line-height: 2em;
 	top: -0.7em;
 	text-align:center;
+	margin-left: -2em;
 }

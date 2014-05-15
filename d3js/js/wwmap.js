@@ -82,6 +82,7 @@ function drawPeopleRow(numPeople, svg, x, y, height, personClass) {
 
 function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
 		width, height, personFullHeight) {
+	// TODO: left align the people?
 	// remove everything inside the div
 	d3.select(divSelector).selectAll("*").remove();
 
