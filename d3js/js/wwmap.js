@@ -1,7 +1,7 @@
 var wwMap = (function() {
 
 var config, allData, mapData, ie8_or_less,
-	countryInfo, sidebarWidth,
+	lineGraphConfig, sidebarWidth,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv,
 	colorDomain, extColorDomain;
@@ -137,7 +137,8 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 		divSelector = ".for-target > .targets-people";
 		personClass = "target";
 	}
-	// TODO: deal with negative numbers
+	// TODO: deal with negative numbers - actually there are no negative
+	// numbers in the dataset, though %age can be negative
 
 	areaWidth = config.personFullHeight * 2.6;
 	areaHeight = config.personFullHeight * 1.2;
@@ -240,9 +241,13 @@ function selectPeopleUnits(number1, number2) {
 	else { return 10000000; }
 }
 
-function addBorderToSelectedCountry() {
+function removeSelectedBorder() {
 	// remove any old selected border
 	d3.select(".selected-country-border").remove();
+}
+
+function addBorderToSelectedCountry() {
+	removeSelectedBorder();
 
 	// add a border to just this country
 	var selectedBorder = topojson.mesh(mapData, mapData.objects.subunits,
@@ -432,10 +437,10 @@ function plotAllYearData() {
 	var margin = 20;
 	var y = d3.scale.linear()
 		.domain([0, 100])
-		.range([0 + margin, countryInfo.height - margin]);
+		.range([0 + margin, lineGraphConfig.height - margin]);
 	var x = d3.scale.linear()
 		.domain([config.minYear, config.maxYear])
-		.range([0 + margin, countryInfo.width - margin]);
+		.range([0 + margin, lineGraphConfig.width - margin]);
 
 	// remove everything inside the country-info div
 	d3.select("#country-info").selectAll("*").remove();
@@ -450,11 +455,11 @@ function plotAllYearData() {
 	// add the graph
 	var vis = country_info.append("svg:svg")
 		.attr("id", "country-info-graph")
-		.attr("width", countryInfo.width)
-		.attr("height", countryInfo.height);
+		.attr("width", lineGraphConfig.width)
+		.attr("height", lineGraphConfig.height);
 
 	var g = vis.append("svg:g")
-		.attr("transform", "translate(0, " + countryInfo.height.toString() + ")");
+		.attr("transform", "translate(0, " + lineGraphConfig.height.toString() + ")");
 
 	var minYearValue = valueForCountry(selectedCountry, config.minYear);
 	var thisYearValue = valueForCountry(selectedCountry, config.thisYear);
@@ -632,6 +637,19 @@ function updateMapColors() {
 		})
 }
 
+function createSlider() {
+	d3.select('#year-slider').selectAll("*").remove();
+	mapSlider = d3.select('#year-slider').call(
+		d3.slider()
+			.axis(true)
+			.min(config.minYear)
+			.max(config.maxYear)
+			.step(1)
+			.value(selectedYear)
+			.on("slide", setYear));
+	updateSliderYear();
+}
+
 function loadedDataCallback(error, africa, dataset) {
 	allData = dataset;
 	mapData = africa;
@@ -663,26 +681,27 @@ function loadedDataCallback(error, africa, dataset) {
 	updateSideBar();
 }
 
+function setDefaultSelections() {
+	selectedCountry = config.initialCountry;
+	selectedSource = config.initialSource;
+	selectedYear = config.thisYear;
+}
+
 function init(mapconfig) {
 	config = mapconfig;
 
 	ie8_or_less = is_ie8_or_less();
-	selectedCountry = "Africa";
-	selectedSource = config.initialSource;
-	selectedYear = config.thisYear;
+	setDefaultSelections();
 
 	var width = parseInt(d3.select('#map').style('width'));
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
 	sidebarWidth = parseInt(d3.select('aside.info').style('width'));
+	// dimensions of line graph
+	lineGraphConfig = {height: config.lineGraphHeight, width: sidebarWidth};
 
 	colorDomain = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101];
 	extColorDomain = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-
-	// dimensions of line graph
-	countryInfo = {height: 140, width: 240};
-
-	//var width = 960, height = 1160;
 
 	var projection = d3.geo.mercator()
 		.scale(width/1.25)
@@ -693,6 +712,7 @@ function init(mapconfig) {
 		.on("click", function(d) { setSource("water"); });
 	d3.select("#select-sanitation-source")
 		.on("click", function(d) { setSource("sanitation"); });
+	d3.select("#reset-button").on("click", reset);
 
 	mapsvg = d3.select("#map").append("svg")
 		.attr("width", width)
@@ -707,15 +727,19 @@ function init(mapconfig) {
 		.defer(d3.json, config.dataurl)
 		.await(loadedDataCallback);
 
-	mapSlider = d3.select('#year-slider').call(
-		d3.slider()
-			.axis(true)
-			.min(config.minYear)
-			.max(config.maxYear)
-			.step(1)
-			.value(selectedYear)
-			.on("slide", setYear));
-	updateSliderYear();
+	createSlider();
+}
+
+function reset() {
+	setDefaultSelections();
+	// update everything that varies by source, year and country
+	createSlider();
+	setCountryInfoAccessText();
+	updateColorScale();
+	updateLegend();
+	updateMapColors();
+	updateSideBar();
+	removeSelectedBorder();
 }
 
 return {init: init};

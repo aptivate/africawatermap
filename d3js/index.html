@@ -64,6 +64,8 @@
 	</aside>
 	<section class="year-slider-section">
 		<div id="year-slider"></div>
+		<p>&nbsp;</p>
+		<div id="reset-button">Reset</div>
 	</section>
 </div>
 
@@ -73,6 +75,7 @@ wwMap.init({
 	thisYear: 2014,
 	maxYear: 2030,
 	initialSource: 'water',
+	initialCountry: 'Africa',
 	yearsOnGraph: [1990, 2000, 2014, 2030],
 	mapurl_topojson: '/data/africa_t.json',
 	mapurl_geojson: '/data/africa_g.json',
@@ -86,6 +89,7 @@ wwMap.init({
 		"#ebb01f", "#f2c83d", "#d3cc4f", "#86c26f",
 		"#4db181", "#15b598"],
 	noDataColor: "#eee",
+	lineGraphHeight: 140,
 	personFullHeight: 50
 });
 </script>
