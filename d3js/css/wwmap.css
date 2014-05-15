@@ -48,17 +48,17 @@ section.year-slider-section {
 }
 
 .targets-section {
-	width: 140px;
+	width: 125px;
 	float: left;
 }
 
 .targets-section.currently {
 	text-align: right;
-	margin-right: 5px;
+	margin-right: 20px;
 }
 .targets-section.for-target {
 	text-align: left;
-	margin-left: 5px;
+	margin-left: 20px;
 }
 
 #targets-key {
@@ -73,7 +73,7 @@ section.year-slider-section {
 .for-target { color: orange; }
 .targets-section-title, .targets-number-unit { font-size: 1.5em; }
 .targets-number-digits { font-size: 3em; }
-.targets-subtitle, .targets-detail, .targets-percent, #targets-key-text { color: #888; }
+.targets-subtitle, .targets-detail, .targets-percent, #targets-key-text { color: #666; }
 
 .person { fill: #aaa; }
 .person.current { fill: black; }
