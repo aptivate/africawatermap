@@ -149,4 +149,7 @@ div.tooltip {
 	top: -0.7em;
 	text-align:center;
 	margin-left: -2em;
+	background: orange;
+	color: white;
+	font-weight: bold;
 }
