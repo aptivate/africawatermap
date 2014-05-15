@@ -48,7 +48,9 @@
 				<p class="targets-detail">extra people per year needed to reach 2030 target</p>
 				<p class="targets-percent">That is just <span class="targets-percent-digits"></span>% of the population</p>
 			</div>
-			<div class="targets-key">
+			<div id="targets-key">
+				<div id="targets-key-person"></div>
+				<div id="targets-key-text"></div>
 			</div>
 		</div>
 		<div id="map-legend" class="legend">
@@ -85,7 +87,10 @@ wwMap.init({
 		"#d45500", "#da670f", "#eb7e1f", "#eb941f",
 		"#ebb01f", "#f2c83d", "#d3cc4f", "#86c26f",
 		"#4db181", "#15b598"],
-	noDataColor: "#eee"
+	noDataColor: "#eee",
+	peopleAreaHeight: 100,
+	peopleAreaWidth: 200,
+	personFullHeight: 50
 });
 </script>
 </body>

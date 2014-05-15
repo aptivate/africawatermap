@@ -80,36 +80,22 @@ function drawPeopleRow(numPeople, svg, x, y, height, personClass) {
 	}
 }
 
-/* totalPeople is people to draw on this side
- * maxPeople is max people to draw on either side - we use it to set person
- * size so that both sides use the same size people
- */
-function drawPeople(totalPeople, maxPeople, current_or_target) {
-	// TODO: show half people?
-	var divClass, personClass;
-	if (current_or_target == "current") {
-		divClass = ".currently > .targets-people";
-		personClass = "current";
-	} else {
-		divClass = ".for-target > .targets-people";
-		personClass = "target";
-	}
+function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
+		width, height, personFullHeight) {
+	// remove everything inside the div
+	d3.select(divSelector).selectAll("*").remove();
 
-	// remove everything inside the country-targets div
-	d3.select(divClass).selectAll("*").remove();
-
-	// TODO: make these configurable
-	var peopleAreaHeight = 100;
-	var peopleAreaWidth = 200;
-	var personFullHeight = 50;
-
-	var country_targets = d3.select(divClass);
+	var personDiv = d3.select(divSelector);
 
 	// add the graph
-	var vis = country_targets.append("svg:svg")
+	var vis = personDiv.append("svg:svg")
 		.attr("id", "country-targets-vis")
-		.attr("width", peopleAreaWidth)
-		.attr("height", peopleAreaHeight);
+		.attr("width", width)
+		.attr("height", height);
+
+	// TODO: show half people?
+	totalPeople = Math.round(totalPeople);
+	maxPeople = Math.round(maxPeople);
 
 	// if totalPeople < 5 and maxPeople < 5, draw one row, full height
 	// if totalPeople < 5 and maxPeople > 5, draw one row, half height
@@ -135,6 +121,33 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	} else {
 		console.log("Can't draw more than 20 people");
 	}
+}
+
+/* totalPeople is people to draw on this side
+ * maxPeople is max people to draw on either side - we use it to set person
+ * size so that both sides use the same size people
+ */
+function drawPeople(totalPeople, maxPeople, current_or_target) {
+	var divSelector, personClass;
+	if (current_or_target == "current") {
+		divSelector = ".currently > .targets-people";
+		personClass = "current";
+	} else {
+		divSelector = ".for-target > .targets-people";
+		personClass = "target";
+	}
+
+	drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
+		config.peopleAreaWidth, config.peopleAreaHeight, config.personFullHeight);
+}
+
+function updatePersonKey(peopleUnits) {
+	personHeight = config.personFullHeight/2;
+	drawPeopleInDiv(1, 1, "#targets-key-person", "key",
+		personHeight, personHeight, personHeight);
+
+	var key_text = " = " + numberWithCommas(peopleUnits) + " people";
+	d3.select("#targets-key-text").text(key_text);
 }
 
 function isDataForCountry(country_code) {
@@ -578,10 +591,8 @@ function updateTargetPanel() {
 		var maxPeople = Math.max(numPeopleCurrent, numPeopleUniversal);
 		drawPeople(numPeopleCurrent, maxPeople, "current");
 		drawPeople(numPeopleUniversal, maxPeople, "target");
-		// TODO: units section - put small person there
-		d3.select(".targets-key")
-			.text("person = " + numberWithCommas(peopleUnits) + " people")
-			.style("visibility", "visible");
+		updatePersonKey(peopleUnits);
+		d3.select(".targets-key").style("visibility", "visible");
 	} else {
 		// no data, so clear the panel
 		d3.select(".currently .targets-number-digits").text("");
@@ -591,8 +602,7 @@ function updateTargetPanel() {
 		d3.select(".targets-percent").style("visibility", "hidden");
 		drawPeople(0, 0, "current");
 		drawPeople(0, 0, "target");
-		d3.select(".targets-key")
-			.style("visibility", "hidden");
+		d3.select(".targets-key").style("visibility", "hidden");
 	}
 }
 
