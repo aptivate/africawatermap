@@ -185,7 +185,7 @@ function addBorderToSelectedCountry() {
 	mapsvg.append("path")
 		.datum(selectedBorder)
 		.attr("d", path)
-		.attr("class", "selected-country-border");
+		.attr("class", "selected-country-border " + selectedSource);
 }
 
 function countryClicked(d) {
