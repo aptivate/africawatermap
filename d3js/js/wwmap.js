@@ -290,10 +290,18 @@ function countryClicked(d) {
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
 	if (coverage == null) { return; }
+	var countryName = d.properties.name;
+	// set the width according to the length of the country name, but don't
+	// get too small
+	var ttWidth = Math.max(65, countryName.length*10);
+	d3.select(".tooltip-year").text(selectedYear.toString());
+	d3.select(".tooltip-country").text(countryName);
+	d3.select(".tooltip-percent").text(coverage.toFixed(1) + "%");
 	tooltipdiv.transition()
 		.duration(200)
 		.style("opacity", 0.9);
-	tooltipdiv.html(d.properties.name + "<br />" + coverage.toFixed(1) + "%")
+	tooltipdiv
+		.style("width", ttWidth + "px")
 		.style("left", (d3.event.pageX) + "px")
 		.style("top", (d3.event.pageY - 28) + "px");
 }
@@ -739,8 +747,7 @@ function init(mapconfig) {
 		.attr("width", width)
 		.attr("height", height)
 		.attr("class", "map-svg");
-	tooltipdiv = d3.select("#map").append("div")
-		.attr("class", "tooltip")
+	tooltipdiv = d3.select("#map > .tooltip")
 		.style("opacity", 0);
 
 	queue()

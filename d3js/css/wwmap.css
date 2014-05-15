@@ -129,14 +129,29 @@ section.year-slider-section {
 div.tooltip {
 	position: absolute;
 	text-align: left;
-	width: 60px;
-	height: 28px;
+	width: 80px;
+	height: 65px;
 	padding: 2px;
-	font: 12px sans-serif;
-	background: lightsteelblue;
+	font-family: sans-serif;
+	background: #444;
 	border: 0px;
 	border-radius: 8px;
 	pointer-events: none;
+}
+
+span.tooltip-year {
+	color: white;
+	font-size: 20px;
+}
+span.tooltip-country {
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+}
+span.tooltip-percent {
+	color: orange;
+	font-weight: bold;
+	font-size: 20px;
 }
 
 #year-slider {
