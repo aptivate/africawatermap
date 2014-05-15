@@ -112,6 +112,69 @@ function isDataForCountry(country_code) {
 	return false;
 }
 
+function isTargetDataForCountry(country_code) {
+	if (allData.hasOwnProperty(country_code)) {
+		if (allData[country_code].hasOwnProperty(selectedSource + "_pop_current") &&
+		    allData[country_code].hasOwnProperty(selectedSource + "_pop_universal")) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function extraPercentToHitTarget(country_code) {
+	if (isDataForCountry(country_code)) {
+		var maxYearValue = valueForCountry(selectedCountry, config.maxYear);
+		if (maxYearValue > 99.9) {
+			return -1;
+		}
+		return (100 - maxYearValue) / (config.maxYear - config.thisYear);
+	}
+	return null;
+}
+
+/* should we use k or m (thousands or millions)?
+ * if both are under 1000, use k
+ * if both are over 1000, use m
+ * if max is over 1000 and min is over 100, use m
+ * otherwise use k
+ *
+ * although if one is zero, just use the other number
+ */
+function selectUnits(number1, number2) {
+	maxNumber = Math.max(number1, number2);
+	minNumber = Math.min(number1, number2);
+
+	if (minNumber == 0) {
+		if (maxNumber < 1000) {
+			return "k";
+		} else {
+			return "m";
+		}
+
+	} else {
+		if (maxNumber < 1000) {
+			return "k";
+		} else if (minNumber >= 100) {
+			return "m";
+		} else {
+			return "k";
+		}
+	}
+}
+
+/* converts number to numbers + m/k for million/thousand */
+function numberToDigitsPlusUnits(number, units) {
+	if (units == "m") {
+		number = number / 1000;
+	}
+	if (number < 10) {
+		return number.toFixed(1);
+	} else {
+		return Math.round(number);
+	}
+}
+
 function addBorderToSelectedCountry() {
 	// remove any old selected border
 	d3.select(".selected-country-border").remove();
@@ -129,7 +192,7 @@ function countryClicked(d) {
 	// don't select countries we don't have data for
 	if (isDataForCountry(d.id)) {
 		selectedCountry = d.id;
-		plotAllYearData();
+		updateSideBar();
 		addBorderToSelectedCountry();
 	}
 }
@@ -183,7 +246,7 @@ function setSource(source) {
 	updateColorScale();
 	updateLegend();
 	updateMapColors();
-	plotAllYearData();
+	updateSideBar();
 }
 
 function getCountryName(country_code) {
@@ -425,6 +488,47 @@ function plotAllYearData() {
 		.attr("y2", function(d) { return -1 * y(d); });
 }
 
+/* update the targets
+ *
+ * We need to update both the numbers, units (k/m) and the set of people
+ * representing the numbers
+ */
+function updateTargetPanel() {
+	if (isTargetDataForCountry(selectedCountry)) {
+		var extraPercent = extraPercentToHitTarget(selectedCountry);
+		var popCurrent = allData[selectedCountry][selectedSource + "_pop_current"];
+		var popUniversal = allData[selectedCountry][selectedSource + "_pop_universal"] - popCurrent;
+		// popUniversal is relative, but don't allow popUniversal to be negative
+		if (popUniversal < 0.01) { popUniversal = 0; }
+
+		var units = selectUnits(popCurrent, popUniversal);
+		var digitsCurrent = numberToDigitsPlusUnits(popCurrent, units);
+		var digitsUniversal = numberToDigitsPlusUnits(popUniversal, units);
+
+		d3.select(".currently .targets-number-digits").text(digitsCurrent);
+		d3.select(".currently .targets-number-unit").text(units);
+
+		if (popUniversal > 0) {
+			d3.select(".for-target .targets-number-digits").text(digitsUniversal);
+			d3.select(".for-target .targets-number-unit").text(units);
+		} else {
+			d3.select(".for-target .targets-number-digits").text("0");
+			d3.select(".for-target .targets-number-unit").text("");
+		}
+	} else {
+		// no data, so clear the panel
+		d3.select(".currently .targets-number-digits").text("");
+		d3.select(".currently .targets-number-unit").text("no data");
+		d3.select(".for-target .targets-number-digits").text("");
+		d3.select(".for-target .targets-number-unit").text("no data");
+	}
+}
+
+function updateSideBar() {
+	plotAllYearData();
+	updateTargetPanel();
+}
+
 function colorScaleOrDefault(data, id) {
 	if (data.hasOwnProperty(id)) {
 		return colorScale(data[id]);
@@ -469,7 +573,7 @@ function loadedDataCallback(error, africa, dataset) {
 
 	updateLegend();
 
-	plotAllYearData();
+	updateSideBar();
 }
 
 function init(mapconfig) {
