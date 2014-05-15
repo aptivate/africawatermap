@@ -81,7 +81,7 @@ function drawPeopleRow(numPeople, svg, x, y, height, personClass) {
 }
 
 function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
-		width, height, personFullHeight) {
+		width, height, personFullHeight, rightAlign) {
 	// TODO: left align the people?
 	// remove everything inside the div
 	d3.select(divSelector).selectAll("*").remove();
@@ -103,22 +103,34 @@ function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
 	// 5-10 we draw 1 rows, half height
 	// 10-20 we draw 2 rows, half height
 	// over 20 is an error
-	var y = 0;
+	var x = 0, y = 0;
 	var personHeight;
 	if (maxPeople <= 5) {
 		personHeight = personFullHeight;
 	} else {
 		personHeight = personFullHeight/2;
 	}
+	if (rightAlign) {
+		// note maxPeople in first if, and totalPeople in 2nd if is deliberate
+		// maxPeople controls person size, totalPeople controls number of rows
+		if (maxPeople <= 5) {
+			x = (5 - totalPeople) * (personHeight/2);
+		} else if (totalPeople <= 10) {
+			x = (10 - totalPeople) * (personHeight/2);
+		} else {
+			x = (20 - totalPeople) * (personHeight/2);
+		}
+	}
 
 	if (totalPeople <= 5 ) {
-		drawPeopleRow(totalPeople, vis, 0, y, personHeight, personClass);
+		drawPeopleRow(totalPeople, vis, x, y, personHeight, personClass);
 	} else if (totalPeople <= 10 ) {
-		drawPeopleRow(totalPeople, vis, 0, y, personHeight, personClass);
+		drawPeopleRow(totalPeople, vis, x, y, personHeight, personClass);
 	} else if (totalPeople <= 20 ) {
+		// for the 10 person row, x is always 0
 		drawPeopleRow(10, vis, 0, y, personHeight, personClass);
 		y = personHeight * 1.2;
-		drawPeopleRow(totalPeople-10, vis, 0, y, personHeight, personClass);
+		drawPeopleRow(totalPeople-10, vis, x, y, personHeight, personClass);
 	} else {
 		console.log("Can't draw more than 20 people");
 	}
@@ -133,9 +145,11 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	if (current_or_target == "current") {
 		divSelector = ".currently > .targets-people";
 		personClass = "current";
+		rightAlign = true;
 	} else {
 		divSelector = ".for-target > .targets-people";
 		personClass = "target";
+		rightAlign = false;
 	}
 	// TODO: deal with negative numbers - actually there are no negative
 	// numbers in the dataset, though %age can be negative
@@ -144,13 +158,13 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	areaHeight = config.personFullHeight * 1.2;
 
 	drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
-		areaWidth, areaHeight, config.personFullHeight);
+		areaWidth, areaHeight, config.personFullHeight, rightAlign);
 }
 
 function updatePersonKey(peopleUnits) {
 	personHeight = config.personFullHeight/2;
 	drawPeopleInDiv(1, 1, "#targets-key-person", "key",
-		personHeight, personHeight, personHeight);
+		personHeight, personHeight, personHeight, false);
 
 	var key_text = " = " + numberWithCommas(peopleUnits) + " people";
 	d3.select("#targets-key-text").text(key_text);
