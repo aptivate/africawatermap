@@ -136,6 +136,7 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 		divSelector = ".for-target > .targets-people";
 		personClass = "target";
 	}
+	// TODO: deal with negative numbers
 
 	areaWidth = config.personFullHeight * 2.6;
 	areaHeight = config.personFullHeight * 1.2;
