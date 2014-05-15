@@ -33,6 +33,12 @@ function pluck(anObject, key) {
 	return range;
 }
 
+function numberWithCommas(number) {
+	// split on decimal point - we discard after decimal
+	var parts = number.toString().split(".");
+	return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 /* draw circle and 2 rectangles
  *
  * svg - svg object to draw person on
@@ -74,7 +80,12 @@ function drawPeopleRow(numPeople, svg, x, y, height, personClass) {
 	}
 }
 
-function drawPeople(numPeople, current_or_target) {
+/* totalPeople is people to draw on this side
+ * maxPeople is max people to draw on either side - we use it to set person
+ * size so that both sides use the same size people
+ */
+function drawPeople(totalPeople, maxPeople, current_or_target) {
+	// TODO: show half people?
 	var divClass, personClass;
 	if (current_or_target == "current") {
 		divClass = ".currently > .targets-people";
@@ -83,23 +94,47 @@ function drawPeople(numPeople, current_or_target) {
 		divClass = ".for-target > .targets-people";
 		personClass = "target";
 	}
+
 	// remove everything inside the country-targets div
 	d3.select(divClass).selectAll("*").remove();
+
+	// TODO: make these configurable
+	var peopleAreaHeight = 100;
+	var peopleAreaWidth = 200;
+	var personFullHeight = 50;
 
 	var country_targets = d3.select(divClass);
 
 	// add the graph
 	var vis = country_targets.append("svg:svg")
 		.attr("id", "country-targets-vis")
-		.attr("width", 200)
-		.attr("height", 100);
+		.attr("width", peopleAreaWidth)
+		.attr("height", peopleAreaHeight);
 
-	drawPeopleRow(numPeople, vis, 0, 0, 50, personClass);
-}
+	// if totalPeople < 5 and maxPeople < 5, draw one row, full height
+	// if totalPeople < 5 and maxPeople > 5, draw one row, half height
+	// 5-10 we draw 1 rows, half height
+	// 10-20 we draw 2 rows, half height
+	// over 20 is an error
+	var y = 0;
+	var personHeight;
+	if (maxPeople <= 5) {
+		personHeight = personFullHeight;
+	} else {
+		personHeight = personFullHeight/2;
+	}
 
-function testDrawPeople2() {
-	drawPeople(2, "current");
-	drawPeople(3, "target");
+	if (totalPeople <= 5 ) {
+		drawPeopleRow(totalPeople, vis, 0, y, personHeight, personClass);
+	} else if (totalPeople <= 10 ) {
+		drawPeopleRow(totalPeople, vis, 0, y, personHeight, personClass);
+	} else if (totalPeople <= 20 ) {
+		drawPeopleRow(10, vis, 0, y, personHeight, personClass);
+		y = personHeight * 1.2;
+		drawPeopleRow(totalPeople-10, vis, 0, y, personHeight, personClass);
+	} else {
+		console.log("Can't draw more than 20 people");
+	}
 }
 
 function isDataForCountry(country_code) {
@@ -134,28 +169,28 @@ function extraPercentToHitTarget(country_code) {
 }
 
 /* should we use k or m (thousands or millions)?
- * if both are under 1000, use k
- * if both are over 1000, use m
- * if max is over 1000 and min is over 100, use m
+ * if both are under 1000000, use k
+ * if both are over 1000000, use m
+ * if max is over 1000000 and min is over 100000, use m
  * otherwise use k
  *
  * although if one is zero, just use the other number
  */
-function selectUnits(number1, number2) {
-	maxNumber = Math.max(number1, number2);
-	minNumber = Math.min(number1, number2);
+function selectTextUnits(number1, number2) {
+	maxNumber = Math.max(Math.abs(number1), Math.abs(number2));
+	minNumber = Math.min(Math.abs(number1), Math.abs(number2));
 
 	if (minNumber == 0) {
-		if (maxNumber < 1000) {
+		if (maxNumber < 1000000) {
 			return "k";
 		} else {
 			return "m";
 		}
 
 	} else {
-		if (maxNumber < 1000) {
+		if (maxNumber < 1000000) {
 			return "k";
-		} else if (minNumber >= 100) {
+		} else if (minNumber >= 100000) {
 			return "m";
 		} else {
 			return "k";
@@ -164,15 +199,27 @@ function selectUnits(number1, number2) {
 }
 
 /* converts number to numbers + m/k for million/thousand */
-function numberToDigitsPlusUnits(number, units) {
+function numberAndUnitsToDigits(number, units) {
 	if (units == "m") {
+		number = number / 1000000;
+	} else {
 		number = number / 1000;
 	}
+
 	if (number < 10) {
 		return number.toFixed(1);
 	} else {
 		return Math.round(number);
 	}
+}
+
+function selectPeopleUnits(number1, number2) {
+	maxNumber = Math.max(Math.abs(number1), Math.abs(number2));
+	if (maxNumber < 20000) { return 1000; }
+	else if (maxNumber < 200000) { return 10000; }
+	else if (maxNumber < 2000000) { return 100000; }
+	else if (maxNumber < 20000000) { return 1000000; }
+	else { return 10000000; }
 }
 
 function addBorderToSelectedCountry() {
@@ -495,14 +542,14 @@ function plotAllYearData() {
  */
 function updateTargetPanel() {
 	if (isTargetDataForCountry(selectedCountry)) {
-		var popCurrent = allData[selectedCountry][selectedSource + "_pop_current"];
-		var popUniversal = allData[selectedCountry][selectedSource + "_pop_universal"] - popCurrent;
+		var popCurrent = 1000 * allData[selectedCountry][selectedSource + "_pop_current"];
+		var popUniversal = 1000 * allData[selectedCountry][selectedSource + "_pop_universal"] - popCurrent;
 		// popUniversal is relative, but don't allow popUniversal to be negative
-		if (popUniversal < 0.01) { popUniversal = 0; }
+		if (popUniversal < 10) { popUniversal = 0; }
 
-		var units = selectUnits(popCurrent, popUniversal);
-		var digitsCurrent = numberToDigitsPlusUnits(popCurrent, units);
-		var digitsUniversal = numberToDigitsPlusUnits(popUniversal, units);
+		var units = selectTextUnits(popCurrent, popUniversal);
+		var digitsCurrent = numberAndUnitsToDigits(popCurrent, units);
+		var digitsUniversal = numberAndUnitsToDigits(popUniversal, units);
 
 		d3.select(".currently .targets-number-digits").text(digitsCurrent);
 		d3.select(".currently .targets-number-unit").text(units);
@@ -523,12 +570,29 @@ function updateTargetPanel() {
 		} else {
 			d3.select(".targets-percent").style("visibility", "hidden");
 		}
+
+		// now do the people
+		var peopleUnits = selectPeopleUnits(popCurrent, popUniversal);
+		var numPeopleCurrent = popCurrent/peopleUnits;
+		var numPeopleUniversal = popUniversal/peopleUnits;
+		var maxPeople = Math.max(numPeopleCurrent, numPeopleUniversal);
+		drawPeople(numPeopleCurrent, maxPeople, "current");
+		drawPeople(numPeopleUniversal, maxPeople, "target");
+		// TODO: units section - put small person there
+		d3.select(".targets-key")
+			.text("person = " + numberWithCommas(peopleUnits) + " people")
+			.style("visibility", "visible");
 	} else {
 		// no data, so clear the panel
 		d3.select(".currently .targets-number-digits").text("");
 		d3.select(".currently .targets-number-unit").text("no data");
 		d3.select(".for-target .targets-number-digits").text("");
 		d3.select(".for-target .targets-number-unit").text("no data");
+		d3.select(".targets-percent").style("visibility", "hidden");
+		drawPeople(0, 0, "current");
+		drawPeople(0, 0, "target");
+		d3.select(".targets-key")
+			.style("visibility", "hidden");
 	}
 }
 
@@ -614,8 +678,6 @@ function init(mapconfig) {
 		.on("click", function(d) { setSource("water"); });
 	d3.select("#select-sanitation-source")
 		.on("click", function(d) { setSource("sanitation"); });
-
-	testDrawPeople2();
 
 	mapsvg = d3.select("#map").append("svg")
 		.attr("width", width)
