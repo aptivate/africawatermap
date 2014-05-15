@@ -260,6 +260,12 @@ function removeSelectedBorder() {
 	d3.select(".selected-country-border").remove();
 }
 
+function updateSelectedBorder() {
+	// remove any old selected border
+	d3.select(".selected-country-border")
+		.attr("class", "selected-country-border " + selectedSource);
+}
+
 function addBorderToSelectedCountry() {
 	removeSelectedBorder();
 
@@ -331,6 +337,7 @@ function setSource(source) {
 	updateLegend();
 	updateMapColors();
 	updateSideBar();
+	updateSelectedBorder();
 }
 
 function getCountryName(country_code) {
