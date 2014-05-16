@@ -39,6 +39,21 @@ function numberWithCommas(number) {
 	return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function addLinksToShareButtons() {
+	// TODO: work out iframe parent link
+	var pageUrl = "http://localhost:8008/";
+	var encodedUrl = encodeURIComponent(pageUrl);
+	d3.select(".ss-share-link.ico-facebook")
+		.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
+	d3.select(".ss-share-link.ico-twitter")
+		.attr("href", "http://twitter.com/share?url=" + encodedUrl +
+			"&hashtags=" + config.twitterHashTag);
+	d3.select(".ss-share-link.ico-google")
+		.attr("href", "http://plus.google.com/share?url=" + encodedUrl);
+	d3.select(".ss-share-link.ico-linkedin")
+		.attr("href", "http://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl);
+}
+
 /* draw circle and 2 rectangles
  *
  * svg - svg object to draw person on
@@ -754,6 +769,8 @@ function init(mapconfig) {
 		.await(loadedDataCallback);
 
 	createSlider();
+
+	addLinksToShareButtons();
 }
 
 function reset() {

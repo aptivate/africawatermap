@@ -122,6 +122,44 @@ span.tooltip-percent {
 /*------Info Panel----------------
  ===============================*/
 
+/*--Social Buttons--*/
+/*--From https://github.com/mattberridge/Simple-Social-Sharing-Buttons --*/
+.ss-share {
+	padding-left: 0;
+	list-style: none;
+}
+
+.ss-share-item {
+	display: inline;
+	margin-right: 1em;
+}
+
+.ss-share-link {
+	/* crude button styles */
+	text-decoration: none;
+	color: #444;
+	font-weight: bold;
+	padding: .5em .75em .5em 35px;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+}
+
+.ss-share-link:hover, .ss-share-link:active, .ss-share-link:focus { color: #891434; }
+
+[class*="ico-"] {
+	display: inline-block;
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+
+.ico-facebook { background-image: url("http://www.facebook.com/favicon.ico"); }
+.ico-twitter { background-image: url("http://twitter.com/favicons/favicon.ico"); }
+.ico-google { background-image: url("https://ssl.gstatic.com/s2/oz/images/faviconr2.ico"); }
+.ico-linkedin { background-image: url("https://static.licdn.com/scds/common/u/images/logos/favicons/v1/favicon.ico"); }
+.ico-embed { background-image: url("https://ssl.gstatic.com/s2/oz/images/faviconr2.ico"); }
+
 /*--Country info--*/
 
 #country-info line {
