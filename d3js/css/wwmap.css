@@ -25,6 +25,7 @@ body {
     min-width:500px;
     overflow: visible;
     padding: 1.5em;
+    padding-left:8%;
     position: relative;
     width: 100%;
     border: 3px solid #eee;
@@ -36,16 +37,22 @@ section.mainmap {
     min-width: 200px;
     width: 65%;
     padding-right:1em;
+    position:relative;
     background-image:url(../images/background-circle.png);
     background-size:100%;
     background-repeat:no-repeat;
 }
 
+
 section.year-slider-section {
-	width:65%;
-	float:left;
-	position:relative;
-	padding-right:1em;
+    clear: both;
+    float: left;
+    left: -10%;
+    padding-right: 1em;
+    padding-top:1em;
+    position: absolute;
+    top: 102%;
+    width: 106%;
 }
 
 
@@ -65,17 +72,54 @@ aside.info {
 /*-------General Styles---------------------
  ===============================*/
 
-h1, h2 {
+h1, h2, h3, h4 {
 	font-family: "MetaCompPro-blackRegular",Arial,Helvetica,sans-serif;
 	color:#222;
+}
+
+h2 {font-size:1.3em;}
+
+h2 > a {
+	color:#2980B9;
+	text-decoration:none;
 }
 
 /*-------Map---------------------
  ===============================*/
 
+.map-info {
+    background-color: #FFFFFF;
+    left: -10%;
+    margin-top: 50%;
+    position: absolute;
+    width: 48%;
+}
+
+.map-info > h1 {
+    color: #666666;
+    font-size: 1.5em;
+}
+
+
+.big {
+    clear: both;
+   
+    display: block;
+    font-size: 2.2em;
+}
+
+.big > strong {
+    color: #333333;
+    font-size: 0.7em;
+}
+
+.big.water {color: #3FC0F0;}
+.big.sanitation{color: #43C4AD;}
+
 #map {
 	margin:13%;
 	margin-right:7%;
+	position:relative;
 }
 
 .map-svg {
@@ -109,11 +153,11 @@ div.tooltip {
 	text-align: left;
 	width: 80px;
 	height: 65px;
-	padding: 2px;
+	padding: 0.5em;
 	font-family: sans-serif;
+	font-size:0.9em;
 	background: #444;
 	border: 0px;
-	border-radius: 8px;
 	pointer-events: none;
 }
 
@@ -153,8 +197,17 @@ aside.info {
     background-color: #F8F8F8;
 }
 
+.social-share {
+	background-color:#fff;
+}
+
+.social-share h2 {
+	margin:0 0 0.5em 0;
+}
+
 /*--Social Buttons--*/
 /*--From https://github.com/mattberridge/Simple-Social-Sharing-Buttons --*/
+
 .ss-share {
     background-color: #FFFFFF;
     list-style: none outside none;
@@ -186,6 +239,16 @@ aside.info {
 .ico-embed {background-position:100%;}
 
 /*--Country info--*/
+
+#country-info {
+    border-bottom: 5px solid #65CDF3;
+    border-top: 5px solid #65CDF3;
+    padding: 1em;
+}
+
+#country-info > h2 {
+	margin:0;
+}
 
 #country-info-graph {
     background-color: #FFFFFF;

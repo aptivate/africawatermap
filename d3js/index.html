@@ -17,36 +17,55 @@
 <body>
 <div class="wrapper">
 	<section class="mainmap">
+		<section class="map-info">
+				<h1>Progress of Africa’s access to 
+					<span class="big water"> water<strong> 1990-2030</strong></span>
+				</h1>
+				<p class="intro-text">
+					This map shows which African countries are on track to reach everyone, 
+					everywhere with access to water (sanitation) by 2030, and what increase 
+					in access is required in countries that are not on track.
+					<strong>Drag the slider to change the year and click on a country to see more information.</strong>
+				</p>
+				<div id="select-source">
+					<a href="#" id="select-water-source" class="button source current-source">Water</a>
+					<a href="#" id="select-sanitation-source" class="button source">Sanitation</a>
+				</div>
+			</section>
 		<div id="map">
-			<div id="select-source">
-				<a href="#" id="select-water-source" class="source current-source">Water</a>
-				<a href="#" id="select-sanitation-source" class="source">Sanitation</a>
-			</div>
 			<div class="tooltip">
 				<span class="tooltip-year"></span><br />
 				<span class="tooltip-country"></span><br />
 				<span class="tooltip-percent"></span>
 			</div>
 		</div>
+		<section class="year-slider-section">
+			<div id="year-slider"></div>
+			<p>&nbsp;</p>
+			<div id="reset-button">Reset</div>
+		</section>
 	</section>
 	<aside class="info">
-		<ul class="ss-share">
-			<li class="ss-share-item">
-				<a class="ss-share-link ico-facebook" rel="nofollow" target="_blank" title="Share on Facebook"></a>
-			</li>
-			<li class="ss-share-item">
-				<a class="ss-share-link ico-twitter" rel="nofollow" target="_blank" title="Share on Twitter"></a>
-			</li>
-			<li class="ss-share-item">
-				<a class="ss-share-link ico-google" rel="nofollow" target="_blank" title="Share on Google+"></a>
-			</li>
-			<li class="ss-share-item">
-				<a class="ss-share-link ico-linkedin" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
-			</li>
-			<li class="ss-share-item">
-				<a class="ss-share-link ico-embed" rel="nofollow" target="_blank" title="Embed this map in your site"></a>
-			</li>
-		</ul>
+		<div class="social-share">
+			<h2>share <a title="follow Africa Water Map on twitter using #africawatermap hashtag" href="https://twitter.com/#africawatermap"> #africawatermap</a></h2>
+			<ul class="ss-share">
+				<li class="ss-share-item">
+					<a class="ss-share-link ico-facebook" target="_blank" title="Share on Facebook"></a>
+				</li>
+				<li class="ss-share-item">
+					<a class="ss-share-link ico-twitter" target="_blank" title="Share on Twitter"></a>
+				</li>
+				<li class="ss-share-item">
+					<a class="ss-share-link ico-google" target="_blank" title="Share on Google+"></a>
+				</li>
+				<li class="ss-share-item">
+					<a class="ss-share-link ico-linkedin" target="_blank" title="Share on LinkedIn"></a>
+				</li>
+				<li class="ss-share-item">
+					<a class="ss-share-link ico-embed" target="_blank" title="Embed this map in your site"></a>
+				</li>
+			</ul>
+		</div>
 		<div id="country-info"></div>
 		<div id="country-targets">
 			<h2 class="targets-title">Reaching 2030 Targets</h2>
@@ -84,11 +103,6 @@
 			</div>
 		</div>
 	</aside>
-	<section class="year-slider-section">
-		<div id="year-slider"></div>
-		<p>&nbsp;</p>
-		<div id="reset-button">Reset</div>
-	</section>
 </div>
 
 <script>
