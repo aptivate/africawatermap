@@ -465,6 +465,7 @@ function setCountryInfoAccessText() {
 			selectedYear.toString();
 	}
 	accessTextElement = d3.select("#country-info-access-text");
+	accessTextElement.selectAll("*").remove();
 	percentSpan = accessTextElement.append("span")
 		.attr("class", "access-percentage")
 		.text(percentValue);
