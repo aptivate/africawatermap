@@ -40,8 +40,8 @@ function numberWithCommas(number) {
 }
 
 function addLinksToShareButtons() {
-	// TODO: work out iframe parent link
-	var pageUrl = "http://localhost:8008/";
+	// work out iframe parent link - from http://stackoverflow.com/a/7739035/3189
+	var pageUrl = (window.location != window.parent.location) ? document.referrer: document.location;
 	var encodedUrl = encodeURIComponent(pageUrl);
 	d3.select(".ss-share-link.ico-facebook")
 		.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
