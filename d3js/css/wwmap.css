@@ -1,34 +1,67 @@
 /*-------Layout---
  ===============================*/
 
+html {
+	font-size:1em;
+}
+
 body {
 	font-family: sans-serif;
-	background-color:#eee;
+	font-size:85%;
 }
+
+* {
+	 -webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		  -o-box-sizing:border-box;
+		     box-sizing:border-box;
+}
+
+
+
 
 .wrapper {
-	width: auto;
-	display:block;
-	position:relative;
-	overflow:visible;
-	padding:5% 5% 10%;
-	border:5px solid #D3D3D4;
-	}
+    display: table;
+    margin: 0 auto;
+    max-width: 1024px;
+    min-width:500px;
+    overflow: visible;
+    padding: 1em;
+    position: relative;
+    width: 100%;
+    border: 5px solid #D3D3D4;
+}
+
 
 section.mainmap {
-	padding-right: 300px;
-	width:100%;
-	-webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	box-sizing:border-box;
+    float: left;
+    min-width: 200px;
+    width: 65%;
+    padding-right:1em;
 }
 
-aside.info {
-	position:absolute;
-	right:20px;
-	top:0;
-	width:300px;
+section.year-slider-section {
+	width:65%;
+	float:left;
+	position:relative;
+	padding-right:1em;
 }
+
+
+aside.info {
+    display: block;
+    float: right;
+    min-width: 150px;
+    position: relative;
+    width: 35%;
+}
+
+.legend {
+	width: 100%;
+	height: 60px;
+}
+
+
 
 /*-------Map---------------------
  ===============================*/
@@ -36,23 +69,10 @@ aside.info {
 #map {
 	margin-top:5%;
 	margin-bottom:10%;
-	max-width:550px;
 }
 
 .map-svg {
 	overflow:visible;
-}
-
-.legend {
-	background-color: #fff;
-	width: 100%;
-	max-width:550px;
-	height: 60px;
-	border: 1px solid #bbb;
-}
-
-section.year-slider-section {
-	width:95%;
 }
 
 .country { fill: #eee; }
@@ -102,10 +122,6 @@ span.tooltip-percent {
 }
 
 /*--Year Slider--*/
-
-#year-slider {
-	max-width:550px;
-}
 
 #year-slider > a.d3-slider-handle {
 	width: 4em;
@@ -183,11 +199,26 @@ span.tooltip-percent {
 
 /*--Map Legend--*/
 
-#map-legend-label { text-align: center; }
-.zero-percent { float: left; }
-.hundred-percent { float: right; }
-.legend-number { font-size: 2em; font-weight: bold; }
-.legend-percent { font-size: 0.8em; }
+
+.legend {
+	border: 1px solid #bbb;
+	background-color: #fff;
+}
+#map-legend-label { 
+	text-align: center; 
+}
+.zero-percent { 
+	float: left; 
+	}
+.hundred-percent { 
+	float: right; 
+	}
+.legend-number { 
+	font-size: 2em; 
+	font-weight: bold; }
+.legend-percent { 
+	font-size: 0.8em; 
+	}
 
 
 
