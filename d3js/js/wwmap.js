@@ -39,6 +39,21 @@ function numberWithCommas(number) {
 	return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function addLinksToShareButtons() {
+	// TODO: work out iframe parent link
+	var pageUrl = "http://localhost:8008/";
+	var encodedUrl = encodeURIComponent(pageUrl);
+	d3.select(".ss-share-link.ico-facebook")
+		.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
+	d3.select(".ss-share-link.ico-twitter")
+		.attr("href", "http://twitter.com/share?url=" + encodedUrl +
+			"&hashtags=" + config.twitterHashTag);
+	d3.select(".ss-share-link.ico-google")
+		.attr("href", "http://plus.google.com/share?url=" + encodedUrl);
+	d3.select(".ss-share-link.ico-linkedin")
+		.attr("href", "http://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl);
+}
+
 /* draw circle and 2 rectangles
  *
  * svg - svg object to draw person on
@@ -81,7 +96,7 @@ function drawPeopleRow(numPeople, svg, x, y, height, personClass) {
 }
 
 function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
-		width, height, personFullHeight, rightAlign) {
+		width, height, personHeight, rightAlign) {
 	// TODO: left align the people?
 	// remove everything inside the div
 	d3.select(divSelector).selectAll("*").remove();
@@ -104,27 +119,17 @@ function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
 	// 10-20 we draw 2 rows, half height
 	// over 20 is an error
 	var x = 0, y = 0;
-	var personHeight;
-	if (maxPeople <= 5) {
-		personHeight = personFullHeight;
-	} else {
-		personHeight = personFullHeight/2;
-	}
 	if (rightAlign) {
 		// note maxPeople in first if, and totalPeople in 2nd if is deliberate
 		// maxPeople controls person size, totalPeople controls number of rows
-		if (maxPeople <= 5) {
-			x = (5 - totalPeople) * (personHeight/2);
-		} else if (totalPeople <= 10) {
+		if (totalPeople <= 10) {
 			x = (10 - totalPeople) * (personHeight/2);
 		} else {
 			x = (20 - totalPeople) * (personHeight/2);
 		}
 	}
 
-	if (totalPeople <= 5 ) {
-		drawPeopleRow(totalPeople, vis, x, y, personHeight, personClass);
-	} else if (totalPeople <= 10 ) {
+	if (totalPeople <= 10 ) {
 		drawPeopleRow(totalPeople, vis, x, y, personHeight, personClass);
 	} else if (totalPeople <= 20 ) {
 		// for the 10 person row, x is always 0
@@ -154,15 +159,15 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	// TODO: deal with negative numbers - actually there are no negative
 	// numbers in the dataset, though %age can be negative
 
-	areaWidth = config.personFullHeight * 2.6;
-	areaHeight = config.personFullHeight * 1.2;
+	areaWidth = config.personFullHeight * 5.2;
+	areaHeight = config.personFullHeight * 2.4;
 
 	drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
 		areaWidth, areaHeight, config.personFullHeight, rightAlign);
 }
 
 function updatePersonKey(peopleUnits) {
-	personHeight = config.personFullHeight/2;
+	personHeight = config.personFullHeight;
 	drawPeopleInDiv(1, 1, "#targets-key-person", "key",
 		personHeight, personHeight, personHeight, false);
 
@@ -719,6 +724,14 @@ function setDefaultSelections() {
 function init(mapconfig) {
 	config = mapconfig;
 
+	// check for svg support
+	if (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1")) {
+		// TODO: do fallback thing with image
+		// delete the main html
+		// replace with img tag with screenshot of data vis, and some text
+		// might need to dynamically load jquip to do this with old browsers
+		return;
+	}
 	ie8_or_less = is_ie8_or_less();
 	setDefaultSelections();
 
@@ -756,6 +769,8 @@ function init(mapconfig) {
 		.await(loadedDataCallback);
 
 	createSlider();
+
+	addLinksToShareButtons();
 }
 
 function reset() {
