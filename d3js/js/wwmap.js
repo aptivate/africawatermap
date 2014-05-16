@@ -458,13 +458,20 @@ function updateLegend() {
 function setCountryInfoAccessText() {
 	percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
 	if (selectedSource == 'water') {
-		accessText = percentValue + "% of people have access to water in " +
+		accessText = ' of people have access to water in ' +
 			selectedYear.toString();
 	} else {
-		accessText = percentValue + "% of people have access to sanitation in " +
+		accessText = ' of people have access to sanitation in ' +
 			selectedYear.toString();
 	}
-	d3.select("#country-info-access-text").text(accessText);
+	accessTextElement = d3.select("#country-info-access-text");
+	percentSpan = accessTextElement.append("span")
+		.attr("class", "access-percentage")
+		.text(percentValue);
+	percentSpan.append("span")
+		.attr("class", "percent-sign")
+		.text("%");
+	accessTextElement.append("span").text(accessText);
 }
 
 function plotAllYearData() {
