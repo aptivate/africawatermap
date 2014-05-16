@@ -1,4 +1,5 @@
-
+/*-------Layout---
+ ===============================*/
 
 body {
 	font-family: sans-serif;
@@ -11,10 +12,8 @@ body {
 	position:relative;
 	overflow:visible;
 	padding:5% 5% 10%;
-	}
-.wrapper {
 	border:5px solid #D3D3D4;
-}
+	}
 
 section.mainmap {
 	padding-right: 300px;
@@ -29,6 +28,27 @@ aside.info {
 	right:20px;
 	top:0;
 	width:300px;
+}
+
+/*-------Map---------------------
+ ===============================*/
+
+#map {
+	margin-top:5%;
+	margin-bottom:10%;
+	max-width:550px;
+}
+
+.map-svg {
+	overflow:visible;
+}
+
+.legend {
+	background-color: #fff;
+	width: 100%;
+	max-width:550px;
+	height: 60px;
+	border: 1px solid #bbb;
 }
 
 section.year-slider-section {
@@ -50,6 +70,81 @@ section.year-slider-section {
 }
 .selected-country-border.water { stroke: orange; }
 .selected-country-border.sanitation { stroke: black; }
+
+/*--Tooltip--*/
+
+div.tooltip {
+	position: absolute;
+	text-align: left;
+	width: 80px;
+	height: 65px;
+	padding: 2px;
+	font-family: sans-serif;
+	background: #444;
+	border: 0px;
+	border-radius: 8px;
+	pointer-events: none;
+}
+
+span.tooltip-year {
+	color: white;
+	font-size: 20px;
+}
+span.tooltip-country {
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+}
+span.tooltip-percent {
+	color: orange;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+/*--Year Slider--*/
+
+#year-slider {
+	max-width:550px;
+}
+
+#year-slider > a.d3-slider-handle {
+	width: 4em;
+	height: 2em;
+	line-height: 2em;
+	top: -0.7em;
+	text-align:center;
+	margin-left: -2em;
+	background: orange;
+	color: white;
+	font-weight: bold;
+}
+
+/*------Info Panel----------------
+ ===============================*/
+
+/*--Country info--*/
+
+#country-info line {
+	stroke-width: 2;
+	fill: none;
+	stroke: black;
+}
+
+#country-info line.axis {
+	stroke-width: 2;
+}
+
+#country-info line.history { stroke: steelblue; }
+#country-info line.projection { stroke: darkgrey; }
+#country-info line.universal { stroke: orange; }
+
+
+#country-info text {
+	font-family: sans-serif;
+	font-size: 9pt;
+}
+
+/*--Targets--*/
 
 .targets-section {
 	width: 125px;
@@ -85,90 +180,16 @@ section.year-slider-section {
 .person.target { fill: orange; }
 .person.key { fill: #aaa; }
 
+
+/*--Map Legend--*/
+
 #map-legend-label { text-align: center; }
 .zero-percent { float: left; }
 .hundred-percent { float: right; }
 .legend-number { font-size: 2em; font-weight: bold; }
 .legend-percent { font-size: 0.8em; }
 
-#map {
-	margin-top:5%;
-	margin-bottom:10%;
-	max-width:550px;
-}
-
-.map-svg {
-	overflow:visible;
-}
-
-.legend {
-	background-color: #fff;
-	width: 100%;
-	max-width:550px;
-	height: 60px;
-	border: 1px solid #bbb;
-}
-
-#country-info line {
-	stroke-width: 2;
-	fill: none;
-	stroke: black;
-}
-
-#country-info line.axis {
-	stroke-width: 2;
-}
-
-#country-info line.history { stroke: steelblue; }
-#country-info line.projection { stroke: darkgrey; }
-#country-info line.universal { stroke: orange; }
 
 
-#country-info text {
-	font-family: sans-serif;
-	font-size: 9pt;
-}
 
-div.tooltip {
-	position: absolute;
-	text-align: left;
-	width: 80px;
-	height: 65px;
-	padding: 2px;
-	font-family: sans-serif;
-	background: #444;
-	border: 0px;
-	border-radius: 8px;
-	pointer-events: none;
-}
 
-span.tooltip-year {
-	color: white;
-	font-size: 20px;
-}
-span.tooltip-country {
-	color: white;
-	font-weight: bold;
-	font-size: 15px;
-}
-span.tooltip-percent {
-	color: orange;
-	font-weight: bold;
-	font-size: 20px;
-}
-
-#year-slider {
-	max-width:550px;
-}
-
-#year-slider > a.d3-slider-handle {
-	width: 4em;
-	height: 2em;
-	line-height: 2em;
-	top: -0.7em;
-	text-align:center;
-	margin-left: -2em;
-	background: orange;
-	color: white;
-	font-weight: bold;
-}
