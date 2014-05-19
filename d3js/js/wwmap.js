@@ -506,13 +506,13 @@ function plotAllYearData() {
 	var width = parseInt(vis_div.style('width'));
 	var height = config.lineGraphAspectRatio * width;
 
-	var margin = 20;
+	var margin = 20, leftMargin = 30;
 	var y = d3.scale.linear()
 		.domain([0, 100])
 		.range([0 + margin, height - margin]);
 	var x = d3.scale.linear()
 		.domain([config.minYear, config.maxYear])
-		.range([0 + margin, width - margin]);
+		.range([0 + leftMargin, width - margin]);
 
 	// add the graph svg
 	var vis = vis_div.append("svg:svg")
@@ -613,9 +613,9 @@ function plotAllYearData() {
 		.data(y.ticks(3))
 		.enter().append("svg:line")
 		.attr("class", "yTicks")
-		.attr("x1", -1 * x(config.minYear))
+		.attr("x1", x(config.minYear))
 		.attr("y1", function(d) { return -1 * y(d); })
-		.attr("x2", -1 * x(config.minYear-3))
+		.attr("x2", x(config.minYear-1))
 		.attr("y2", function(d) { return -1 * y(d); });
 }
 
