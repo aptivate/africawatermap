@@ -24,35 +24,37 @@ body {
     max-width: 1280px;
     min-width:500px;
     overflow: visible;
-    padding: 1.5em;
-    padding-left:8%;
+    padding: 0;
     position: relative;
     width: 100%;
     border: 3px solid #eee;
+    
 }
 
 
+
 section.mainmap {
+    background-image: url("../images/background-circle.png");
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-size: 90% auto;
     float: left;
     min-width: 200px;
+    max-width:600px;
+    padding-right: 1em;
+    position: relative;
     width: 65%;
-    padding-right:1em;
-    position:relative;
-    background-image:url(../images/background-circle.png);
-    background-size:100%;
-    background-repeat:no-repeat;
 }
 
 
 section.year-slider-section {
     clear: both;
     float: left;
-    left: -10%;
+    margin-left:1em;
     padding-right: 1em;
     padding-top:1em;
-    position: absolute;
-    top: 102%;
-    width: 106%;
+    position: relative;
+    width: 100%;
 }
 
 
@@ -89,15 +91,16 @@ h2 > a {
 
 .map-info {
     background-color: #FFFFFF;
-    left: -10%;
+    left: 1em;
     margin-top: 50%;
     position: absolute;
-    width: 48%;
+    width: 44%;
 }
 
 .map-info > h1 {
     color: #666666;
-    font-size: 1.5em;
+    font-size: 1.2em;
+    margin:0;
 }
 
 
@@ -117,9 +120,10 @@ h2 > a {
 .big.sanitation{color: #43C4AD;}
 
 #map {
-	margin:13%;
-	margin-right:7%;
-	position:relative;
+    margin: 11% 7% 5% 18%;
+    overflow: visible;
+    position: relative;
+    z-index:1;
 }
 
 .map-svg {
@@ -142,9 +146,64 @@ h2 > a {
 .selected-country-border.water { stroke: orange; }
 .selected-country-border.sanitation { stroke: black; }
 
+
+
 #select-source {
-	position:absolute;
+	display:block;
+	margin:1em 0;
 }
+
+#select-source .button {
+    background-color: #999999;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 0.2em 0.4em 0.3em;
+    text-decoration: none;
+}
+
+#select-source .button:hover {
+	background-color:#333;
+}
+
+#select-water-source.button {
+	background-color:#3FC0F0;
+}
+
+/*--Map Legend--*/
+
+
+.legend {
+	padding:0.5em 0;
+}
+
+#map-legend > #map-legend-svg {
+    overflow: hidden!important;
+}
+
+#map-legend > #map-legend-svg > svg {
+	width:96%;
+	margin:0!important;
+	height:0.8em;
+}
+
+#map-legend-label { 
+	text-align: center; 
+}
+.zero-percent { 
+	float: left; 
+	}
+.hundred-percent { 
+	float: right; 
+	}
+.legend-number { 
+	font-size: 2em; 
+	font-weight: bold; }
+.legend-percent { 
+	font-size: 0.8em; 
+	}
+
+
+
 
 /*--Tooltip--*/
 
@@ -195,6 +254,7 @@ span.tooltip-percent {
 
 aside.info {
     background-color: #F8F8F8;
+    margin:1em 1em 1em 0;
 }
 
 .social-share {
@@ -311,30 +371,6 @@ aside.info {
 .person.current .negative { fill: red; }
 .person.target { fill: orange; }
 .person.key { fill: #aaa; }
-
-
-/*--Map Legend--*/
-
-
-.legend {
-	border: 1px solid #bbb;
-	background-color: #fff;
-}
-#map-legend-label { 
-	text-align: center; 
-}
-.zero-percent { 
-	float: left; 
-	}
-.hundred-percent { 
-	float: right; 
-	}
-.legend-number { 
-	font-size: 2em; 
-	font-weight: bold; }
-.legend-percent { 
-	font-size: 0.8em; 
-	}
 
 
 
