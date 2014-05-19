@@ -34,10 +34,6 @@ body {
 
 
 section.mainmap {
-    background-image: url("../images/background-circle.png");
-    background-position: right top;
-    background-repeat: no-repeat;
-    background-size: 90% auto;
     float: left;
     min-width: 200px;
     max-width:600px;
@@ -87,7 +83,7 @@ h2 > a {
 .map-info {
     background-color: #FFFFFF;
     left: 1em;
-    margin-top: 47%;
+    margin-top: 42%;
     position: absolute;
     width: 44%;
 }
@@ -115,7 +111,7 @@ h2 > a {
 .big.sanitation{color: #43C4AD;}
 
 #map {
-    margin: 11% 7% 5% 18%;
+    margin: 5% 7% 5% 18%;
     overflow: visible;
     position: relative;
     z-index:1;
@@ -321,6 +317,32 @@ aside.info {
     border-bottom: 5px solid #65CDF3;
     border-top: 5px solid #65CDF3;
     padding: 1em;
+    position:relative;
+}
+
+
+.country-info-year {
+    background-color: #FFA500;
+    color: #FFFFFF;
+    display: block;
+    float: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0.25em 1em;
+    position: absolute;
+    top: -1em;
+    right: 0;
+}
+
+.country-info-year:before {
+    border-right: 15px solid #D48702;
+    border-top: 15px solid rgba(0, 0, 0, 0);
+    content: "";
+    display: block;
+    left: -15px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
 }
 
 #country-info > h2 {
