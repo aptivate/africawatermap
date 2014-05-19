@@ -94,23 +94,47 @@ function drawPeopleRow(numPeople, svg, x, y, height, personClass) {
 	}
 }
 
-function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
-		width, height, personHeight, rightAlign) {
-	// TODO: left align the people?
-	// remove everything inside the div
-	d3.select(divSelector).selectAll("*").remove();
-
-	var personDiv = d3.select(divSelector);
-
-	// add the graph
-	var vis = personDiv.append("svg:svg")
-		.attr("id", "country-targets-vis")
-		.attr("width", width)
-		.attr("height", height);
+/* totalPeople is people to draw on this side
+ * maxPeople is max people to draw on either side - we use it to set person
+ * size so that both sides use the same size people
+ */
+function drawPeople(totalPeople, maxPeople, current_or_target) {
+	var divSelector, personClass, rightAlign;
+	if (current_or_target == "current") {
+		divSelector = ".currently > .targets-people";
+		personClass = "current";
+		rightAlign = true;
+	} else {
+		divSelector = ".for-target > .targets-people";
+		personClass = "target";
+		rightAlign = false;
+	}
+	// TODO: deal with negative numbers - actually there are no negative
+	// numbers in the dataset, though %age can be negative
 
 	// TODO: show half people?
 	totalPeople = Math.round(totalPeople);
 	maxPeople = Math.round(maxPeople);
+
+	var personDiv = d3.select(divSelector);
+	// remove everything inside the div
+	personDiv.selectAll("*").remove();
+
+	// add the graph
+	var personDivInner = personDiv.append("div")
+	var width = parseInt(personDivInner.style('width'));
+	var height;
+	if (totalPeople <= 10) {
+		height = 0.25 * width;
+	} else {
+		height = 0.5 * width;
+	}
+	var personHeight = 0.2 * width;
+
+	var vis = personDivInner.append("svg:svg")
+		.attr("id", "country-targets-vis")
+		.attr("width", width)
+		.attr("height", height);
 
 	// if totalPeople < 5 and maxPeople < 5, draw one row, full height
 	// if totalPeople < 5 and maxPeople > 5, draw one row, half height
@@ -140,35 +164,21 @@ function drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
 	}
 }
 
-/* totalPeople is people to draw on this side
- * maxPeople is max people to draw on either side - we use it to set person
- * size so that both sides use the same size people
- */
-function drawPeople(totalPeople, maxPeople, current_or_target) {
-	var divSelector, personClass;
-	if (current_or_target == "current") {
-		divSelector = ".currently > .targets-people";
-		personClass = "current";
-		rightAlign = true;
-	} else {
-		divSelector = ".for-target > .targets-people";
-		personClass = "target";
-		rightAlign = false;
-	}
-	// TODO: deal with negative numbers - actually there are no negative
-	// numbers in the dataset, though %age can be negative
-
-	areaWidth = config.personFullHeight * 5.2;
-	areaHeight = config.personFullHeight * 2.4;
-
-	drawPeopleInDiv(totalPeople, maxPeople, divSelector, personClass,
-		areaWidth, areaHeight, config.personFullHeight, rightAlign);
-}
-
 function updatePersonKey(peopleUnits) {
-	personHeight = config.personFullHeight;
-	drawPeopleInDiv(1, 1, "#targets-key-person", "key",
-		personHeight, personHeight, personHeight, false);
+	var personHeight = config.personFullHeight;
+
+	var width = personHeight;
+	var height = personHeight;
+
+	var personDiv = d3.select("#targets-key-person");
+	// remove everything inside the div
+	personDiv.selectAll("*").remove();
+	var vis = personDiv.append("svg:svg")
+		.attr("id", "country-targets-vis")
+		.attr("width", width)
+		.attr("height", height);
+
+	drawPeopleRow(1, vis, 0, 0, personHeight, "key");
 
 	var key_text = " = " + numberWithCommas(peopleUnits) + " people";
 	d3.select("#targets-key-text").text(key_text);
@@ -485,27 +495,27 @@ function setCountryInfoAccessText() {
 }
 
 function plotAllYearData() {
-	var country_info = d3.select("#country-info");
+	var countryInfo = d3.select("#country-info");
 	// remove everything inside the country-info div
-	country_info.selectAll("*").remove();
+	countryInfo.selectAll("*").remove();
 	// put title stuff in
-	country_info.append("div")
+	countryInfo.append("div")
 		.attr("class", "country-info-year")
 		.text(selectedYear.toString());
-	country_info.append("h2")
+	countryInfo.append("h2")
 		.text(getCountryName(selectedCountry));
-	country_info.append("p")
+	countryInfo.append("p")
 		.attr("id", "country-info-access-text");
 	setCountryInfoAccessText();
 
 	// add the graph div
-	var vis_div = country_info.append("div")
+	var visDiv = countryInfo.append("div")
 		.attr("id", "country-info-graph");
-	var vis_div_inner = vis_div.append("div")
+	var visDivInner = visDiv.append("div")
 		.attr("class", "inner");
 
 	// dimensions of line graph
-	var width = parseInt(vis_div_inner.style('width'));
+	var width = parseInt(visDivInner.style('width'));
 	var height = config.lineGraphAspectRatio * width;
 
 	//var margin = 20, leftMargin = 30;
@@ -518,7 +528,7 @@ function plotAllYearData() {
 		.range([0 + margin.left, width - margin.right]);
 
 	// add the graph svg
-	var vis = vis_div_inner.append("svg:svg")
+	var vis = visDivInner.append("svg:svg")
 		.attr("width", width)
 		.attr("height", height);
 

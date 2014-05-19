@@ -397,7 +397,7 @@ aside.info {
 /*--Targets--*/
 
 .targets-section {
-	width: 125px;
+	width: 40%;
 	float: left;
 }
 .targets-title {
@@ -414,11 +414,13 @@ aside.info {
 
 .targets-section.currently {
 	text-align: right;
-	margin-right: 20px;
+	margin-right: 8%;
+	margin-left: 2%;
 }
 .targets-section.for-target {
 	text-align: left;
-	margin-left: 20px;
+	margin-left: 8%;
+	margin-right: 2%;
 }
 
 #targets-key {
