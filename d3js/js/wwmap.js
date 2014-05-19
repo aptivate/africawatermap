@@ -321,6 +321,10 @@ function updateSliderYear() {
 	d3.select("a.d3-slider-handle").text(selectedYear.toString());
 }
 
+function setCountryInfoYear() {
+	d3.select(".country-info-year").text(selectedYear.toString());
+}
+
 function updateColorScale() {
 	var colorRange;
 	if (selectedSource == "water") {
@@ -338,6 +342,7 @@ function setYear(ext, value) {
 	selectedYear = value;
 	// update everything that varies by year
 	updateSliderYear();
+	setCountryInfoYear();
 	setCountryInfoAccessText();
 	updateMapColors();
 }
@@ -492,6 +497,9 @@ function plotAllYearData() {
 	// remove everything inside the country-info div
 	country_info.selectAll("*").remove();
 	// put title stuff in
+	country_info.append("div")
+		.attr("class", "country-info-year")
+		.text(selectedYear.toString());
 	country_info.append("h2")
 		.text(getCountryName(selectedCountry));
 	country_info.append("p")
