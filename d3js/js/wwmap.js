@@ -809,7 +809,7 @@ function init(mapconfig) {
 	setDefaultSelections();
 
 	var width = parseInt(d3.select('#map').style('width'));
-	var mapRatio = 1.0;
+	var mapRatio = 1.1;
 	var height = width * mapRatio;
 
 	colorDomain = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101];
