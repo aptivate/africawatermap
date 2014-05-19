@@ -658,6 +658,19 @@ function updateTargetPanel() {
 		drawPeople(numPeopleUniversal, maxPeople, "target");
 		updatePersonKey(peopleUnits);
 		d3.select(".targets-key").style("visibility", "visible");
+
+		// finally update the text
+		if (selectedSource == "water") {
+			d3.select(".targets-subtitle")
+				.text("Total number of new people gaining access to water");
+			d3.select(".currently > .targets-detail")
+				.text("more people per year will gain access to water");
+		} else {
+			d3.select(".targets-subtitle")
+				.text("Total number of new people gaining access to sanitation");
+			d3.select(".currently > .targets-detail")
+				.text("more people per year will gain access to sanitation");
+		}
 	} else {
 		// no data, so clear the panel
 		d3.select(".currently .targets-number-digits").text("");
