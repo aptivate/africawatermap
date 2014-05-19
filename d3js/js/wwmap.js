@@ -1,7 +1,7 @@
 var wwMap = (function() {
 
 var config, allData, mapData, ie8_or_less,
-	lineGraphConfig, sidebarWidth,
+	lineGraphConfig, sidebarWidth, mapInfoWidth,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv,
 	colorDomain, extColorDomain;
@@ -420,24 +420,25 @@ function convertAllYearDataToArray(dataset) {
 
 function updateLegend() {
 	// remove the old legend, if any
-	d3.select("#map-legend-svg").selectAll("*").remove();
+	var legendDiv = d3.select("#map-legend-svg");
+	legendDiv.selectAll("*").remove();
 
 	var lenScale = extColorDomain.length;
 	// subtract lenScale for 1 px separator between boxes
 	// subtract 20 to allow for 10px margin either side
 	// divide by lenScale for size of each
-	var ls_w = Math.floor((sidebarWidth - lenScale - 20) / lenScale);
+	var legendWidth = parseInt(legendDiv.style('width'));
+	var ls_w = Math.floor((legendWidth - lenScale) / lenScale);
 	var ls_h = ls_w;
 	var legend_width = (ls_w + 1) * (lenScale + 1);
 
 	// create the new legend
-	var legend_svg = d3.select("#map-legend-svg")
-		.append("svg")
+	var legendSvg = legendDiv.append("svg")
 		.attr("width", legend_width)
 		.attr("height", ls_h)
-		.style("margin", "auto 10px");
+		.style("margin", "auto");
 	
-	var legend = legend_svg.selectAll("g.legend")
+	var legend = legendSvg.selectAll("g.legend")
 		.data(extColorDomain)
 		.enter().append("g")
 		.attr("class", "legend");
@@ -758,6 +759,7 @@ function init(mapconfig) {
 	var width = parseInt(d3.select('#map').style('width'));
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
+	mapInfoWidth = parseInt(d3.select('section.map-info').style('width'));
 	sidebarWidth = parseInt(d3.select('aside.info').style('width'));
 	// dimensions of line graph
 	lineGraphConfig = {height: config.lineGraphHeight, width: sidebarWidth};
@@ -776,7 +778,7 @@ function init(mapconfig) {
 		.on("click", function(d) { setSource("sanitation"); });
 	d3.select("#reset-button").on("click", reset);
 
-	mapsvg = d3.select("#map").append("svg")
+	mapsvg = d3.select("#map").insert("svg", "div.tooltip")
 		.attr("width", width)
 		.attr("height", height)
 		.attr("class", "map-svg");
