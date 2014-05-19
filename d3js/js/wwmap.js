@@ -501,21 +501,24 @@ function plotAllYearData() {
 	// add the graph div
 	var vis_div = country_info.append("div")
 		.attr("id", "country-info-graph");
+	var vis_div_inner = vis_div.append("div")
+		.attr("class", "inner");
 
 	// dimensions of line graph
-	var width = parseInt(vis_div.style('width'));
+	var width = parseInt(vis_div_inner.style('width'));
 	var height = config.lineGraphAspectRatio * width;
 
-	var margin = 20, leftMargin = 30;
+	//var margin = 20, leftMargin = 30;
+	var margin = {left: 30, right: 15, top: 6, bottom: 20};
 	var y = d3.scale.linear()
 		.domain([0, 100])
-		.range([0 + margin, height - margin]);
+		.range([0 + margin.bottom, height - margin.top]);
 	var x = d3.scale.linear()
 		.domain([config.minYear, config.maxYear])
-		.range([0 + leftMargin, width - margin]);
+		.range([0 + margin.left, width - margin.right]);
 
 	// add the graph svg
-	var vis = vis_div.append("svg:svg")
+	var vis = vis_div_inner.append("svg:svg")
 		.attr("width", width)
 		.attr("height", height);
 

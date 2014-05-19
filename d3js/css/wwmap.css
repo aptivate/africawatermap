@@ -350,9 +350,11 @@ aside.info {
 }
 
 #country-info-graph {
-    background-color: #FFFFFF;
-    width:100%;
+	background-color: #FFFFFF;
+	width:100%;
 }
+#country-info-graph > .inner { margin: 5px; }
+#country-info-graph > .inner > svg { margin-top: 5px; margin-bottom: 5px; }
 
 #country-info line {
 	stroke-width: 3;
