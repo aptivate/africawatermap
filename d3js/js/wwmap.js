@@ -359,6 +359,7 @@ function setYear(ext, value) {
 function setSource(source) {
 	selectedSource = source;
 	// update everything that varies by source
+	updateMapInfo();
 	setCountryInfoAccessText();
 	updateColorScale();
 	updateLegend();
@@ -468,6 +469,25 @@ function updateLegend() {
 	d3.select("#map-legend-label")
 		.text(title)
 		.style("width", legend_width);
+}
+
+/*
+ * set the text in the main title and update the buttons
+ */
+function updateMapInfo() {
+	d3.select(".map-info > h1 > span.big")
+		.attr("class", "big " + selectedSource)
+		.text(selectedSource)
+		.append("strong").text(" " + config.minYear.toString() + "-" +
+			config.maxYear.toString());
+
+	if (selectedSource == "water") {
+		d3.select("#select-water-source").attr("class", "button source current-source");
+		d3.select("#select-sanitation-source").attr("class", "button source");
+	} else {
+		d3.select("#select-water-source").attr("class", "button source");
+		d3.select("#select-sanitation-source").attr("class", "button source current-source");
+	}
 }
 
 function setCountryInfoAccessText() {
