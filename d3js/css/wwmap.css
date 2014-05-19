@@ -146,7 +146,7 @@ h2 > a {
 
 #select-source {
 	display:block;
-	margin:1em 0;
+	margin:0.25em 0;
 }
 
 #select-source .button {
@@ -197,9 +197,31 @@ h2 > a {
 .legend-percent { 
 	font-size: 0.8em; 
 	}
+	
+/*--Map Legend--*/
 
-
-
+.legend {
+    height: 50px;
+    padding-top: 0;
+    width: 100%;
+}
+#map-legend-label { 
+	text-align: center; 
+}
+.zero-percent { 
+	float: left; 
+	}
+.hundred-percent { 
+	float: right; 
+	}
+.legend-number { 
+	font-size: 1em; 
+	font-weight: bold;
+	color:#888; 
+}
+.legend-percent { 
+	font-size: 0.8em; 
+	}
 
 /*--Tooltip--*/
 
@@ -234,38 +256,45 @@ span.tooltip-percent {
 /*--Year Slider--*/
 
 #year-slider > a.d3-slider-handle {
-	width: 4em;
-	height: 2em;
-	line-height: 2em;
-	top: -0.7em;
-	text-align:center;
-	margin-left: -2em;
-	background: orange;
-	color: white;
-	font-weight: bold;
+    background: none repeat scroll 0 0 #FFA500;
+    border: medium none;
+    border-radius: 0;
+    color: #FFFFFF;
+    font-size: 1.5em;
+    font-weight: bold;
+    height: 35px;
+    line-height: 35px;
+    margin-left: -37.5px;
+    padding: 0 15px;
+    text-align: center;
+    top: -0.7em;
+    width: 75px;
+}
+#year-slider > a.d3-slider-handle:before {
+    border-left: 37.5px solid rgba(0, 0, 0, 0);
+    border-right: 37.5px solid rgba(0, 0, 0, 0);
+    border-top: 8px solid #D48702;
+    content: "";
+    display: block;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    z-index: 1;
 }
 
-/*--Map Legend--*/
+#year-slider > a.d3-slider-handle:after {
+    border-bottom: 8px solid #FECD7C;
+    border-left: 37.5px solid rgba(0, 0, 0, 0);
+    border-right: 37.5px solid rgba(0, 0, 0, 0);
+    content: "";
+    display: block;
+    left: 0;
+    position: absolute;
+    top: -8px;
+    z-index: 1;
+}
 
-.legend {
-	width: 100%;
-	height: 60px;
-}
-#map-legend-label { 
-	text-align: center; 
-}
-.zero-percent { 
-	float: left; 
-	}
-.hundred-percent { 
-	float: right; 
-	}
-.legend-number { 
-	font-size: 2em; 
-	font-weight: bold; }
-.legend-percent { 
-	font-size: 0.8em; 
-	}
+
 
 /*------Info Panel----------------
  ===============================*/
@@ -391,7 +420,7 @@ aside.info {
 #country-info line.universal { stroke: orange; }
 #country-info text {
 	font-family: sans-serif;
-	font-size: 9pt;
+	font-size: 0.8em;
 }
 
 /*--Targets--*/
@@ -438,9 +467,16 @@ aside.info {
 .currently { 
 	color: black; 
 	}
+
+.currently > .targets-detail {
+	padding-left:1em;
+}
 .for-target { 
 	color: orange; 
-	}
+}
+.for-target > .targets-detail {
+	padding-right:1em;
+}
 .targets-section-title, .targets-number-unit {
     font-size: 1.1em;
     font-weight: bold;
@@ -456,7 +492,8 @@ aside.info {
 }
 .targets-subtitle, .targets-detail, .targets-percent, #targets-key-text { 
 	color: #666; 
-	margin:0;
+	margin:0.5em 0;
+	font-size:0.9em;
 }
 
 .person { fill: #aaa; }
