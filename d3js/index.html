@@ -3,16 +3,16 @@
 <head profile="http://www.w3.org/2005/10/profile">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-	<link rel="icon" type="image/x-icon" href="favicon.ico"></link>
-	<link rel="stylesheet" href="css/wwmap.css"></link>
-	<link rel="stylesheet" href="css/d3.slider.min.css"></link>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico"></link>
+	<link rel="stylesheet" href="/css/wwmap.css"></link>
+	<link rel="stylesheet" href="/css/d3.slider.min.css"></link>
 	<!--[if gte IE 9]><!-->
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<!--<![endif]-->
 	<script src="http://d3js.org/queue.v1.min.js"></script>
-	<script src="js/d3.slider.min.js"></script>
-	<script src="js/wwmap.js"></script>
+	<script src="/js/d3.slider.min.js"></script>
+	<script src="/js/wwmap.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -21,16 +21,7 @@
 				<h1>Progress of Africa’s access to 
 					<span class="big water"> water<strong> 1990-2030</strong></span>
 				</h1>
-				<p class="intro-text">
-					This map shows which African countries are on track to reach everyone, 
-					everywhere with access to water (sanitation) by 2030, and what increase 
-					in access is required in countries that are not on track.
-					<strong>Drag the slider to change the year and click on a country to see more information.</strong>
-				</p>
-				<div id="select-source">
-					<a href="#" id="select-water-source" class="button source current-source">Water</a>
-					<a href="#" id="select-sanitation-source" class="button source">Sanitation</a>
-				</div>
+				<p class="instructions">Drag the slider to change the year and click on a country to see more information.</p>
 				<div id="map-legend" class="legend">
 					<div id="map-legend-svg"></div>
 					<div id="map-legend-text">
@@ -38,7 +29,11 @@
 						<div class="hundred-percent"><span class="legend-number">100</span> <span class="legend-percent">%</span></div>
 						<div id="map-legend-label" class="legend-text"></div>
 					</div>
-			</div>
+				</div>
+				<div id="select-source">
+					<a href="#" id="select-water-source" class="button source current-source">Water</a>
+					<a href="#" id="select-sanitation-source" class="button source">Sanitation</a>
+				</div>
 			</section>
 		<div id="map">
 			<div class="tooltip">
@@ -52,6 +47,13 @@
 			<p>&nbsp;</p>
 			<div id="reset-button">Reset</div>
 		</section>
+		<footer class="map-footer">
+			<p class="intro-text">
+				This map shows which African countries are on track to reach everyone, 
+				everywhere with access to water (sanitation) by 2030, and what increase 
+				in access is required in countries that are not on track.
+			</p>
+		</footer>
 	</section>
 	<aside class="info">
 		<div class="social-share">
@@ -76,7 +78,7 @@
 		</div>
 		<div id="country-info"></div>
 		<div id="country-targets">
-			<h2 class="targets-title">Reaching Everyone, Everywhere by 2030</h2>
+			<h2 class="targets-title">Reaching 2030 Targets</h2>
 			<p class="targets-subtitle">Total number of new people getting access to water</p>
 			<div class="targets-section currently">
 				<p class="targets-section-title">currently</p>
@@ -113,8 +115,9 @@ wwMap.init({
 	initialSource: 'water',
 	initialCountry: 'Africa',
 	yearsOnGraph: [1990, 2000, 2014, 2030],
-	mapurl_topojson: 'data/africa_t.json',
-	dataurl: 'data/waterdata.json',
+	mapurl_topojson: '/data/africa_t.json',
+	mapurl_geojson: '/data/africa_g.json',
+	dataurl: '/data/waterdata.json',
 	waterColorRange: [
 		"#8c9494", "#8398a2", "#7c9baa", "#73a1b4",
 		"#6aa6bd", "#62abc7", "#5aafd0", "#52b4d9",
