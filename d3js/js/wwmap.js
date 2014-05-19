@@ -458,11 +458,9 @@ function updateLegend() {
 function setCountryInfoAccessText() {
 	percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
 	if (selectedSource == 'water') {
-		accessText = ' of people have access to water in ' +
-			selectedYear.toString();
+		accessText = ' of people have access to water ';
 	} else {
-		accessText = ' of people have access to sanitation in ' +
-			selectedYear.toString();
+		accessText = ' of people have access to sanitation ';
 	}
 	accessTextElement = d3.select("#country-info-access-text");
 	accessTextElement.selectAll("*").remove();
@@ -473,6 +471,12 @@ function setCountryInfoAccessText() {
 		.attr("class", "percent-sign")
 		.text("%");
 	accessTextElement.append("span").text(accessText);
+	accessTextElement.append("span")
+		.attr("class", "in-year")
+		.text("in " + selectedYear.toString());
+	accessTextElement.append("span")
+		.attr("class", "actual-projected")
+		.text(" (actual and projected)");
 }
 
 function plotAllYearData() {
@@ -484,10 +488,10 @@ function plotAllYearData() {
 		.domain([config.minYear, config.maxYear])
 		.range([0 + margin, lineGraphConfig.width - margin]);
 
-	// remove everything inside the country-info div
-	d3.select("#country-info").selectAll("*").remove();
-	// put title stuff in
 	var country_info = d3.select("#country-info");
+	// remove everything inside the country-info div
+	country_info.selectAll("*").remove();
+	// put title stuff in
 	country_info.append("h2")
 		.text(getCountryName(selectedCountry));
 	country_info.append("p")
