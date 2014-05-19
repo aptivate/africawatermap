@@ -103,9 +103,8 @@ h2 > a {
 
 .big {
     clear: both;
-   
     display: block;
-    font-size: 2.2em;
+    font-size: 2em;
 }
 
 .big > strong {
@@ -162,7 +161,7 @@ h2 > a {
 	background-color:#333;
 }
 
-#select-water-source.button {
+#select-water-source.button.current-source {
 	background-color:#3FC0F0;
 }
 
@@ -356,7 +355,7 @@ aside.info {
 
 #country-info > p {
     font-size: 0.9em;
-    margin: 0.2em 0;
+    margin: 0.2em 0 1em;
     padding-left: 8em;
     position: relative;
 }
@@ -401,9 +400,16 @@ aside.info {
 	width: 125px;
 	float: left;
 }
-
 .targets-title {
-	margin-top:0;
+    font-size: 1em;
+    margin: 0;
+    padding: 0 1em;
+}
+
+.targets-subtitle {
+    font-size: 0.9em;
+    margin: 0.2em 0;
+    padding: 0 1em;
 }
 
 .targets-section.currently {
@@ -419,15 +425,39 @@ aside.info {
 	width: 180px;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top:0
 }
+
+.targets-section-title {
+	margin:0;
+}
+
 #targets-key-person { display: inline; }
 #targets-key-text { display: inline; }
 
-.currently { color: black; }
-.for-target { color: orange; }
-.targets-section-title, .targets-number-unit { font-size: 1.5em; }
-.targets-number-digits { font-size: 3em; }
-.targets-subtitle, .targets-detail, .targets-percent, #targets-key-text { color: #666; }
+.currently { 
+	color: black; 
+	}
+.for-target { 
+	color: orange; 
+	}
+.targets-section-title, .targets-number-unit {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+	
+.targets-number {
+    margin: 0 0 1em;
+}
+
+.targets-number-digits {
+	font-size: 2.5em; 
+	font-weight:bold;
+}
+.targets-subtitle, .targets-detail, .targets-percent, #targets-key-text { 
+	color: #666; 
+	margin:0;
+}
 
 .person { fill: #aaa; }
 .person.current { fill: black; }
