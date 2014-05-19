@@ -46,11 +46,12 @@ section.mainmap {
 section.year-slider-section {
     clear: both;
     float: left;
-    margin-left:1em;
+    margin-left:3em;
     padding-right: 1em;
-    padding-top:1em;
+    padding-top:0em;
     position: relative;
     width: 100%;
+    padding-right:5em;
 }
 
 
@@ -88,7 +89,7 @@ h2 > a {
 
 .map-info {
     background-color: #FFFFFF;
-    left: 1em;
+    left: 3em;
     margin-top: 42%;
     position: absolute;
     width: 44%;
@@ -116,7 +117,7 @@ h2 > a {
 .big.sanitation{color: #43C4AD;}
 
 #map {
-    margin: 5% 7% 5% 23%;
+    margin: 2% 2% 5% 25%;
     overflow: visible;
     position: relative;
     z-index:1;
@@ -429,6 +430,11 @@ aside.info {
 
 /*--Targets--*/
 
+#country-targets {
+    border-top: 10px solid #FFFFFF;
+    padding-top: 0.75em;
+}
+
 .targets-section {
 	width: 40%;
 	float: left;
@@ -447,27 +453,34 @@ aside.info {
 
 .targets-section.currently {
 	text-align: right;
-	margin-right: 8%;
+	margin-right: 4%;
 	margin-left: 2%;
 }
+
 .targets-section.for-target {
-	text-align: left;
-	margin-left: 8%;
-	margin-right: 2%;
+    margin-left: 4%;
+    margin-right: 2%;
+    text-align: left;
 }
 
 #targets-key {
-	width: 180px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top:0
+    clear: both;
+    display: block;
+    margin: 0 auto 1em;
+    position: relative;
+    width: 180px;
 }
 
 .targets-section-title {
 	margin:0;
 }
 
-#targets-key-person { display: inline; }
+#targets-key-person {
+    display: inline;
+    left: 1em;
+    position: relative;
+    top: 0.5em;
+}
 #targets-key-text { display: inline; }
 
 .currently { 
@@ -500,6 +513,13 @@ aside.info {
 	color: #666; 
 	margin:0.5em 0;
 	font-size:0.9em;
+}
+
+.targets-percent {
+    color: #333333;
+    font-weight: bold;
+    padding: 0 1em;
+    text-align: center;
 }
 
 .person { fill: #aaa; }
