@@ -1,7 +1,6 @@
 var wwMap = (function() {
 
 var config, allData, mapData, ie8_or_less,
-	lineGraphConfig, sidebarWidth, mapInfoWidth,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv,
 	colorDomain, extColorDomain;
@@ -486,14 +485,6 @@ function setCountryInfoAccessText() {
 }
 
 function plotAllYearData() {
-	var margin = 20;
-	var y = d3.scale.linear()
-		.domain([0, 100])
-		.range([0 + margin, lineGraphConfig.height - margin]);
-	var x = d3.scale.linear()
-		.domain([config.minYear, config.maxYear])
-		.range([0 + margin, lineGraphConfig.width - margin]);
-
 	var country_info = d3.select("#country-info");
 	// remove everything inside the country-info div
 	country_info.selectAll("*").remove();
@@ -507,14 +498,32 @@ function plotAllYearData() {
 		.attr("id", "country-info-access-text");
 	setCountryInfoAccessText();
 
-	// add the graph
-	var vis = country_info.append("svg:svg")
-		.attr("id", "country-info-graph")
-		.attr("width", lineGraphConfig.width)
-		.attr("height", lineGraphConfig.height);
+	// add the graph div
+	var vis_div = country_info.append("div")
+		.attr("id", "country-info-graph");
+	var vis_div_inner = vis_div.append("div")
+		.attr("class", "inner");
+
+	// dimensions of line graph
+	var width = parseInt(vis_div_inner.style('width'));
+	var height = config.lineGraphAspectRatio * width;
+
+	//var margin = 20, leftMargin = 30;
+	var margin = {left: 30, right: 15, top: 6, bottom: 20};
+	var y = d3.scale.linear()
+		.domain([0, 100])
+		.range([0 + margin.bottom, height - margin.top]);
+	var x = d3.scale.linear()
+		.domain([config.minYear, config.maxYear])
+		.range([0 + margin.left, width - margin.right]);
+
+	// add the graph svg
+	var vis = vis_div_inner.append("svg:svg")
+		.attr("width", width)
+		.attr("height", height);
 
 	var g = vis.append("svg:g")
-		.attr("transform", "translate(0, " + lineGraphConfig.height.toString() + ")");
+		.attr("transform", "translate(0, " + height.toString() + ")");
 
 	var minYearValue = valueForCountry(selectedCountry, config.minYear);
 	var thisYearValue = valueForCountry(selectedCountry, config.thisYear);
@@ -607,9 +616,9 @@ function plotAllYearData() {
 		.data(y.ticks(3))
 		.enter().append("svg:line")
 		.attr("class", "yTicks")
-		.attr("x1", -1 * x(config.minYear))
+		.attr("x1", x(config.minYear))
 		.attr("y1", function(d) { return -1 * y(d); })
-		.attr("x2", -1 * x(config.minYear-3))
+		.attr("x2", x(config.minYear-1))
 		.attr("y2", function(d) { return -1 * y(d); });
 }
 
@@ -772,10 +781,6 @@ function init(mapconfig) {
 	var width = parseInt(d3.select('#map').style('width'));
 	var mapRatio = 1.0;
 	var height = width * mapRatio;
-	mapInfoWidth = parseInt(d3.select('section.map-info').style('width'));
-	sidebarWidth = parseInt(d3.select('aside.info').style('width'));
-	// dimensions of line graph
-	lineGraphConfig = {height: config.lineGraphHeight, width: sidebarWidth};
 
 	colorDomain = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101];
 	extColorDomain = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
