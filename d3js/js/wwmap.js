@@ -323,17 +323,18 @@ function hoverCountry(d) {
 	var countryName = d.properties.name;
 	// set the width according to the length of the country name, but don't
 	// get too small
-	var ttWidth = Math.max(6, countryName.length*0.8);
+	var ttWidth = Math.max(7, countryName.length*0.9);
 	d3.select(".tooltip-year").text(selectedYear.toString());
 	d3.select(".tooltip-country").text(countryName);
 	d3.select(".tooltip-percent").text(coverage.toFixed(1) + "%");
 	tooltipdiv.transition()
 		.duration(200)
 		.style("opacity", 0.9);
+	var box = d3.select("#map")[0][0].getBoundingClientRect();
 	tooltipdiv
 		.style("width", ttWidth + "em")
-		.style("left", (d3.event.pageX - 320) + "px")
-		.style("top", (d3.event.pageY - 50) + "px");
+		.style("left", (d3.event.pageX - box.left + 30) + "px")
+		.style("top", (d3.event.pageY - box.top - 10) + "px");
 }
 
 function unhoverCountry(d) {
