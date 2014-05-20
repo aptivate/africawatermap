@@ -6,6 +6,30 @@ var config, allData, mapData,
 	graphsvg, lgX, lgY,
 	colorDomain, extColorDomain;
 
+// from http://stackoverflow.com/a/979995/3189
+var QueryString = function () {
+	// This function is anonymous, is executed immediately and 
+	// the return value is assigned to QueryString!
+	var query_string = {};
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+			// If first entry with this name
+		if (typeof query_string[pair[0]] === "undefined") {
+			query_string[pair[0]] = pair[1];
+			// If second entry with this name
+		} else if (typeof query_string[pair[0]] === "string") {
+			var arr = [ query_string[pair[0]], pair[1] ];
+			query_string[pair[0]] = arr;
+			// If third or later entry with this name
+		} else {
+			query_string[pair[0]].push(pair[1]);
+		}
+	}
+	return query_string;
+} ();
+
 function replaceBodyWithFallbackImage() {
 	// delete the main html
 	// replace with img tag with screenshot of data vis, and some text
@@ -67,6 +91,16 @@ function addLinksToShareButtons() {
 
 	d3.select(".ss-share-link.ico-embed")
 		.on("click", toggleEmbedCode);
+}
+
+/* Check if URL parameters request logo removal, and remove them if they do
+ */
+function checkLogoRemoval() {
+	if (QueryString.hasOwnProperty("logo")) {
+		if (QueryString.logo == "none") {
+			d3.select(".logos").selectAll("*").remove();
+		}
+	}
 }
 
 /* draw circle and 2 rectangles
@@ -867,6 +901,8 @@ function init(mapconfig) {
 	createSlider();
 
 	addLinksToShareButtons();
+
+	checkLogoRemoval();
 }
 
 function reset() {

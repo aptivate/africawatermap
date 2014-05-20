@@ -582,6 +582,8 @@ aside.info {
 .main-footer > .logos {float:left;}
 .main-footer > .made-by {float:right;}
 
+.main-footer > .logos > a {margin:0.5em;}
+
 /*------Fallback----------------
  ===============================*/
 
