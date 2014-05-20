@@ -9,7 +9,7 @@ function replaceBodyWithFallbackImage() {
 	// delete the main html
 	// replace with img tag with screenshot of data vis, and some text
 	// might need to dynamically load jquip to do this with old browsers
-	var wrapper = document.getElementsByClassName("wrapper")[0];
+	var wrapper = document.getElementById("wrapperdiv");
 	document.body.removeChild(wrapper);
 
 	var explanation = document.getElementById("fallback-text");
