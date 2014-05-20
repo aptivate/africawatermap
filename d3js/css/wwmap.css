@@ -28,9 +28,7 @@ body {
     position: relative;
     width: 100%;
     border: 3px solid #eee;
-    
 }
-
 
 
 section.mainmap {
@@ -56,17 +54,23 @@ section.year-slider-section {
 
 
 aside.info {
-    display: block;
-    float: right;
-    min-width: 150px;
-    position: relative;
-    width: 32%;
+	display: block;
+	float: right;
+	min-width: 150px;
+	position: relative;
+	width: 32%;
 }
 
 .map-footer {
-    clear: both;
-    display: block;
-    padding: 1em;
+	clear: both;
+	display: block;
+	padding: 1em;
+}
+
+.main-footer {
+	clear: both;
+	display: block;
+	padding: 1em;
 }
 
 /*-------General Styles---------------------
@@ -573,9 +577,10 @@ aside.info {
 /*------Footer----------------
  ===============================*/
 
-.map-footer {
+.map-footer { }
 
-}
+.main-footer > .logos {float:left;}
+.main-footer > .made-by {float:right;}
 
 /*------Fallback----------------
  ===============================*/
