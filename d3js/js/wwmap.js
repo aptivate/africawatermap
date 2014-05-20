@@ -3,6 +3,7 @@ var wwMap = (function() {
 var config, allData, mapData,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv,
+	graphsvg, lgX, lgY,
 	colorDomain, extColorDomain;
 
 function replaceBodyWithFallbackImage() {
@@ -367,6 +368,7 @@ function setYear(ext, value) {
 	// update everything that varies by year
 	updateSliderYear();
 	setCountryInfoYear();
+	drawLineGraphYearLine();
 	setCountryInfoAccessText();
 	updateMapColors();
 }
@@ -529,6 +531,16 @@ function setCountryInfoAccessText() {
 		.text(" (actual and projected)");
 }
 
+function drawLineGraphYearLine() {
+	d3.select(".year-line").remove();
+	graphsvg.append("svg:line")
+		.attr("class", "year-line")
+		.attr("x1", lgX(selectedYear))
+		.attr("y1", -1 * lgY(0))
+		.attr("x2", lgX(selectedYear))
+		.attr("y2", -1 * lgY(100));
+}
+
 function plotAllYearData() {
 	var countryInfo = d3.select("#country-info");
 	// remove everything inside the country-info div
@@ -553,12 +565,11 @@ function plotAllYearData() {
 	var width = parseInt(visDivInner.style('width'));
 	var height = config.lineGraphAspectRatio * width;
 
-	//var margin = 20, leftMargin = 30;
 	var margin = {left: 30, right: 15, top: 6, bottom: 20};
-	var y = d3.scale.linear()
+	lgY = d3.scale.linear()
 		.domain([0, 100])
 		.range([0 + margin.bottom, height - margin.top]);
-	var x = d3.scale.linear()
+	lgX = d3.scale.linear()
 		.domain([config.minYear, config.maxYear])
 		.range([0 + margin.left, width - margin.right]);
 
@@ -567,7 +578,7 @@ function plotAllYearData() {
 		.attr("width", width)
 		.attr("height", height);
 
-	var g = vis.append("svg:g")
+	graphsvg = vis.append("svg:g")
 		.attr("transform", "translate(0, " + height.toString() + ")");
 
 	var minYearValue = valueForCountry(selectedCountry, config.minYear);
@@ -575,96 +586,99 @@ function plotAllYearData() {
 	var maxYearValue = valueForCountry(selectedCountry, config.maxYear);
 
 	// the graph lines
-	g.append("svg:line")
+	graphsvg.append("svg:line")
 		.attr("class", "history")
-		.attr("x1", x(config.minYear))
-		.attr("y1", -1 * y(minYearValue))
-		.attr("x2", x(config.thisYear))
-		.attr("y2", -1 * y(thisYearValue));
+		.attr("x1", lgX(config.minYear))
+		.attr("y1", -1 * lgY(minYearValue))
+		.attr("x2", lgX(config.thisYear))
+		.attr("y2", -1 * lgY(thisYearValue));
 
 	if (maxYearValue > 99.9) {
 		// handle the case where we hit 100% before maxYear
 		var year100 = findYear100(selectedCountry);
-		g.append("svg:line")
+		graphsvg.append("svg:line")
 			.attr("class", "projection")
-			.attr("x1", x(config.thisYear))
-			.attr("y1", -1 * y(thisYearValue))
-			.attr("x2", x(year100))
-			.attr("y2", -1 * y(100));
+			.attr("x1", lgX(config.thisYear))
+			.attr("y1", -1 * lgY(thisYearValue))
+			.attr("x2", lgX(year100))
+			.attr("y2", -1 * lgY(100));
 
-		g.append("svg:line")
+		graphsvg.append("svg:line")
 			.attr("class", "projection")
-			.attr("x1", x(year100))
-			.attr("y1", -1 * y(100))
-			.attr("x2", x(config.maxYear))
-			.attr("y2", -1 * y(100));
+			.attr("x1", lgX(year100))
+			.attr("y1", -1 * lgY(100))
+			.attr("x2", lgX(config.maxYear))
+			.attr("y2", -1 * lgY(100));
 
 	} else {
-		g.append("svg:line")
+		graphsvg.append("svg:line")
 			.attr("class", "projection")
-			.attr("x1", x(config.thisYear))
-			.attr("y1", -1 * y(thisYearValue))
-			.attr("x2", x(config.maxYear))
-			.attr("y2", -1 * y(maxYearValue));
+			.attr("x1", lgX(config.thisYear))
+			.attr("y1", -1 * lgY(thisYearValue))
+			.attr("x2", lgX(config.maxYear))
+			.attr("y2", -1 * lgY(maxYearValue));
 
 		// the plotted line to achieve universal access
 		// but only plot it if we won't reach it anyway
-		g.append("svg:line")
+		graphsvg.append("svg:line")
 			.attr("class", "universal")
-			.attr("x1", x(config.thisYear))
-			.attr("y1", -1 * y(thisYearValue))
-			.attr("x2", x(config.maxYear))
-			.attr("y2", -1 * y(100));
+			.attr("x1", lgX(config.thisYear))
+			.attr("y1", -1 * lgY(thisYearValue))
+			.attr("x2", lgX(config.maxYear))
+			.attr("y2", -1 * lgY(100));
 	}
 	// the axes
-	g.append("svg:line")
+	graphsvg.append("svg:line")
 		.attr("class", "axis")
-		.attr("x1", x(config.minYear))
-		.attr("y1", -1 * y(0))
-		.attr("x2", x(config.maxYear))
-		.attr("y2", -1 * y(0));
-	g.append("svg:line")
+		.attr("x1", lgX(config.minYear))
+		.attr("y1", -1 * lgY(0))
+		.attr("x2", lgX(config.maxYear))
+		.attr("y2", -1 * lgY(0));
+	graphsvg.append("svg:line")
 		.attr("class", "axis")
-		.attr("x1", x(config.minYear))
-		.attr("y1", -1 * y(0))
-		.attr("x2", x(config.minYear))
-		.attr("y2", -1 * y(100));
+		.attr("x1", lgX(config.minYear))
+		.attr("y1", -1 * lgY(0))
+		.attr("x2", lgX(config.minYear))
+		.attr("y2", -1 * lgY(100));
 
 	// the ticks on the axes
-	g.selectAll(".xLabel")
+	graphsvg.selectAll(".xLabel")
 		.data(config.yearsOnGraph)
 		.enter().append("svg:text")
 		.attr("class", "xLabel")
 		.text(String)
-		.attr("x", function(d) { return x(d); })
+		.attr("x", function(d) { return lgX(d); })
 		.attr("y", 0)
 		.attr("text-anchor", "middle");
-	g.selectAll(".yLabel")
-		.data(y.ticks(3))
+	graphsvg.selectAll(".yLabel")
+		.data(lgY.ticks(3))
 		.enter().append("svg:text")
 		.attr("class", "yLabel")
 		.text(String)
 		.attr("x", 0)
-		.attr("y", function(d) { return -1 * y(d); })
+		.attr("y", function(d) { return -1 * lgY(d); })
 		.attr("text-anchor", "right")
 		.attr("dy", 4);
 
-	g.selectAll(".xTicks")
+	graphsvg.selectAll(".xTicks")
 		.data(config.yearsOnGraph)
 		.enter().append("svg:line")
 		.attr("class", "xTicks")
-		.attr("x1", function(d) { return x(d); })
-		.attr("y1", -1 * y(0))
-		.attr("x2", function(d) { return x(d); })
-		.attr("y2", -1 * y(-5));
-	g.selectAll(".yTicks")
-		.data(y.ticks(3))
+		.attr("x1", function(d) { return lgX(d); })
+		.attr("y1", -1 * lgY(0))
+		.attr("x2", function(d) { return lgX(d); })
+		.attr("y2", -1 * lgY(-5));
+	graphsvg.selectAll(".yTicks")
+		.data(lgY.ticks(3))
 		.enter().append("svg:line")
 		.attr("class", "yTicks")
-		.attr("x1", x(config.minYear))
-		.attr("y1", function(d) { return -1 * y(d); })
-		.attr("x2", x(config.minYear-1))
-		.attr("y2", function(d) { return -1 * y(d); });
+		.attr("x1", lgX(config.minYear))
+		.attr("y1", function(d) { return -1 * lgY(d); })
+		.attr("x2", lgX(config.minYear-1))
+		.attr("y2", function(d) { return -1 * lgY(d); });
+
+	// finally add the year line
+	drawLineGraphYearLine();
 }
 
 /* update the targets

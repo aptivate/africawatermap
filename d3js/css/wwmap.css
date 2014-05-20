@@ -459,6 +459,12 @@ aside.info {
 #country-info line.history { stroke: steelblue; }
 #country-info line.projection { stroke: darkgrey; }
 #country-info line.universal { stroke: orange; }
+#country-info line.year-line
+{
+	stroke: red;
+	stroke-width: 1;
+}
+
 #country-info text {
 	font-family: sans-serif;
 	font-size: 0.8em;
