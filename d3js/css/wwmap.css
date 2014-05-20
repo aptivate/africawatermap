@@ -349,6 +349,8 @@ aside.info {
 .ico-linkedin {background-position:75%;}
 .ico-embed {background-position:100%;}
 
+div.embed-example {display:none;}
+
 /*--Country info--*/
 
 #country-info {

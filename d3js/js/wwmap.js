@@ -38,6 +38,15 @@ function numberWithCommas(number) {
 	return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function toggleEmbedCode() {
+	var embedCode = d3.select(".embed-example");
+	if (embedCode.style("display") == "none") {
+		embedCode.style("display", "block");
+	} else {
+		embedCode.style("display", "none");
+	}
+}
+
 function addLinksToShareButtons() {
 	// work out iframe parent link - from http://stackoverflow.com/a/7739035/3189
 	var pageUrl = (window.location != window.parent.location) ? document.referrer: document.location;
@@ -51,6 +60,9 @@ function addLinksToShareButtons() {
 		.attr("href", "http://plus.google.com/share?url=" + encodedUrl);
 	d3.select(".ss-share-link.ico-linkedin")
 		.attr("href", "http://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl);
+
+	d3.select(".ss-share-link.ico-embed")
+		.on("click", toggleEmbedCode);
 }
 
 /* draw circle and 2 rectangles
