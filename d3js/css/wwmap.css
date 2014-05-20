@@ -570,3 +570,9 @@ aside.info {
 .map-footer {
 
 }
+
+/*------Fallback----------------
+ ===============================*/
+
+#fallback-text {display:none;}
+#fallback-text.show {display:block;}

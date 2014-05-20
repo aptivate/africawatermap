@@ -1,20 +1,23 @@
 var wwMap = (function() {
 
-var config, allData, mapData, ie8_or_less,
+var config, allData, mapData,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv,
 	colorDomain, extColorDomain;
 
-function is_ie8_or_less() {
-	// return true if internet explorer, and version is 8 or less
-	var myNav = navigator.userAgent.toLowerCase();
-	if (myNav.indexOf('msie') != -1) {
-		var version = parseInt(myNav.split('msie')[1]);
-		if (version <= 8) {
-			return true;
-		}
-	}
-	return false;
+function replaceBodyWithFallbackImage() {
+	// delete the main html
+	// replace with img tag with screenshot of data vis, and some text
+	// might need to dynamically load jquip to do this with old browsers
+	var wrapper = document.getElementsByClassName("wrapper")[0];
+	document.body.removeChild(wrapper);
+
+	var explanation = document.getElementById("fallback-text");
+	explanation.className = "show";
+
+	var image = document.createElement("img");
+	image.setAttribute("src", "images/fallback.png");
+	document.body.appendChild(image);
 }
 
 function pluck(anObject, key) {
@@ -811,13 +814,9 @@ function init(mapconfig) {
 
 	// check for svg support
 	if (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1")) {
-		// TODO: do fallback thing with image
-		// delete the main html
-		// replace with img tag with screenshot of data vis, and some text
-		// might need to dynamically load jquip to do this with old browsers
+		replaceBodyWithFallbackImage();
 		return;
 	}
-	ie8_or_less = is_ie8_or_less();
 	setDefaultSelections();
 
 	var width = parseInt(d3.select('#map').style('width'));
