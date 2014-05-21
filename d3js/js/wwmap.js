@@ -128,7 +128,7 @@ function updateStaticText() {
 	setSelectionText("#reset-button", "Reset");
 
 	// sharing section
-	setSelectionTitle(".social-share > h2", "follow africa water map");
+	setSelectionTitle("#twitter-search-link", "follow africa water map");
 	setSelectionTitle(".ss-share-link.ico-facebook", "share on facebook");
 	setSelectionTitle(".ss-share-link.ico-twitter", "share on twitter");
 	setSelectionTitle(".ss-share-link.ico-google", "share on google");
@@ -159,7 +159,7 @@ function toggleEmbedCode() {
 	}
 }
 
-function addLinksToShareButtons() {
+function updateSocialText() {
 	// work out iframe parent link - from http://stackoverflow.com/a/7739035/3189
 	var pageUrl = (window.location != window.parent.location) ? document.referrer: document.location;
 	var encodedUrl = encodeURIComponent(pageUrl);
@@ -170,6 +170,9 @@ function addLinksToShareButtons() {
 		hashTag = config.twitterHashTagSanitation;
 	}
 
+	d3.select("#twitter-search-link")
+		.attr("href", "https://twitter.com/#" + hashTag)
+		.text(" #" + hashTag);
 	d3.select(".ss-share-link.ico-facebook")
 		.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
 	d3.select(".ss-share-link.ico-twitter")
@@ -179,6 +182,10 @@ function addLinksToShareButtons() {
 		.attr("href", "http://plus.google.com/share?url=" + encodedUrl);
 	d3.select(".ss-share-link.ico-linkedin")
 		.attr("href", "http://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl);
+}
+
+function addLinksToShareButtons() {
+	updateSocialText();
 
 	d3.select(".ss-share-link.ico-embed")
 		.on("click", toggleEmbedCode);
@@ -509,6 +516,7 @@ function setSource(source) {
 	updateMapColors();
 	updateSideBar();
 	updateSelectedBorder();
+	updateSocialText();
 }
 
 function getCountryName(country_code) {
