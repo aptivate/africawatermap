@@ -79,6 +79,8 @@ function getTranslation(translationKey, capitalise) {
 		} else {
 			return translations[translationKey];
 		}
+	} else {
+		console.log("Could not find translation of " + translationKey);
 	}
 }
 
