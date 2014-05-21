@@ -595,8 +595,12 @@ aside.info {
 /*------Footer----------------
  ===============================*/
 
-.map-footer { }
-
+.main-footer {
+	display:block;
+	padding-bottom:1em;
+	float:left;
+	width:100%;
+}
 .main-footer > .logos {float:left;}
 .main-footer > .made-by {float:right;}
 
