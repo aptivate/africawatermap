@@ -62,15 +62,17 @@ aside.info {
 }
 
 .map-footer {
-	clear: both;
-	display: block;
-	padding: 1em;
+    clear: both;
+    display: block;
+    padding: 1em 1em 0 2.5em;
 }
 
 .main-footer {
-	clear: both;
-	display: block;
-	padding: 1em;
+	display:block;
+	padding-bottom:1em;
+	float:left;
+	width:100%;
+	padding:0 1em 1em 2.5em;
 }
 
 /*-------General Styles---------------------
@@ -78,10 +80,10 @@ aside.info {
 
 h1, h2, h3, h4 {
 	font-family: "MetaCompPro-blackRegular",Arial,Helvetica,sans-serif;
-	color:#222;
+	color:#555;
 }
 
-h2 {font-size:1.1em;}
+h2 {font-size:1.2em;}
 
 h2 > a {
 	color:#2980B9;
@@ -500,11 +502,11 @@ aside.info {
 }
 
 .targets-section {
-	width: 40%;
+	width: 43%;
 	float: left;
 }
 .targets-title {
-    font-size: 1em;
+    font-size: 1.1em;
     margin: 0;
     padding: 0 1em;
 }
@@ -575,7 +577,7 @@ aside.info {
 .targets-subtitle, .targets-detail, .targets-percent, #targets-key-text { 
 	color: #666; 
 	margin:0.5em 0;
-	font-size:0.9em;
+	font-size:1em;
 }
 
 .targets-percent {
@@ -594,15 +596,25 @@ aside.info {
 
 /*------Footer----------------
  ===============================*/
-
-.main-footer {
-	display:block;
-	padding-bottom:1em;
+.main-footer > .logos {
 	float:left;
-	width:100%;
+	bottom:-5px;
+	left:-10px;
+	position:relative;
+	}
+.main-footer > .made-by {
+    bottom: 1em;
+    float: right;
+    font-size: 0.9em;
+    position: absolute;
+    right: 1em;
 }
-.main-footer > .logos {float:left;}
-.main-footer > .made-by {float:right;}
+.main-footer > .made-by > a {
+	text-decoration: none;
+	color:#333;
+	font-weight:bold;
+	font-size:0.98em;
+}
 
 .main-footer > .logos > a {margin:0.5em;}
 
