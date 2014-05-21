@@ -166,12 +166,21 @@ h2 > a {
 	background-color:#333;
 }
 
+
+#select-water-source.button.source:hover {
+    background-color: #3FC0F0;
+}
+
+#select-sanitation-source.button.source:hover {
+    background-color: #DD7733;
+}
+
 #select-water-source.button.current-source {
 	background-color:#3FC0F0;
 }
 
 #select-sanitation-source.button.current-source {
-	background-color:#43C4AD;
+	background-color:#DD7733;
 }
 
 /*--Map Legend--*/
@@ -278,28 +287,30 @@ span.tooltip-percent {
     top: -0.7em;
     width: 75px;
 }
+
+#year-slider > a.d3-slider-handle:before,
+#year-slider > a.d3-slider-handle:after {
+	content: "";
+    display: block;
+    left: 0;
+    position: absolute;
+    z-index: 1;
+    -moz-transform:scale(1.1);
+    transform:scale(1.1);
+}
 #year-slider > a.d3-slider-handle:before {
     border-left: 37.5px solid rgba(0, 0, 0, 0);
     border-right: 37.5px solid rgba(0, 0, 0, 0);
     border-top: 8px solid #D48702;
-    content: "";
-    display: block;
-    left: 0;
-    position: absolute;
     top: 100%;
-    z-index: 1;
+    
 }
 
 #year-slider > a.d3-slider-handle:after {
     border-bottom: 8px solid #FECD7C;
     border-left: 37.5px solid rgba(0, 0, 0, 0);
     border-right: 37.5px solid rgba(0, 0, 0, 0);
-    content: "";
-    display: block;
-    left: 0;
-    position: absolute;
     top: -8px;
-    z-index: 1;
 }
 
 
