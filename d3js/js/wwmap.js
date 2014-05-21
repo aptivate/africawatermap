@@ -1,6 +1,6 @@
 var wwMap = (function() {
 
-var config, allData, mapData,
+var config, allData, mapData, translations,
 	selectedCountry, selectedYear, selectedSource,
 	path, mapsvg, colorScale, mapSlider, tooltipdiv,
 	graphsvg, lgX, lgY,
@@ -66,6 +66,90 @@ function numberWithCommas(number) {
 	return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function capitaliseFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function getTranslation(translationKey, capitalise) {
+	capitalise = (typeof capitalise === "undefined") ? "defaultValue" : capitalise;
+	if (translations.hasOwnProperty(translationKey)) {
+		if (capitalise) {
+			return capitaliseFirstLetter(translations[translationKey]);
+		} else {
+			return translations[translationKey];
+		}
+	} else {
+		console.log("Could not find translation of " + translationKey);
+	}
+}
+
+function setSelectionText(selector, translationKey, capitalise) {
+	var translated = getTranslation(translationKey, capitalise);
+	if (translated) {
+		d3.select(selector).text(translated);
+	}
+}
+
+function setSelectionHtml(selector, translationKey, capitalise) {
+	var translated = getTranslation(translationKey, capitalise);
+	if (translated) {
+		d3.select(selector).html(translated);
+	}
+}
+
+function setSelectionTitle(selector, translationKey, capitalise) {
+	var translated = getTranslation(translationKey, capitalise);
+	if (translated) {
+		d3.select(selector).attr("title", translated);
+	}
+}
+
+/* translate the text up to the first html tag
+ */
+function setSelectionLeadingText(selector, translationKey, capitalise) {
+	var translated = getTranslation(translationKey, capitalise);
+	if (translated) {
+		var selection = d3.select(selector);
+		var origHtml = selection.html();
+		selection.html(translated + origHtml.substring(origHtml.indexOf('<')));
+	}
+}
+
+/* Update the text in the file
+ */
+function updateStaticText() {
+	// map info section
+	setSelectionHtml("#fallback-text", "browser fallback");
+	setSelectionLeadingText("#map-info-title", "map info title");
+	setSelectionHtml(".instructions", "instructions");
+	setSelectionText("#select-water-source", "water", true);
+	setSelectionText("#select-sanitation-source", "sanitation", true);
+	setSelectionText("#reset-button", "Reset");
+
+	// sharing section
+	setSelectionTitle("#twitter-search-link", "follow africa water map");
+	setSelectionTitle(".ss-share-link.ico-facebook", "share on facebook");
+	setSelectionTitle(".ss-share-link.ico-twitter", "share on twitter");
+	setSelectionTitle(".ss-share-link.ico-google", "share on google");
+	setSelectionTitle(".ss-share-link.ico-linkedin", "share on linkedin");
+	setSelectionTitle(".ss-share-link.ico-embed", "embed this map");
+	setSelectionLeadingText(".embed-example", "you can embed this map");
+
+	// targets section
+	setSelectionText(".targets-title", "Everyone, Everywhere by 2030");
+	setSelectionText(".currently > .targets-section-title", "currently");
+	setSelectionText(".for-target > .targets-section-title", "for targets");
+	setSelectionText(".for-target > .targets-detail", "extra people per year");
+	setSelectionHtml(".targets-percent", "That is just % of the population");
+
+	setSelectionText(".map-description > h2", "about this map");
+	setSelectionText(".map-description > p", "this map shows which ...");
+
+	// footer
+	setSelectionText("#map-by", "map by");
+}
+
 function toggleEmbedCode() {
 	var embedCode = d3.select(".embed-example");
 	if (embedCode.style("display") == "none") {
@@ -75,19 +159,33 @@ function toggleEmbedCode() {
 	}
 }
 
-function addLinksToShareButtons() {
+function updateSocialText() {
 	// work out iframe parent link - from http://stackoverflow.com/a/7739035/3189
 	var pageUrl = (window.location != window.parent.location) ? document.referrer: document.location;
 	var encodedUrl = encodeURIComponent(pageUrl);
+	var hashTag;
+	if (selectedSource == "water") {
+		hashTag = config.twitterHashTagWater;
+	} else {
+		hashTag = config.twitterHashTagSanitation;
+	}
+
+	d3.select("#twitter-search-link")
+		.attr("href", "https://twitter.com/#" + hashTag)
+		.text(" #" + hashTag);
 	d3.select(".ss-share-link.ico-facebook")
 		.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
 	d3.select(".ss-share-link.ico-twitter")
 		.attr("href", "http://twitter.com/share?url=" + encodedUrl +
-			"&hashtags=" + config.twitterHashTag);
+			"&hashtags=" + hashTag);
 	d3.select(".ss-share-link.ico-google")
 		.attr("href", "http://plus.google.com/share?url=" + encodedUrl);
 	d3.select(".ss-share-link.ico-linkedin")
 		.attr("href", "http://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl);
+}
+
+function addLinksToShareButtons() {
+	updateSocialText();
 
 	d3.select(".ss-share-link.ico-embed")
 		.on("click", toggleEmbedCode);
@@ -162,7 +260,6 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	// TODO: deal with negative numbers - actually there are no negative
 	// numbers in the dataset, though %age can be negative
 
-	// TODO: show half people?
 	totalPeople = Math.round(totalPeople);
 	maxPeople = Math.round(maxPeople);
 
@@ -230,7 +327,7 @@ function updatePersonKey(peopleUnits) {
 
 	drawPeopleRow(1, vis, 0, 0, personHeight, "key");
 
-	var key_text = " = " + numberWithCommas(peopleUnits) + " people";
+	var key_text = " = " + numberWithCommas(peopleUnits) + " " + getTranslation("people");
 	d3.select("#targets-key-text").text(key_text);
 }
 
@@ -277,31 +374,30 @@ function selectTextUnits(number1, number2) {
 	maxNumber = Math.max(Math.abs(number1), Math.abs(number2));
 	minNumber = Math.min(Math.abs(number1), Math.abs(number2));
 
+	var k = {number: 1000, abbrev: getTranslation("one_letter_1000")};
+	var m = {number: 1000000, abbrev: getTranslation("one_letter_1000000")};
+
 	if (minNumber == 0) {
 		if (maxNumber < 1000000) {
-			return "k";
+			return k;
 		} else {
-			return "m";
+			return m;
 		}
 
 	} else {
 		if (maxNumber < 1000000) {
-			return "k";
+			return k;
 		} else if (minNumber >= 100000) {
-			return "m";
+			return m;
 		} else {
-			return "k";
+			return k;
 		}
 	}
 }
 
 /* converts number to numbers + m/k for million/thousand */
 function numberAndUnitsToDigits(number, units) {
-	if (units == "m") {
-		number = number / 1000000;
-	} else {
-		number = number / 1000;
-	}
+	number = number / units.number;
 
 	if (number < 10) {
 		return number.toFixed(1);
@@ -354,7 +450,8 @@ function countryClicked(d) {
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
 	if (coverage == null) { return; }
-	var countryName = d.properties.name;
+	// TODO: translations, add all country names
+	var countryName = d.properties.name; // TODO = getTranslation(d.properties.name);
 	// set the width according to the length of the country name, but don't
 	// get too small
 	var ttWidth = Math.max(7, countryName.length*0.9);
@@ -419,6 +516,7 @@ function setSource(source) {
 	updateMapColors();
 	updateSideBar();
 	updateSelectedBorder();
+	updateSocialText();
 }
 
 function getCountryName(country_code) {
@@ -468,19 +566,6 @@ function extractDataForSourceAndYear() {
 	return yearData;
 }
 
-/* Expects a {"1990": 43.1, "1991": 43.7, ...}
- * and will return [43.1, 43.7, ...]
- */
-function convertAllYearDataToArray(dataset) {
-	var yearArray = [];
-	for (var year = config.minYear; year <= config.maxYear; year++) {
-		if (dataset.hasOwnProperty(year.toString())) {
-			yearArray.push(dataset[year.toString()]);
-		}
-	}
-	return yearArray;
-}
-
 function updateLegend() {
 	// remove the old legend, if any
 	var legendDiv = d3.select("#map-legend-svg");
@@ -515,9 +600,9 @@ function updateLegend() {
 		.style("opacity", 0.8);
 
 	if (selectedSource == 'water') {
-		title = "access to water";
+		title = getTranslation("access to water");
 	} else {
-		title = "access to sanitation";
+		title = getTranslation("access to sanitation");
 	}
 	d3.select("#map-legend-label")
 		.text(title)
@@ -546,9 +631,9 @@ function updateMapInfo() {
 function setCountryInfoAccessText() {
 	percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
 	if (selectedSource == 'water') {
-		accessText = ' of people have access to water ';
+		accessText = getTranslation('of people have access to water');
 	} else {
-		accessText = ' of people have access to sanitation ';
+		accessText = getTranslation('of people have access to sanitation');
 	}
 	accessTextElement = d3.select("#country-info-access-text");
 	accessTextElement.selectAll("*").remove();
@@ -558,13 +643,13 @@ function setCountryInfoAccessText() {
 	percentSpan.append("span")
 		.attr("class", "percent-sign")
 		.text("%");
-	accessTextElement.append("span").text(accessText);
+	accessTextElement.append("span").text(" " + accessText + " ");
 	accessTextElement.append("span")
 		.attr("class", "in-year")
 		.text("in " + selectedYear.toString());
 	accessTextElement.append("span")
 		.attr("class", "actual-projected")
-		.text(" (actual and projected)");
+		.text(" (" + getTranslation("actual and projected") + ")");
 }
 
 function drawLineGraphYearLine() {
@@ -734,11 +819,11 @@ function updateTargetPanel() {
 		var digitsUniversal = numberAndUnitsToDigits(popUniversal, units);
 
 		d3.select(".currently .targets-number-digits").text(digitsCurrent);
-		d3.select(".currently .targets-number-unit").text(units);
+		d3.select(".currently .targets-number-unit").text(units.abbrev);
 
 		if (popUniversal > 0) {
 			d3.select(".for-target .targets-number-digits").text(digitsUniversal);
-			d3.select(".for-target .targets-number-unit").text(units);
+			d3.select(".for-target .targets-number-unit").text(units.abbrev);
 		} else {
 			d3.select(".for-target .targets-number-digits").text("0");
 			d3.select(".for-target .targets-number-unit").text("");
@@ -822,9 +907,10 @@ function createSlider() {
 	updateSliderYear();
 }
 
-function loadedDataCallback(error, africa, dataset) {
+function loadedDataCallback(error, africa, dataset, langData) {
 	allData = dataset;
 	mapData = africa;
+	translations = langData;
 	var countries = topojson.feature(africa, africa.objects.subunits).features;
 	var borders = topojson.mesh(africa, africa.objects.subunits,
 		function(a, b) { return true; });
@@ -851,6 +937,8 @@ function loadedDataCallback(error, africa, dataset) {
 	updateLegend();
 
 	updateSideBar();
+
+	updateStaticText();
 }
 
 function setDefaultSelections() {
@@ -876,6 +964,12 @@ function init(mapconfig) {
 	colorDomain = [10, 20, 30, 40, 50, 60, 70, 80, 90, 101];
 	extColorDomain = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
+	var lang = "en";
+	if (QueryString.hasOwnProperty("lang")) {
+		lang_url = QueryString.lang;
+	}
+	var lang_url = 'data/lang_' + lang + '.json';
+
 	var projection = d3.geo.mercator()
 		.scale(width/1.25)
 		.translate([width/4, height/2+10]);
@@ -895,6 +989,7 @@ function init(mapconfig) {
 	queue()
 		.defer(d3.json, config.mapurl_topojson)
 		.defer(d3.json, config.dataurl)
+		.defer(d3.json, lang_url)
 		.await(loadedDataCallback);
 
 	createSlider();

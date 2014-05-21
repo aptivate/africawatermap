@@ -1,0 +1,114 @@
+{
+	"water": "water",
+	"sanitation": "sanitation",
+
+	"access to water": "access to water",
+	"access to sanitation": "access to sanitation",
+
+	"of people have access to water": "of people have access to water",
+	"of people have access to sanitation": "of people have access to sanitation",
+	"actual and projected": "actual and projected",
+
+	"browser fallback": "Your browser does not support the features needed to view this map properly - you could us any recent version of <a href=\"https://www.google.com/chrome/\">Chrome</a>, <a href=\"https://www.mozilla.org/firefox/\">Firefox</a>, Opera or Safari, or Internet Explorer version 9 or greater.",
+
+	"map info title": "Progress of Africa’s access to ",
+
+	"instructions": "Drag the slider to change the year and click on a country to see more information.",
+
+	"Reset": "Reset timeline",
+
+	"share": "share",
+
+	"follow africa water map": "follow Africa Water Map on twitter using #africawatermap hashtag",
+	"follow africa sanitation map": "follow Africa Sanitation Map on twitter using #africasanitationmap hashtag",
+
+	"share on facebook": "Share on Facebook",
+	"share on twitter": "Share on Twitter",
+	"share on google": "Share on Google+",
+	"share on linkedin": "Share on LinkedIn",
+
+	"embed this map": "Embed this map in your site",
+	"you can embed this map": "You can embed this map in your own site by adding the following HTML to your page:",
+
+	"Everyone, Everywhere by 2030": "Everyone, Everywhere by 2030",
+	"currently": "currently",
+	"for targets": "for targets",
+
+	"one_letter_1000": "k",
+	"one_letter_1000000": "m",
+
+	"Total number of new people gaining access to water": "Total number of new people gaining access to water",
+	"more people per year will gain access to water": "more people per year will gain access to water",
+	"Total number of new people gaining access to sanitation": "Total number of new people gaining access to sanitation",
+	"more people per year will gain access to sanitation": "more people per year will gain access to sanitation",
+
+	"extra people per year": "extra people per year needed to reach 2030 target",
+
+	"people": "people",
+
+	"That is just % of the population": "That is just <span class=\"targets-percent-digits\"></span>% of the population",
+
+	"about this map": "About this map",
+	"this map shows which ...": "This map shows which African countries are on track to reach everyone, everywhere with access to water (sanitation) by 2030, and what increase in access is required in countries that are not on track.",
+
+	"map by": "map by",
+
+	"Algeria": "Algeria",
+	"Angola": "Angola",
+	"Benin": "Benin",
+	"Botswana": "Botswana",
+	"Burkina Faso": "Burkina Faso",
+	"Burundi": "Burundi",
+	"Cameroon": "Cameroon",
+	"Cape Verde": "Cape Verde",
+	"Central African Republic": "Central African Republic",
+	"Chad": "Chad",
+	"Comoros": "Comoros",
+	"Congo": "Congo",
+	"C\u00f4te d'Ivoire": "C\u00f4te d'Ivoire",
+	"Democratic Republic of the Congo": "Democratic Republic of the Congo",
+	"Djibouti": "Djibouti",
+	"Egypt": "Egypt",
+	"Equatorial Guinea": "Equatorial Guinea",
+	"Eritrea": "Eritrea",
+	"Ethiopia": "Ethiopia",
+	"Gabon": "Gabon",
+	"Gambia": "Gambia",
+	"Ghana": "Ghana",
+	"Guinea": "Guinea",
+	"Guinea-Bissau": "Guinea-Bissau",
+	"Kenya": "Kenya",
+	"Lesotho": "Lesotho",
+	"Liberia": "Liberia",
+	"Libyan Arab Jamahiriya": "Libyan Arab Jamahiriya",
+	"Madagascar": "Madagascar",
+	"Malawi": "Malawi",
+	"Mali": "Mali",
+	"Mauritania": "Mauritania",
+	"Mauritius": "Mauritius",
+	"Mayotte": "Mayotte",
+	"Morocco": "Morocco",
+	"Mozambique": "Mozambique",
+	"Namibia": "Namibia",
+	"Niger": "Niger",
+	"Nigeria": "Nigeria",
+	"R\u00e9union": "R\u00e9union",
+	"Rwanda": "Rwanda",
+	"Sao Tome and Principe": "Sao Tome and Principe",
+	"Senegal": "Senegal",
+	"Seychelles": "Seychelles",
+	"Sierra Leone": "Sierra Leone",
+	"Somalia": "Somalia",
+	"South Africa": "South Africa",
+	"South Sudan": "South Sudan",
+	"Sub-Saharan Africa": "Sub-Saharan Africa",
+	"Sudan": "Sudan",
+	"Swaziland": "Swaziland",
+	"Togo": "Togo",
+	"Tunisia": "Tunisia",
+	"Uganda": "Uganda",
+	"United Republic of Tanzania": "United Republic of Tanzania",
+	"Western Sahara": "Western Sahara",
+	"Zambia": "Zambia",
+	"Zimbabwe": "Zimbabwe"
+}

@@ -17,12 +17,12 @@
 </head>
 <body>
 <p id="fallback-text">
-Your browser does not support the features needed to view this map properly - for that you need any recent version of Chrome, Firefox or Safari, or Internet Explorer version 9 or greater.
+Your browser does not support the features needed to view this map properly - you could use any recent version of <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.mozilla.org/firefox/">Firefox</a>, Opera or Safari, or Internet Explorer version 9 or greater.
 </p>
 
 <div id="wrapperdiv" class="wrapper water">
 	<div class="social-share">
-			<h2>share <a title="follow Africa Water Map on twitter using #africawatermap hashtag" href="https://twitter.com/#africawatermap"> #africawatermap</a></h2>
+			<h2>share <a id="twitter-search-link" title="follow Africa Water Map on twitter using #africawatermap hashtag" href="https://twitter.com/#africawatermap"> #AfricaWaterMap</a></h2>
 			<ul class="ss-share">
 				<li class="ss-share-item">
 					<a class="ss-share-link ico-facebook" target="_blank" title="Share on Facebook"></a>
@@ -47,7 +47,7 @@ Your browser does not support the features needed to view this map properly - fo
 		</div>
 	<section class="mainmap">
 		<section class="map-info">
-				<h1>Progress of Africa’s access to 
+				<h1 id="map-info-title">Progress of Africa’s access to 
 					<span class="big water"> water<strong> 1990-2030</strong></span>
 				</h1>
 				<p class="instructions">Drag the slider to change the year and click on a country to see more information.</p>
@@ -122,7 +122,7 @@ Your browser does not support the features needed to view this map properly - fo
 			<a href="http://www.washwatch.org/"><img src="images/washwatch.png" width="74" height="44" alt="WashWatch"></a>
 		</div>
 		<div class="made-by">
-			map by <a href="http://www.aptivate.org/" class="Aptivate">Aptivate</a>
+			<span id="map-by">map by</span> <a href="http://www.aptivate.org/" class="Aptivate">Aptivate</a>
 		</div>
 	</footer>
 </div>
@@ -148,7 +148,8 @@ wwMap.init({
 	noDataColor: "#eee",
 	lineGraphAspectRatio: 0.6,
 	lineGraphMargin: 5,
-	twitterHashTag: "africawatermap",
+	twitterHashTagWater: "AfricaWaterMap",
+	twitterHashTagSanitation: "AfricaSanitationMap",
 	personFullHeight: 25
 });
 </script>
