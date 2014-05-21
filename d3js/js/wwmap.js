@@ -366,31 +366,30 @@ function selectTextUnits(number1, number2) {
 	maxNumber = Math.max(Math.abs(number1), Math.abs(number2));
 	minNumber = Math.min(Math.abs(number1), Math.abs(number2));
 
+	var k = {number: 1000, abbrev: getTranslation("one_letter_1000")};
+	var m = {number: 1000000, abbrev: getTranslation("one_letter_1000000")};
+
 	if (minNumber == 0) {
 		if (maxNumber < 1000000) {
-			return "k";
+			return k;
 		} else {
-			return "m";
+			return m;
 		}
 
 	} else {
 		if (maxNumber < 1000000) {
-			return "k";
+			return k;
 		} else if (minNumber >= 100000) {
-			return "m";
+			return m;
 		} else {
-			return "k";
+			return k;
 		}
 	}
 }
 
 /* converts number to numbers + m/k for million/thousand */
 function numberAndUnitsToDigits(number, units) {
-	if (units == "m") {
-		number = number / 1000000;
-	} else {
-		number = number / 1000;
-	}
+	number = number / units.number;
 
 	if (number < 10) {
 		return number.toFixed(1);
@@ -811,11 +810,11 @@ function updateTargetPanel() {
 		var digitsUniversal = numberAndUnitsToDigits(popUniversal, units);
 
 		d3.select(".currently .targets-number-digits").text(digitsCurrent);
-		d3.select(".currently .targets-number-unit").text(units);
+		d3.select(".currently .targets-number-unit").text(units.abbrev);
 
 		if (popUniversal > 0) {
 			d3.select(".for-target .targets-number-digits").text(digitsUniversal);
-			d3.select(".for-target .targets-number-unit").text(units);
+			d3.select(".for-target .targets-number-unit").text(units.abbrev);
 		} else {
 			d3.select(".for-target .targets-number-digits").text("0");
 			d3.select(".for-target .targets-number-unit").text("");
