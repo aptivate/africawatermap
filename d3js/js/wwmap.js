@@ -253,7 +253,6 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	// TODO: deal with negative numbers - actually there are no negative
 	// numbers in the dataset, though %age can be negative
 
-	// TODO: show half people?
 	totalPeople = Math.round(totalPeople);
 	maxPeople = Math.round(maxPeople);
 
