@@ -9,6 +9,8 @@ body {
 	font-family: Arial,"liberation sans", Helvetica, sans-serif;
 	font-size:85%;
 	color:#6D6E72;
+	margin:0;
+	min-width:290px;
 }
 
 * {
@@ -18,13 +20,13 @@ body {
 		     box-sizing:border-box;
 }
 
-.wrapper {
+#wrapperdiv {
     display: table;
     margin: 0 auto;
     max-width: 960px;
-    min-width:500px;
+    min-width:290px;
     overflow: visible;
-    padding: 0;
+    padding: 1em 0 1em;
     position: relative;
     width: 100%;
     border: 3px solid #eee;
@@ -35,7 +37,7 @@ section.mainmap {
     float: left;
     min-width: 200px;
     max-width:650px;
-    padding-right: 1em;
+    padding-right: 0em;
     position: relative;
     width: 65%;
 }
@@ -62,17 +64,19 @@ aside.info {
 }
 
 .map-footer {
-    clear: both;
+    clear: left;
     display: block;
-    padding: 1em 1em 0 2.5em;
+    float: left;
+    padding: 2em 1em 0 2.5em;
+    width: 65%;
 }
 
 .main-footer {
-	display:block;
-	padding-bottom:1em;
-	float:left;
-	width:100%;
-	padding:0 1em 1em 2.5em;
+    display: block;
+    float: left;
+    padding: 0 1em 0 2.5em;
+    width: 100%;
+    position:relative;
 }
 
 /*-------General Styles---------------------
@@ -98,7 +102,7 @@ h2 > a {
     left: 3em;
     margin-top: 42%;
     position: absolute;
-    width: 44%;
+    width: 42%;
 }
 
 .map-info > h1 {
@@ -112,6 +116,7 @@ h2 > a {
     clear: both;
     display: block;
     font-size: 2em;
+    line-height:1em;
 }
 
 .big > strong {
@@ -122,8 +127,13 @@ h2 > a {
 .big.water {color: #3FC0F0;}
 .big.sanitation{color: #43C4AD;}
 
+.instructions {
+    font-size: 0.95em;
+    margin: 0.5em 0;
+}
+
 #map {
-    margin: 2% 2% 5% 25%;
+    margin: 0 0 3em 8em;
     overflow: visible;
     position: relative;
     z-index:1;
@@ -152,14 +162,19 @@ h2 > a {
 
 
 #select-source {
-	display:block;
-	margin:0.25em 0;
+    display: block;
+    float: left;
+    margin: 0.25em 0;
+    z-index: 3;
 }
 
 #select-source .button {
     background-color: #999999;
     color: #FFFFFF;
+    display: inline-block;
+    float: left;
     font-weight: bold;
+    margin-right: 0.5em;
     padding: 0.2em 0.4em 0.3em;
     text-decoration: none;
 }
@@ -183,6 +198,22 @@ h2 > a {
 
 #select-sanitation-source.button.current-source {
 	background-color:#43C4AD;
+}
+
+#reset-button {
+    color: #2977A8;
+    display: inline-block;
+    float: left;
+    font-size: 1em;
+    position: relative;
+    text-decoration: underline;
+    z-index: 2;
+    line-height:1.5em;
+}
+
+#reset-button:hover {
+	cursor:pointer;
+	color:#333333;
 }
 
 /*--Map Legend--*/
@@ -221,7 +252,7 @@ h2 > a {
 /*--Map Legend--*/
 
 .legend {
-    height: 50px;
+    height: 30px;
     padding-top: 0;
     width: 100%;
 }
@@ -275,6 +306,16 @@ span.tooltip-percent {
 
 /*--Year Slider--*/
 
+#year-slider {
+    background-color: #2876A7;
+    border: medium none;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 1.1em;
+    position: relative;
+    z-index: 2;
+    height:0.5em;
+}
+
 #year-slider > a.d3-slider-handle {
     background: none repeat scroll 0 0 #FFA500;
     border: medium none;
@@ -290,6 +331,13 @@ span.tooltip-percent {
     width: 75px;
 }
 
+#year-slider > a.d3-slider-handle:hover {
+	cursor: move;
+	cursor: url(https://mail.google.com/mail/images/2/closedhand.cur) 8 8, move;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+}
+
 #year-slider > a.d3-slider-handle:before,
 #year-slider > a.d3-slider-handle:after {
 	content: "";
@@ -298,6 +346,8 @@ span.tooltip-percent {
     position: absolute;
     z-index: 1;
     -moz-transform:scale(1.1);
+    -webkit-transform:scale(1.1);
+    -o-transform:scale(1.1);
     transform:scale(1.1);
 }
 #year-slider > a.d3-slider-handle:before {
@@ -315,18 +365,40 @@ span.tooltip-percent {
     top: -8px;
 }
 
+#year-slider > .d3-slider-axis-bottom {
+    position: relative;
+    top: 8px;
+}
+
+#year-slider > .d3-slider-axis text {
+	font-weight:bold;
+	font-size:0.7em;
+}
+
+.logos {
+	float:left;
+	bottom:-5px;
+	left:-2em;
+	position:relative;
+	}
+	
+.logos > a {margin-left:0.5em;}
+
 
 
 /*------Info Panel----------------
  ===============================*/
 
 aside.info {
-    background-color: #F8F8F8;
-    margin:1em 1em 1em 0;
+    margin:0em 1em 0 0;
 }
 
+
 .social-share {
-	background-color:#fff;
+    float: right;
+    margin-right: 1em;
+    position: relative;
+    width: 32%;
 }
 
 .social-share h2 {
@@ -409,6 +481,8 @@ aside.info {
     border-top: 5px solid #65CDF3;
     padding: 1em;
     position:relative;
+    background-color:#F8F8F8;
+    margin-top:1em;
 }
 
 
@@ -499,6 +573,8 @@ aside.info {
 #country-targets {
     border-top: 10px solid #FFFFFF;
     padding-top: 0.75em;
+    background-color:#F8F8F8;
+    padding-bottom:1em;
 }
 
 .targets-section {
@@ -596,27 +672,22 @@ aside.info {
 
 /*------Footer----------------
  ===============================*/
-.main-footer > .logos {
-	float:left;
-	bottom:-5px;
-	left:-10px;
-	position:relative;
-	}
-.main-footer > .made-by {
-    bottom: 1em;
+
+.made-by {
+    bottom: 0;
     float: right;
     font-size: 0.9em;
     position: absolute;
     right: 1em;
 }
-.main-footer > .made-by > a {
+.made-by > a {
 	text-decoration: none;
 	color:#333;
 	font-weight:bold;
 	font-size:0.98em;
 }
 
-.main-footer > .logos > a {margin:0.5em;}
+
 
 /*------Fallback----------------
  ===============================*/
@@ -627,8 +698,237 @@ aside.info {
 /*------Fallback----------------
  ===============================*/
 
-@media all and (max-width: 750px) and (min-width: 650px) {
+@media all and (max-width: 900px) and (min-width: 649px) {
+	.map-info {font-size:0.95em;left:2em;margin-top:45%;}
+	.big {font-size:2.5em;}
+	
+	
+	
 	section.year-slider-section {
-    	padding-top: 10%;
+	    margin-bottom: 2em;
+	    margin-left: 1.6em;
+	    padding-right: 3em;
 	}
+	
+	.map-footer {
+	    clear: left;
+	    display: block;
+	    padding: 0 1em 0 1.6em;
+	}
+}
+
+@media all and (max-width: 800px) and (min-width: 619px) {
+	
+	.map-info {
+		font-size:0.9em;
+		left:2em;
+		margin-top:45%;
+		width:45%;
+		}
+	#map {margin-bottom:5em;}
+	.map-info > h1 {font-size:1em;}
+	section.year-slider-section {
+	    margin-left: 1.6em;
+	    padding-right: 3em;
+	}
+	#country-info {font-size:0.9em;}
+	.targets-title {font-size:1em;}
+	.main-footer {width:65%;}
+
+}
+
+@media all and (max-width:620px) and (min-width:0px){
+	
+	#wrapperdiv{
+		padding:1em;
+		display:block;
+		width:100%;	
+		float:left;
+		position:relative;
+		min-width:250px;
+	}
+
+	#map,
+	section.mainmap,
+	aside.info,
+	.map-footer,
+	section.year-slider-section,
+	.main-footer {
+		width:100%;
+		clear:both;
+		padding:0;
+		margin:0;
+		margin-left:0;
+		left:inherit;
+		top:inherit;
+		position:relative;
+		display:block;
+		float:left;
+		min-width:250px;
+		}
+	section.mainmap {
+		margin-top: 0;
+	}
+	#map {
+		width:85%;
+		float:right;
+		margin-bottom:2em;
+	}
+	.social-share {
+	    background-color: #FFFFFF;
+	    font-size: 0.83em;
+	    position:absolute;
+	    right: 10px;
+	    top: 0;
+	    z-index: 2;
+	}
+	.map-info {
+		font-size:0.9em;
+		left:0;
+		margin-top:47%;
+		width:45%;
+		z-index: 2;
+	}
+	.map-info > h1 {
+		font-size:0.9em;
+	}
+	.big {
+		font-size:3em;
+	}
+	#select-source {
+		width:120%;
+	}
+	
+	section.year-slider-section {
+	    margin: 0% 1% 3em;
+	    width: 98%;
+	}
+	.map-footer {
+		margin-top:0;
+	}
+	#country-info, #country-targets {
+	    border-top: 5px solid #65CDF3;
+	    display: block;
+	    float: left;
+	    font-size: 0.85em;
+	    position: relative;
+	    width: 48%;
+	}
+	#country-info {
+		margin-right:2%;
+		margin-left:1%;
+		margin-top:0;
+	}
+	.country-info-year {
+		display:none;
+	}
+	#country-info-access-text > .access-percentage {
+		position:absolute;
+		display:block;
+		}
+	#country-targets {
+		padding-top:1em;
+	}
+	.targets-title {
+	    font-size: 1.2em;
+	}
+	.targets-subtitle {
+		font-size:0.9em;
+	}
+	.logos {
+	    bottom: 0;
+	    left: 0;
+	}
+}
+
+
+@media all and (max-width:420px) and (min-width:0px){
+	body {
+		margin:0;
+	}
+	
+	.social-share {
+	    float: right;
+	    font-size: 0.83em;
+	    margin-right: 0;
+	    padding-left: 0;
+	    position: relative;
+	    right: 0;
+	    top: 0;
+	    width: 100%;
+	    z-index: 2;
+	}
+	.social-share h2 {
+	    display: block;
+	    float: left;
+	    font-size: 1.2em;
+	    margin: 0;
+	    position: relative;
+	    top: -5px;
+	    width: 40%;
+	}
+	.ss-share {
+	    background-color: #FFFFFF;
+	    margin: 0;
+	    padding-bottom: 0;
+	    padding-left: 0;
+	    width: 55%;
+	    display:block;
+	    float:right;
+	}
+	
+	.ss-share-item {
+	    margin-right: 0;
+	}
+	
+	#map {
+		margin-bottom:5em;
+	}
+	
+	.map-info {
+	    font-size: 0.8em;
+	    left: 0;
+	    margin-top: 15em;
+	    width: 40%;
+	    z-index: 2;
+	}
+	
+	.map-info > h1 {
+	    font-size: 1.1em;
+	}
+	
+	.big {font-size:1.7em;}
+	
+	.legend {
+	    height: 35px;
+	}
+	#country-info, #country-targets {
+	    width: 100%;
+	    border:none;
+	}
+	
+	#country-info > h2 {
+	    font-size: 1.5em;
+	}
+	
+	.made-by {
+	    bottom: 0;
+	    clear: both;
+	    float: none;
+	    font-size: 0.9em;
+	    padding-top: 2em;
+	    position: relative;
+	    text-align: center;
+	}
+}
+
+@media all and (max-width:350px) and (min-width:0px){
+	#wrapperdiv {
+	    font-size: 0.9em;
+	    padding: 0.5em;
+	}
+	#map {margin-bottom:6em;}
+	.instructions {display:none;}
+	.legend {height: 60px;}
+	.map-info{font-size:0.9em;}
 }
