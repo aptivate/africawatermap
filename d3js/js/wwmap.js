@@ -891,8 +891,6 @@ function init(mapconfig) {
 		.attr("width", width)
 		.attr("height", height)
 		.attr("class", "map-svg");
-	tooltipdiv = d3.select("#map > .tooltip")
-		.style("opacity", 0);
 
 	queue()
 		.defer(d3.json, config.mapurl_topojson)
@@ -904,6 +902,10 @@ function init(mapconfig) {
 	addLinksToShareButtons();
 
 	checkLogoRemoval();
+
+	// causes trouble for IE 9 - so do it last
+	tooltipdiv = d3.select("#map > .tooltip")
+		.style("opacity", 0);
 }
 
 function reset() {
