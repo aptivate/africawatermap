@@ -623,3 +623,12 @@ aside.info {
 
 #fallback-text {display:none;}
 #fallback-text.show {display:block;}
+
+/*------Fallback----------------
+ ===============================*/
+
+@media all and (max-width: 750px) and (min-width: 650px) {
+	section.year-slider-section {
+    	padding-top: 10%;
+	}
+}
