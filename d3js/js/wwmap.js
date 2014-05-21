@@ -411,6 +411,7 @@ function setYear(ext, value) {
 function setSource(source) {
 	selectedSource = source;
 	// update everything that varies by source
+	d3.select("#wrapperdiv").attr("class", "wrapper " + selectedSource);
 	updateMapInfo();
 	setCountryInfoAccessText();
 	updateColorScale();
