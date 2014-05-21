@@ -180,7 +180,7 @@ h2 > a {
 }
 
 #select-sanitation-source.button.current-source {
-	background-color:#DD7733;
+	background-color:#43C4AD;
 }
 
 /*--Map Legend--*/
@@ -246,11 +246,11 @@ h2 > a {
 div.tooltip {
 	position: absolute;
 	text-align: left;
-	width: 6em;
-	height: 6em;
+	width: 3em;
+	height: 5em;
 	padding: 0.5em;
 	font-family: sans-serif;
-	font-size:0.9em;
+	font-size:1em;
 	background: #444;
 	border: 0px;
 	pointer-events: none;
@@ -258,17 +258,17 @@ div.tooltip {
 
 span.tooltip-year {
 	color: white;
-	font-size: 20px;
+	font-size: 1em;
 }
 span.tooltip-country {
 	color: white;
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 0.9em;
 }
 span.tooltip-percent {
 	color: orange;
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 1.2em;
 }
 
 /*--Year Slider--*/
@@ -471,12 +471,19 @@ aside.info {
 	stroke-width: 3;
 }
 
-#country-info line.history { stroke: steelblue; }
-#country-info line.projection { stroke: darkgrey; }
+.sanitation #country-info line.history,
+.sanitation #country-info line.projection { 
+	stroke: #43C4AD; 
+	}
+
+.water #country-info line.history,
+.water #country-info line.projection { 
+	stroke: steelblue; 
+	}
 #country-info line.universal { stroke: orange; }
 #country-info line.year-line
 {
-	stroke: red;
+	stroke: #D34231;
 	stroke-width: 1;
 }
 
@@ -540,9 +547,8 @@ aside.info {
 }
 #targets-key-text { display: inline; }
 
-.currently { 
-	color: black; 
-	}
+.water .currently { color: steelblue; }
+.sanitation .currently { color: #43C4AD; }
 
 .currently > .targets-detail {
 	padding-left:1em;
@@ -580,7 +586,8 @@ aside.info {
 }
 
 .person { fill: #aaa; }
-.person.current { fill: black; }
+.water .person.current { fill: steelblue; }
+.sanitation .person.current { fill: #43C4AD; }
 .person.current .negative { fill: red; }
 .person.target { fill: orange; }
 .person.key { fill: #aaa; }
