@@ -141,6 +141,9 @@ function updateStaticText() {
 	setSelectionText(".for-target > .targets-detail", "extra people per year");
 	setSelectionHtml(".targets-percent", "That is just % of the population");
 
+	setSelectionText(".map-description > h2", "about this map");
+	setSelectionText(".map-description > p", "this map shows which ...");
+
 	// footer
 	setSelectionText("#map-by", "map by");
 }
@@ -316,7 +319,7 @@ function updatePersonKey(peopleUnits) {
 
 	drawPeopleRow(1, vis, 0, 0, personHeight, "key");
 
-	var key_text = " = " + numberWithCommas(peopleUnits) + " people";
+	var key_text = " = " + numberWithCommas(peopleUnits) + " " + getTranslation("people");
 	d3.select("#targets-key-text").text(key_text);
 }
 
@@ -440,7 +443,8 @@ function countryClicked(d) {
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
 	if (coverage == null) { return; }
-	var countryName = d.properties.name;
+	// TODO: translations, add all country names
+	var countryName = d.properties.name; // TODO = getTranslation(d.properties.name);
 	// set the width according to the length of the country name, but don't
 	// get too small
 	var ttWidth = Math.max(7, countryName.length*0.9);
@@ -554,19 +558,6 @@ function extractDataForSourceAndYear() {
 	return yearData;
 }
 
-/* Expects a {"1990": 43.1, "1991": 43.7, ...}
- * and will return [43.1, 43.7, ...]
- */
-function convertAllYearDataToArray(dataset) {
-	var yearArray = [];
-	for (var year = config.minYear; year <= config.maxYear; year++) {
-		if (dataset.hasOwnProperty(year.toString())) {
-			yearArray.push(dataset[year.toString()]);
-		}
-	}
-	return yearArray;
-}
-
 function updateLegend() {
 	// remove the old legend, if any
 	var legendDiv = d3.select("#map-legend-svg");
@@ -601,9 +592,9 @@ function updateLegend() {
 		.style("opacity", 0.8);
 
 	if (selectedSource == 'water') {
-		title = "access to water";
+		title = getTranslation("access to water");
 	} else {
-		title = "access to sanitation";
+		title = getTranslation("access to sanitation");
 	}
 	d3.select("#map-legend-label")
 		.text(title)
@@ -632,9 +623,9 @@ function updateMapInfo() {
 function setCountryInfoAccessText() {
 	percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
 	if (selectedSource == 'water') {
-		accessText = ' of people have access to water ';
+		accessText = getTranslation('of people have access to water');
 	} else {
-		accessText = ' of people have access to sanitation ';
+		accessText = getTranslation('of people have access to sanitation');
 	}
 	accessTextElement = d3.select("#country-info-access-text");
 	accessTextElement.selectAll("*").remove();
@@ -644,13 +635,13 @@ function setCountryInfoAccessText() {
 	percentSpan.append("span")
 		.attr("class", "percent-sign")
 		.text("%");
-	accessTextElement.append("span").text(accessText);
+	accessTextElement.append("span").text(" " + accessText + " ");
 	accessTextElement.append("span")
 		.attr("class", "in-year")
 		.text("in " + selectedYear.toString());
 	accessTextElement.append("span")
 		.attr("class", "actual-projected")
-		.text(" (actual and projected)");
+		.text(" (" + getTranslation("actual and projected") + ")");
 }
 
 function drawLineGraphYearLine() {

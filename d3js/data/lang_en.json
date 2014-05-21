@@ -1,7 +1,13 @@
 {
 	"water": "water",
-
 	"sanitation": "sanitation",
+
+	"access to water": "access to water",
+	"access to sanitation": "access to sanitation",
+
+	"of people have access to water": "of people have access to water",
+	"of people have access to sanitation": "of people have access to sanitation",
+	"actual and projected": "actual and projected",
 
 	"browser fallback": "Your browser does not support the features needed to view this map properly - you could us any recent version of <a href=\"https://www.google.com/chrome/\">Chrome</a>, <a href=\"https://www.mozilla.org/firefox/\">Firefox</a>, Opera or Safari, or Internet Explorer version 9 or greater.",
 
@@ -9,7 +15,7 @@
 
 	"instructions": "Drag the slider to change the year and click on a country to see more information.",
 
-	"Reset": "Reset",
+	"Reset": "Reset timeline",
 
 	"share": "share",
 
@@ -28,9 +34,19 @@
 	"currently": "currently",
 	"for targets": "for targets",
 
+	"Total number of new people gaining access to water": "Total number of new people gaining access to water",
+	"more people per year will gain access to water": "more people per year will gain access to water",
+	"Total number of new people gaining access to sanitation": "Total number of new people gaining access to sanitation",
+	"more people per year will gain access to sanitation": "more people per year will gain access to sanitation",
+
 	"extra people per year": "extra people per year needed to reach 2030 target",
 
+	"people": "people",
+
 	"That is just % of the population": "That is just <span class=\"targets-percent-digits\"></span>% of the population",
+
+	"about this map": "About this map",
+	"this map shows which ...": "This map shows which African countries are on track to reach everyone, everywhere with access to water (sanitation) by 2030, and what increase in access is required in countries that are not on track.",
 
 	"map by": "map by"
 }
