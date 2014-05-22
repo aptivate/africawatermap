@@ -169,19 +169,48 @@ function updateSocialText() {
 	} else {
 		hashTag = config.twitterHashTagSanitation;
 	}
+	var twitterText =
+		encodeURIComponent(getTranslation("twitter share text " + selectedSource));
+	var otherText =
+		encodeURIComponent(getTranslation("other share text " + selectedSource));
+	var title =
+		encodeURIComponent("Africa Water Week");
+		//encodeURIComponent(getTranslation("africa week " + selectedSource));
 
 	d3.select("#twitter-search-link")
 		.attr("href", "https://twitter.com/#" + hashTag)
 		.text(" #" + hashTag);
+
 	d3.select(".ss-share-link.ico-facebook")
-		.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
+		//.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
+		.attr("href", "https://www.facebook.com/sharer.php?s=100&p[title]=" + title +
+			"&p[summary]=" + otherText +
+			"&p[url]=" + encodedUrl);
+
 	d3.select(".ss-share-link.ico-twitter")
-		.attr("href", "http://twitter.com/share?url=" + encodedUrl +
-			"&hashtags=" + hashTag);
+		.attr("href", "https://twitter.com/share?text=" + twitterText +
+			"&url=" + encodedUrl +
+			"&hashtags=africawaterweek");
+
 	d3.select(".ss-share-link.ico-google")
-		.attr("href", "http://plus.google.com/share?url=" + encodedUrl);
+		.attr("href", "https://plus.google.com/share?url=" + encodedUrl);
+
 	d3.select(".ss-share-link.ico-linkedin")
-		.attr("href", "http://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl);
+		.attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=" + encodedUrl +
+			"&title=" + title +
+			"&summary=" + otherText);
+
+	// looks like facebook uses meta tags, so insert some stuff there
+	var metaTag = document.getElementsByTagName('meta');
+	for (var i = 0; i < metaTag.length; i++) {
+		if (metaTag[i].getAttribute("property") == "og:description") {
+			metaTag[i].content = otherText;
+		}
+		if (metaTag[i].getAttribute("property") == "og:title") {
+			// TODO: add translation
+			metaTag[i].content = title;
+		}
+	}
 }
 
 function addLinksToShareButtons() {
@@ -941,6 +970,15 @@ function loadedDataCallback(error, africa, dataset, langData) {
 	updateLegend();
 
 	updateSideBar();
+
+	createSlider();
+
+	addLinksToShareButtons();
+
+	checkLogoRemoval();
+
+	// causes trouble for IE 9 - so do it last
+	tooltipdiv.style("opacity", 0);
 }
 
 function setDefaultSelections() {
@@ -988,21 +1026,13 @@ function init(mapconfig) {
 		.attr("height", height)
 		.attr("class", "map-svg");
 
+	tooltipdiv = d3.select("#map > .tooltip");
+
 	queue()
 		.defer(d3.json, config.mapurl_topojson)
 		.defer(d3.json, config.dataurl)
 		.defer(d3.json, lang_url)
 		.await(loadedDataCallback);
-
-	createSlider();
-
-	addLinksToShareButtons();
-
-	checkLogoRemoval();
-
-	// causes trouble for IE 9 - so do it last
-	tooltipdiv = d3.select("#map > .tooltip")
-		.style("opacity", 0);
 }
 
 function reset() {
