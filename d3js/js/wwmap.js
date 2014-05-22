@@ -912,6 +912,9 @@ function loadedDataCallback(error, africa, dataset, langData) {
 	allData = dataset;
 	mapData = africa;
 	translations = langData;
+
+	updateStaticText();
+
 	var countries = topojson.feature(africa, africa.objects.subunits).features;
 	var borders = topojson.mesh(africa, africa.objects.subunits,
 		function(a, b) { return true; });
@@ -938,8 +941,6 @@ function loadedDataCallback(error, africa, dataset, langData) {
 	updateLegend();
 
 	updateSideBar();
-
-	updateStaticText();
 }
 
 function setDefaultSelections() {
