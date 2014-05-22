@@ -1,0 +1,124 @@
+{
+	"water": "l'eau",
+	"sanitation": "l'assainissement",
+
+	"access to water": "acc\u00e8s \u00e0 l'eau potable",
+	"access to sanitation": "acc\u00e8s a l'assainissement",
+
+	"of people have access to water": "de la population a acc\u00e8s \u00e0 l'eau potable",
+	"of people have access to sanitation": "de la population a acc\u00e8s a l'assainissement",
+	"actual and projected": "r\u00e9el, projet\u00e9",
+
+	"browser fallback": "Votre navigateur ne supporte pas les caract\u00e9ristiques n\u00e9cessaires pour visualiser cette carte correctement - vous nous pourrait une version r\u00e9cente de <a href=\"https://www.google.com/chrome/\">Chrome</a>, <a href=\"https://www.mozilla.org/firefox/\">Firefox</a>, Opera ou Safari, ou Internet Explorer version 9 ou plus.",
+
+	"map info title": "Le progr\u00e8s de l'acc\u00e8s de l'Afrique",
+
+	"instructions": "Faites glisser le curseur pour modifier l'ann\u00e9e, et cliquez sur un pays pour plus d'informations.",
+
+	"Reset": "R\u00e9initialisation",
+
+	"share": "Partagez",
+
+	"follow africa water map": "suivez Carte de l'Afrique de l'eau sur Twitter en utilisant hashtag #africawatermap",
+	"follow africa sanitation map": "suivez Afrique Assainissement Carte sur Twitter en utilisant hashtag #africasanitationmap",
+
+	"share on facebook": "Partagez en Facebook",
+	"share on twitter": "Partagez en Twitter",
+	"share on google": "Partagez en Google+",
+	"share on linkedin": "Partagez en LinkedIn",
+
+
+	"twitter share text water": "Suivre les progr\u00e8s de l'acc\u00e8s \u00e0 l'eau potable par les pays africains avec le nouveau interactive #CarteEauAfrique  #SemaineAfricaineDeLEau <URL> #africawaterweek",
+
+	"twitter share text sanitation": "Suivre les progr\u00e8s de l'acc\u00e8s \u00e0 l'assainissement les pays africains avec le nouveau interactive #CarteEauAfrique  <URL> #africawaterweek",
+
+	"other share text water": "Quels sont les pays sur la bonne voie avec de l'eau? Suivez les progr\u00e8s r\u00e9alis\u00e9s par les pays africains en donnant l'eau potable pour tous dans la nouvelle #AfricaWaterMap / #CarteEauAfrique. D\u00e9couvrez o\u00f9 chaque nation est maintenant, o\u00f9 ils sont pr\u00e9vus pour \u00eatre en 2030, et si elles sont sur la bonne voie pour atteindre pour tous, partout avec de l'eau propre en 2030.",
+
+	"other share text sanitation": "Quels sont les pays sur la bonne voie avec de l'assainissement? Suivez les progr\u00e8s r\u00e9alis\u00e9s par les pays africains en donnant l'assainissement pour tous dans la nouvelle #AfricaSanitationMap / #CarteAssainissementAfrique. D\u00e9couvrez o\u00f9 chaque nation est \u00e0 maintenant, o\u00f9 ils sont pr\u00e9vus pour \u00eatre en 2030, et si elles sont sur la bonne voie pour atteindre pour tous, partout avec l'assainissement en 2030.",
+
+
+	"embed this map": "Int\u00e9grez dans votre site",
+	"you can embed this map": "Vous pouvez int\u00e9grer cette carte dans votre propre site en ajoutant le code HTML suivant sur ??votre page:",
+
+	"Everyone, Everywhere by 2030": "Everyone, Everywhere by 2030",
+	"currently": "Actuellement",
+	"for targets": "cibl\u00e9e",
+
+	"one_letter_1000": "k",
+	"one_letter_1000000": "m",
+
+	"Total number of new people gaining access to water": "Nombre total de nouvelles personnes avec l'acc\u00e8s \u00e0 l'eau potable",
+	"more people per year will gain access to water": "personnes de plus par an auront acc\u00e8s \u00e0 l'eau potable",
+	"Total number of new people gaining access to sanitation": "Nombre total de nouvelles personnes avec l'acc\u00e8s \u00e0 l'assainissement",
+	"more people per year will gain access to sanitation": "personnes de plus par an auront acc\u00e8s \u00e0 l'assainissement",
+
+	"extra people per year": "personnes suppl\u00e9mentaires par an n\u00e9cessaires pour atteindre la cible 2030",
+
+	"people": "personnes",
+
+	"That is just % of the population": "C'est seulement <span class=\"targets-percent-digits\"></span>% de la population",
+
+	"about this map": "Propos de cette carte",
+	"this map shows which ...": "Cette carte montre quels pays en Afrique sont sur la bonne voie pour atteindre pour tous, partout, avec un acc\u00e8s \u00e0 l'eau potable et \u00e0 l'assainissement en 2030, et quelle augmentation est n\u00e9cessaire dans les pays qui ne sont pas sur la bonne voieabou.",
+
+	"map by": "La carte par",
+
+	"Algeria": "Alg\u00e9rie",
+	"Angola": "Angola",
+	"Benin": "B\u00e9nin",
+	"Botswana": "Botswana",
+	"Burkina Faso": "Burkina Faso",
+	"Burundi": "Burundi",
+	"Cameroon": "Cameroun",
+	"Cape Verde": "Cap-Vert",
+	"Central African Republic": "Centrafricaine, R\u00e9publique",
+	"Chad": "Tchad",
+	"Comoros": "Comores",
+	"Congo": "R\u00e9publique du Congo",
+	"C\u00f4te d'Ivoire": "C\u00f4te d'Ivoire",
+	"Democratic Republic of the Congo": "Congo, La R\u00e9publique D\u00e9mocratique du",
+	"Djibouti": "Djibouti",
+	"Egypt": "\u00e9gypte",
+	"Equatorial Guinea": "Guin\u00e9e \u00e9quatoriale",
+	"Eritrea": "\u00e9rythr\u00e9e",
+	"Ethiopia": "\u00e9thiopie",
+	"Gabon": "Gabon",
+	"Gambia": "Gambie",
+	"Ghana": "Ghana",
+	"Guinea": "Guin\u00e9e",
+	"Guinea-Bissau": "Guin\u00e9e-Bissau",
+	"Kenya": "Kenya",
+	"Lesotho": "Lesotho",
+	"Liberia": "Lib\u00e9ria",
+	"Libyan Arab Jamahiriya": "Libye Arab Jamahiriya",
+	"Madagascar": "Madagascar",
+	"Malawi": "Malawi",
+	"Mali": "Mali",
+	"Mauritania": "Mauritanie",
+	"Mauritius": "\u00cele Maurice",
+	"Mayotte": "Mayotte",
+	"Morocco": "Maroc",
+	"Mozambique": "Mozambique",
+	"Namibia": "Namibie",
+	"Niger": "Niger",
+	"Nigeria": "Nig\u00e9ria",
+	"R\u00e9union": "R\u00e9union",
+	"Rwanda": "Rwanda",
+	"Sao Tome and Principe": "Sao Tom\u00e9-et-Principe",
+	"Senegal": "S\u00e9n\u00e9gal",
+	"Seychelles": "Seychelles",
+	"Sierra Leone": "Sierra Leone",
+	"Somalia": "Somalie",
+	"South Africa": "Afrique du Sud",
+	"South Sudan": "Soudan du Sud",
+	"Sub-Saharan Africa": "Afrique sub-saharienne",
+	"Sudan": "Soudan",
+	"Swaziland": "Swaziland",
+	"Togo": "Togo",
+	"Tunisia": "Tunisie",
+	"Uganda": "Ouganda",
+	"United Republic of Tanzania": "Tanzanie, R\u00e9publique-Unie de",
+	"Western Sahara": "Sahara Occidental",
+	"Zambia": "Zambie",
+	"Zimbabwe": "Zimbabwe"
+}
