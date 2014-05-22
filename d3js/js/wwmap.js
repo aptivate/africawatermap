@@ -642,19 +642,23 @@ function updateLegend() {
  * set the text in the main title and update the buttons
  */
 function updateMapInfo() {
+	var extraSpace; // whether to leave blank space under the title
+	if (selectedSource == "water") {
+		d3.select("#select-water-source").attr("class", "button source current-source");
+		d3.select("#select-sanitation-source").attr("class", "button source");
+		extraSpace = "<br />&nbsp";
+	} else {
+		d3.select("#select-water-source").attr("class", "button source");
+		d3.select("#select-sanitation-source").attr("class", "button source current-source");
+		extraSpace = "";
+	}
+
 	d3.select(".map-info > h1 > span.big")
 		.attr("class", "big " + selectedSource)
 		.text(getTranslation(selectedSource))
 		.append("strong").text(" " + config.minYear.toString() + "-" +
-			config.maxYear.toString());
-
-	if (selectedSource == "water") {
-		d3.select("#select-water-source").attr("class", "button source current-source");
-		d3.select("#select-sanitation-source").attr("class", "button source");
-	} else {
-		d3.select("#select-water-source").attr("class", "button source");
-		d3.select("#select-sanitation-source").attr("class", "button source current-source");
-	}
+			config.maxYear.toString())
+		.append("span").html(extraSpace);
 }
 
 function setCountryInfoAccessText() {
