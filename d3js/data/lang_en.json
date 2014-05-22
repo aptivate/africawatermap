@@ -20,7 +20,7 @@
 
 	"Reset": "Reset timeline",
 
-	"share": "share",
+	"share": "Share",
 
 	"follow africa water map": "follow Africa Water Map on twitter using #africawatermap hashtag",
 	"follow africa sanitation map": "follow Africa Sanitation Map on twitter using #africasanitationmap hashtag",
@@ -45,7 +45,7 @@
 
 	"Everyone, Everywhere by 2030": "Everyone, Everywhere by 2030",
 	"currently": "currently",
-	"for targets": "for targets",
+	"for targets": "for target",
 
 	"one_letter_1000": "k",
 	"one_letter_1000000": "m",
@@ -63,7 +63,7 @@
 
 	"about this map": "About this map",
 	"this map shows which ...": "This map shows which African countries are on track to reach everyone, everywhere with access to water and sanitation by 2030, and what increase in access is required in countries that are not on track.",
-	"find out more": "Find out more about how we calculated these figures.",
+	"find out more": "Find out more about the data in this map and how we arrived at the numbers.",
 
 	"map by": "map by",
 

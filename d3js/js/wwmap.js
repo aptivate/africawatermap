@@ -658,15 +658,16 @@ function updateMapInfo() {
 }
 
 function setCountryInfoAccessText() {
-	percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
+	var accessText;
+	var percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
 	if (selectedSource == 'water') {
 		accessText = getTranslation('of people have access to water');
 	} else {
 		accessText = getTranslation('of people have access to sanitation');
 	}
-	accessTextElement = d3.select("#country-info-access-text");
+	var accessTextElement = d3.select("#country-info-access-text");
 	accessTextElement.selectAll("*").remove();
-	percentSpan = accessTextElement.append("span")
+	var percentSpan = accessTextElement.append("span")
 		.attr("class", "access-percentage")
 		.text(percentValue);
 	percentSpan.append("span")
