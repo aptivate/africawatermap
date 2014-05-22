@@ -882,7 +882,7 @@ function updateTargetPanel() {
 		// finally update the text
 		if (selectedSource == "water") {
 			d3.select(".targets-subtitle")
-				.text("Total number of new people gaining access to water");
+				.text(getTranslation("Total number of new people gaining access to water"));
 			d3.select(".currently > .targets-detail")
 				.text(getTranslation("more people per year will gain access to water"));
 		} else {
