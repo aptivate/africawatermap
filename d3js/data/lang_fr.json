@@ -8,10 +8,10 @@
 	"of people have access to water": "de la population a acc\u00e8s \u00e0 l'eau potable",
 	"of people have access to sanitation": "de la population a acc\u00e8s a l'assainissement",
 	"actual and projected": "r\u00e9el, projet\u00e9",
-	"current trends": "current trends",
+	"current trends": "les tendances actuelles",
 
-	"Africa Water Week": "Africa Water Week",
-	"Africa Water Map": "Africa Water Map",
+	"Africa Water Week": "Carte de l'Afrique de l'Eau",
+	"Africa Water Map": "Semaine Africaine de l'eau",
 	"browser fallback": "Votre navigateur ne supporte pas les caract\u00e9ristiques n\u00e9cessaires pour visualiser cette carte correctement - vous nous pourrait une version r\u00e9cente de <a href=\"https://www.google.com/chrome/\">Chrome</a>, <a href=\"https://www.mozilla.org/firefox/\">Firefox</a>, Opera ou Safari, ou Internet Explorer version 9 ou plus.",
 
 	"map info title": "Le progr\u00e8s de l'acc\u00e8s de l'Afrique",
@@ -43,7 +43,7 @@
 	"embed this map": "Int\u00e9grez dans votre site",
 	"you can embed this map": "Vous pouvez int\u00e9grer cette carte dans votre propre site en ajoutant le code HTML suivant sur ??votre page:",
 
-	"Everyone, Everywhere by 2030": "Everyone, Everywhere by 2030",
+	"Everyone, Everywhere by 2030": "Tout le monde, partout en 2030",
 	"currently": "Actuellement",
 	"for targets": "cibl\u00e9e",
 
@@ -59,13 +59,13 @@
 
 	"people": "personnes",
 
-	"That is just % of the population": "Only an extra <span class=\"targets-percent-digits\"></span>% of the population <a title=\"Find out more\" href=\"#description-more-info\">*</a> needs to be reached annually to achieve universal access by 2030",
+	"That is just % of the population": "Seulement un suppl\u00e9ment de <span class=\"targets-percent-digits\"></span>% de la <a title=\"En savoir plus\" href=\"#description-more-info\">2030 population *</a> doit \u00eatre atteint chaque ann\u00e9e pour atteindre l'acc\u00e8s universel d'ici l\u00e0",
 
 	"about this map": "Propos de cette carte",
 	"this map shows which ...": "Cette carte montre quels pays en Afrique sont sur la bonne voie pour atteindre pour tous, partout, avec un acc\u00e8s \u00e0 l'eau potable et \u00e0 l'assainissement en 2030, et quelle augmentation est n\u00e9cessaire dans les pays qui ne sont pas sur la bonne voieabou.",
 	"find out more": "Find out more about the data in this map and how we arrived at the numbers.",
 
-	"map by": "La carte par",
+	"map by": "la carte par",
 
 	"Algeria": "Alg\u00e9rie",
 	"Angola": "Angola",
