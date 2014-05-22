@@ -635,8 +635,7 @@ function updateLegend() {
 		title = getTranslation("access to sanitation");
 	}
 	d3.select("#map-legend-label")
-		.text(title)
-		.style("width", legend_width);
+		.text(title);
 }
 
 /*
