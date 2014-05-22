@@ -480,14 +480,20 @@ function countryClicked(d) {
 
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
-	if (coverage == null) { return; }
+	var minWidth = 6;
+	if (coverage != null) {
+		coverage = coverage.toFixed(1) + "%";
+	} else {
+		coverage = "No Data";
+		minWidth = 8;
+	}
 	var countryName = getCountryName(d.id);
 	// set the width according to the length of the country name, but don't
 	// get too small
-	var ttWidth = Math.max(6, countryName.length*0.7);
+	var ttWidth = Math.max(minWidth, countryName.length*0.7);
 	d3.select(".tooltip-year").text(selectedYear.toString());
 	d3.select(".tooltip-country").text(countryName);
-	d3.select(".tooltip-percent").text(coverage.toFixed(1) + "%");
+	d3.select(".tooltip-percent").text(coverage);
 	tooltipdiv.transition()
 		.duration(200)
 		.style("opacity", 0.9);
