@@ -72,7 +72,7 @@ function capitaliseFirstLetter(string)
 }
 
 function getTranslation(translationKey, capitalise) {
-	capitalise = (typeof capitalise === "undefined") ? "defaultValue" : capitalise;
+	capitalise = (typeof capitalise === "undefined") ? false : capitalise;
 	if (translations.hasOwnProperty(translationKey)) {
 		if (capitalise) {
 			return capitaliseFirstLetter(translations[translationKey]);
