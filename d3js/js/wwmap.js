@@ -147,7 +147,8 @@ function updateStaticText() {
 	setSelectionHtml(".targets-percent", "That is just % of the population");
 
 	setSelectionText(".map-description > h3", "about this map");
-	setSelectionText(".map-description > p", "this map shows which ...");
+	setSelectionText("#description-about", "this map shows which ...");
+	setSelectionText("#description-more-info > a", "find out more");
 
 	// footer
 	setSelectionText("#map-by", "map by");

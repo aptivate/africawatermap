@@ -8,6 +8,7 @@
 	"of people have access to water": "de la population a acc\u00e8s \u00e0 l'eau potable",
 	"of people have access to sanitation": "de la population a acc\u00e8s a l'assainissement",
 	"actual and projected": "r\u00e9el, projet\u00e9",
+	"current trends": "current trends",
 
 	"Africa Water Week": "Africa Water Week",
 	"Africa Water Map": "Africa Water Map",
@@ -58,10 +59,11 @@
 
 	"people": "personnes",
 
-	"That is just % of the population": "C'est seulement <span class=\"targets-percent-digits\"></span>% de la population",
+	"That is just % of the population": "Only an extra <span class=\"targets-percent-digits\"></span>% of the population <a title=\"Find out more\" href=\"#description-more-info\">*</a> needs to be reached annually to achieve universal access by 2030",
 
 	"about this map": "Propos de cette carte",
 	"this map shows which ...": "Cette carte montre quels pays en Afrique sont sur la bonne voie pour atteindre pour tous, partout, avec un acc\u00e8s \u00e0 l'eau potable et \u00e0 l'assainissement en 2030, et quelle augmentation est n\u00e9cessaire dans les pays qui ne sont pas sur la bonne voieabou.",
+	"find out more": "Find out more about how we calculated these figures.",
 
 	"map by": "La carte par",
 

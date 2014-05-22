@@ -8,6 +8,7 @@
 	"of people have access to water": "of people have access to water",
 	"of people have access to sanitation": "of people have access to sanitation",
 	"actual and projected": "actual and projected",
+	"current trends": "current trends",
 
 	"Africa Water Week": "Africa Water Week",
 	"Africa Water Map": "Africa Water Map",
@@ -58,10 +59,11 @@
 
 	"people": "people",
 
-	"That is just % of the population": "That is just <span class=\"targets-percent-digits\"></span>% of the population",
+	"That is just % of the population": "Only an extra <span class=\"targets-percent-digits\"></span>% of the population <a title=\"Find out more\" href=\"#description-more-info\">*</a> needs to be reached annually to achieve universal access by 2030",
 
 	"about this map": "About this map",
-	"this map shows which ...": "This map shows which African countries are on track to reach everyone, everywhere with access to water (sanitation) by 2030, and what increase in access is required in countries that are not on track.",
+	"this map shows which ...": "This map shows which African countries are on track to reach everyone, everywhere with access to water and sanitation by 2030, and what increase in access is required in countries that are not on track.",
+	"find out more": "Find out more about how we calculated these figures.",
 
 	"map by": "map by",
 
