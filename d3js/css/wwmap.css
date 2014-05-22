@@ -234,22 +234,22 @@ h2 > a {
 	height:0.8em;
 }
 
-#map-legend-label { 
-	text-align: center; 
+#map-legend-label {
+	text-align: center;
 }
-.zero-percent { 
-	float: left; 
+.zero-percent {
+	float: left;
 	}
-.hundred-percent { 
-	float: right; 
+.hundred-percent {
+	float: right;
 	}
-.legend-number { 
-	font-size: 2em; 
+.legend-number {
+	font-size: 2em;
 	font-weight: bold; }
-.legend-percent { 
-	font-size: 0.8em; 
+.legend-percent {
+	font-size: 0.8em;
 	}
-	
+
 /*--Map Legend--*/
 
 .legend {
@@ -257,22 +257,22 @@ h2 > a {
     padding-top: 0;
     width: 100%;
 }
-#map-legend-label { 
-	text-align: center; 
+#map-legend-label {
+	text-align: center;
 }
-.zero-percent { 
-	float: left; 
+.zero-percent {
+	float: left;
 	}
-.hundred-percent { 
-	float: right; 
+.hundred-percent {
+	float: right;
 	}
-.legend-number { 
-	font-size: 1em; 
+.legend-number {
+	font-size: 1em;
 	font-weight: bold;
-	color:#888; 
+	color:#888;
 }
-.legend-percent { 
-	font-size: 0.8em; 
+.legend-percent {
+	font-size: 0.8em;
 	}
 
 /*--Tooltip--*/
@@ -356,7 +356,7 @@ span.tooltip-percent {
     border-right: 37.5px solid rgba(0, 0, 0, 0);
     border-top: 8px solid #D48702;
     top: 100%;
-    
+
 }
 
 #year-slider > a.d3-slider-handle:after {
@@ -382,7 +382,7 @@ span.tooltip-percent {
 	left:-2em;
 	position:relative;
 	}
-	
+
 .logos > a {margin-left:0.5em;}
 
 
@@ -549,13 +549,13 @@ aside.info {
 }
 
 .sanitation #country-info line.history,
-.sanitation #country-info line.projection { 
-	stroke: #43C4AD; 
+.sanitation #country-info line.projection {
+	stroke: #43C4AD;
 	}
 
 .water #country-info line.history,
-.water #country-info line.projection { 
-	stroke: steelblue; 
+.water #country-info line.projection {
+	stroke: steelblue;
 	}
 #country-info line.universal { stroke: orange; }
 #country-info line.year-line
@@ -632,8 +632,8 @@ aside.info {
 .currently > .targets-detail {
 	padding-left:1em;
 }
-.for-target { 
-	color: orange; 
+.for-target {
+	color: orange;
 }
 .for-target > .targets-detail {
 	padding-right:1em;
@@ -642,26 +642,27 @@ aside.info {
     font-size: 1.1em;
     font-weight: bold;
 }
-	
+
 .targets-number {
     margin: 0 0 1em;
 }
 
 .targets-number-digits {
-	font-size: 2.5em; 
+	font-size: 2.5em;
 	font-weight:bold;
 }
-.targets-subtitle, .targets-detail, .targets-percent, #targets-key-text { 
-	color: #666; 
+.targets-subtitle, .targets-detail, .targets-percent, #targets-key-text {
+	color: #666;
 	margin:0.5em 0;
 	font-size:1em;
 }
 
 .targets-percent {
-    color: #333333;
-    font-weight: bold;
-    padding: 0 1em;
-    text-align: center;
+	color: #333333;
+	font-weight: bold;
+	padding: 0 1em;
+	text-align: center;
+	clear: both;
 }
 
 .person { fill: #aaa; }
@@ -703,15 +704,15 @@ aside.info {
 @media all and (max-width: 900px) and (min-width: 649px) {
 	.map-info {font-size:0.95em;left:2em;margin-top:45%;}
 	.big {font-size:2.5em;}
-	
-	
-	
+
+
+
 	section.year-slider-section {
 	    margin-bottom: 2em;
 	    margin-left: 1.6em;
 	    padding-right: 3em;
 	}
-	
+
 	.map-footer {
 	    clear: left;
 	    display: block;
@@ -720,7 +721,7 @@ aside.info {
 }
 
 @media all and (max-width: 800px) and (min-width: 619px) {
-	
+
 	.map-info {
 		font-size:0.9em;
 		left:2em;
@@ -740,11 +741,11 @@ aside.info {
 }
 
 @media all and (max-width:620px) and (min-width:0px){
-	
+
 	#wrapperdiv{
 		padding:1em;
 		display:block;
-		width:100%;	
+		width:100%;
 		float:left;
 		position:relative;
 		min-width:250px;
@@ -800,7 +801,7 @@ aside.info {
 	#select-source {
 		width:120%;
 	}
-	
+
 	section.year-slider-section {
 	    margin: 0% 1% 3em;
 	    width: 98%;
@@ -848,7 +849,7 @@ aside.info {
 	body {
 		margin:0;
 	}
-	
+
 	.social-share {
 	    float: right;
 	    font-size: 0.83em;
@@ -878,15 +879,15 @@ aside.info {
 	    display:block;
 	    float:right;
 	}
-	
+
 	.ss-share-item {
 	    margin-right: 0;
 	}
-	
+
 	#map {
 		margin-bottom:5em;
 	}
-	
+
 	.map-info {
 	    font-size: 0.8em;
 	    left: 0;
@@ -894,13 +895,13 @@ aside.info {
 	    width: 40%;
 	    z-index: 2;
 	}
-	
+
 	.map-info > h1 {
 	    font-size: 1.1em;
 	}
-	
+
 	.big {font-size:1.7em;}
-	
+
 	.legend {
 	    height: 35px;
 	}
@@ -908,11 +909,11 @@ aside.info {
 	    width: 100%;
 	    border:none;
 	}
-	
+
 	#country-info > h2 {
 	    font-size: 1.5em;
 	}
-	
+
 	.made-by {
 	    bottom: 0;
 	    clear: both;
