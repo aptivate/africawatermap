@@ -120,7 +120,7 @@ function setSelectionLeadingText(selector, translationKey, capitalise) {
  */
 function updateStaticText() {
 	// map info section
-	// TODO: add our new title
+	setSelectionText("#fallback-title", "Africa Water Map");
 	setSelectionHtml("#fallback-text", "browser fallback");
 	setSelectionLeadingText("#map-info-title", "map info title");
 	setSelectionLeadingText(".map-info > h1 > span.big", selectedSource)
@@ -177,8 +177,7 @@ function updateSocialText() {
 	var otherText =
 		encodeURIComponent(getTranslation("other share text " + selectedSource));
 	var title =
-		encodeURIComponent("Africa Water Week");
-		//encodeURIComponent(getTranslation("africa week " + selectedSource));
+		encodeURIComponent(getTranslation("Africa Water Week"));
 
 	d3.select("#twitter-search-link")
 		.attr("href", "https://twitter.com/#" + hashTag)
@@ -210,7 +209,6 @@ function updateSocialText() {
 			metaTag[i].content = otherText;
 		}
 		if (metaTag[i].getAttribute("property") == "og:title") {
-			// TODO: add translation
 			metaTag[i].content = title;
 		}
 	}
