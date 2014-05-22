@@ -8,7 +8,7 @@ var config, allData, mapData, translations,
 
 // from http://stackoverflow.com/a/979995/3189
 var QueryString = function () {
-	// This function is anonymous, is executed immediately and 
+	// This function is anonymous, is executed immediately and
 	// the return value is assigned to QueryString!
 	var query_string = {};
 	var query = window.location.search.substring(1);
@@ -302,7 +302,7 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	var personDivInner = personDiv.append("div")
 	var width = parseInt(personDivInner.style('width'));
 	var height;
-	if (totalPeople <= 10) {
+	if (maxPeople <= 10) {
 		height = 0.25 * width;
 	} else {
 		height = 0.5 * width;
@@ -615,12 +615,12 @@ function updateLegend() {
 		.attr("width", legend_width)
 		.attr("height", ls_h)
 		.style("margin", "auto");
-	
+
 	var legend = legendSvg.selectAll("g.legend")
 		.data(extColorDomain)
 		.enter().append("g")
 		.attr("class", "legend");
-	
+
 	legend.append("rect")
 		.attr("x", function(d, i) { return (ls_w + 1) * i; })
 		.attr("y", 0)
