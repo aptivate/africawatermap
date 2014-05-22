@@ -522,13 +522,17 @@ aside.info {
     position: relative;
 }
 
-#country-info-access-text > .access-percentage {
-    color: #FFA500;
+#country-info-access-text > .access-percentage,
+#country-info-access-text > .target-percentage {
     font-size: 2.5em;
     font-weight: bold;
     left: 0;
     position: absolute;
 }
+
+.water #country-info-access-text > .access-percentage { color: steelblue; }
+.sanitation #country-info-access-text > .access-percentage { color: #43C4AD; }
+#country-info-access-text > .target-percentage {color: #FFA500;}
 
 #country-info-graph {
 	background-color: #FFFFFF;

@@ -574,6 +574,20 @@ function valueForCountry(country_code, year) {
 	return null;
 }
 
+function targetValueForCountry(country_code, year) {
+	if (isDataForCountry(country_code) && year > config.thisYear) {
+		var initial = allData[country_code][selectedSource + "_initial"];
+		var increase = allData[country_code][selectedSource + "_increase"];
+		var thisYearValue = Math.min(100,
+			initial + (increase * (config.thisYear - config.minYear)));
+		var targetIncrease = (100 - thisYearValue) / (config.maxYear - config.thisYear);
+
+		return thisYearValue + (targetIncrease * (year - config.thisYear));
+	}
+	// catch all exit
+	return null;
+}
+
 /* finds the year when the percent = 100 */
 function findYear100(country_code) {
 	if (isDataForCountry(country_code)) {
@@ -672,8 +686,10 @@ function setCountryInfoAccessText() {
 	var percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
 	if (selectedSource == 'water') {
 		accessText = getTranslation('of people have access to water');
+		targetText = getTranslation('of people need access to water');
 	} else {
 		accessText = getTranslation('of people have access to sanitation');
+		targetText = getTranslation('of people need access to sanitation');
 	}
 	var accessTextElement = d3.select("#country-info-access-text");
 	accessTextElement.selectAll("*").remove();
@@ -689,7 +705,26 @@ function setCountryInfoAccessText() {
 		.text("in " + selectedYear.toString());
 	accessTextElement.append("span")
 		.attr("class", "actual-projected")
-		.text(" (" + getTranslation("actual and projected") + ")");
+		.text(" " + getTranslation("current trends"));
+	
+	if (selectedYear > config.thisYear) {
+		targetValue = targetValueForCountry(selectedCountry, selectedYear).toFixed(1);
+		targetTextElement = accessTextElement.append("p")
+			.attr("class", "target-increase");
+		percentSpan = accessTextElement.append("span")
+			.attr("class", "target-percentage")
+			.text(targetValue);
+		percentSpan.append("span")
+			.attr("class", "percent-sign")
+			.text("%");
+		accessTextElement.append("span").text(" " + targetText + " ");
+		accessTextElement.append("span")
+			.attr("class", "in-year")
+			.text("in " + selectedYear.toString());
+		accessTextElement.append("span")
+			.attr("class", "achieve-targets")
+			.text(" " + getTranslation("to achieve targets"));
+	}
 }
 
 function drawLineGraphYearLine() {
