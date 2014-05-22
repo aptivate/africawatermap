@@ -653,13 +653,14 @@ function setCountryInfoAccessText() {
 }
 
 function drawLineGraphYearLine() {
-	d3.select(".year-line").remove();
+	// TODO: replace with something nicer
+	/*d3.select(".year-line").remove();
 	graphsvg.append("svg:line")
 		.attr("class", "year-line")
 		.attr("x1", lgX(selectedYear))
 		.attr("y1", -1 * lgY(0))
 		.attr("x2", lgX(selectedYear))
-		.attr("y2", -1 * lgY(100));
+		.attr("y2", -1 * lgY(100));*/
 }
 
 function plotAllYearData() {
