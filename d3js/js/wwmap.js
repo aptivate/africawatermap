@@ -120,6 +120,7 @@ function setSelectionLeadingText(selector, translationKey, capitalise) {
  */
 function updateStaticText() {
 	// map info section
+	// TODO: add our new title
 	setSelectionHtml("#fallback-text", "browser fallback");
 	setSelectionLeadingText("#map-info-title", "map info title");
 	setSelectionHtml(".instructions", "instructions");

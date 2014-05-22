@@ -692,7 +692,8 @@ aside.info {
 /*------Fallback----------------
  ===============================*/
 
-#fallback-text {display:none;}
+.noshow {display:none;}
+.fallback {display:none;}
 #fallback-text.show {display:block;}
 
 /*------Fallback----------------
