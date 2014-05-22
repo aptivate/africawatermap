@@ -984,7 +984,6 @@ function loadedDataCallback(error, africa, dataset, langData) {
 
 function setDefaultSelections() {
 	selectedCountry = config.initialCountry;
-	selectedSource = config.initialSource;
 	selectedYear = config.thisYear;
 }
 
@@ -996,6 +995,8 @@ function init(mapconfig) {
 		replaceBodyWithFallbackImage();
 		return;
 	}
+	// we don't want to reset source on reset button
+	selectedSource = config.initialSource;
 	setDefaultSelections();
 
 	var width = parseInt(d3.select('#map').style('width'));
@@ -1038,6 +1039,7 @@ function init(mapconfig) {
 
 function reset() {
 	setDefaultSelections();
+	selectedYear = config.minYear;
 	// update everything that varies by source, year and country
 	createSlider();
 	setCountryInfoAccessText();
