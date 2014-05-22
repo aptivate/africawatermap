@@ -123,12 +123,14 @@ function updateStaticText() {
 	// TODO: add our new title
 	setSelectionHtml("#fallback-text", "browser fallback");
 	setSelectionLeadingText("#map-info-title", "map info title");
+	setSelectionLeadingText(".map-info > h1 > span.big", selectedSource)
 	setSelectionHtml(".instructions", "instructions");
 	setSelectionText("#select-water-source", "water", true);
 	setSelectionText("#select-sanitation-source", "sanitation", true);
 	setSelectionText("#reset-button", "Reset");
 
 	// sharing section
+	setSelectionLeadingText(".social-share > h2", "share")
 	setSelectionTitle("#twitter-search-link", "follow africa water map");
 	setSelectionTitle(".ss-share-link.ico-facebook", "share on facebook");
 	setSelectionTitle(".ss-share-link.ico-twitter", "share on twitter");
@@ -144,7 +146,7 @@ function updateStaticText() {
 	setSelectionText(".for-target > .targets-detail", "extra people per year");
 	setSelectionHtml(".targets-percent", "That is just % of the population");
 
-	setSelectionText(".map-description > h2", "about this map");
+	setSelectionText(".map-description > h3", "about this map");
 	setSelectionText(".map-description > p", "this map shows which ...");
 
 	// footer
@@ -480,8 +482,7 @@ function countryClicked(d) {
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
 	if (coverage == null) { return; }
-	// TODO: translations, add all country names
-	var countryName = d.properties.name; // TODO = getTranslation(d.properties.name);
+	var countryName = getTranslation(d.properties.name);
 	// set the width according to the length of the country name, but don't
 	// get too small
 	var ttWidth = Math.max(7, countryName.length*0.9);
@@ -551,7 +552,7 @@ function setSource(source) {
 
 function getCountryName(country_code) {
 	if (allData.hasOwnProperty(country_code)) {
-		return allData[country_code]["name"];
+		return getTranslation(allData[country_code]["name"]);
 	}
 	return "unknown"
 }
@@ -644,7 +645,7 @@ function updateLegend() {
 function updateMapInfo() {
 	d3.select(".map-info > h1 > span.big")
 		.attr("class", "big " + selectedSource)
-		.text(selectedSource)
+		.text(getTranslation(selectedSource))
 		.append("strong").text(" " + config.minYear.toString() + "-" +
 			config.maxYear.toString());
 
@@ -883,12 +884,12 @@ function updateTargetPanel() {
 			d3.select(".targets-subtitle")
 				.text("Total number of new people gaining access to water");
 			d3.select(".currently > .targets-detail")
-				.text("more people per year will gain access to water");
+				.text(getTranslation("more people per year will gain access to water"));
 		} else {
 			d3.select(".targets-subtitle")
-				.text("Total number of new people gaining access to sanitation");
+				.text(getTranslation("Total number of new people gaining access to sanitation"));
 			d3.select(".currently > .targets-detail")
-				.text("more people per year will gain access to sanitation");
+				.text(getTranslation("more people per year will gain access to sanitation"));
 		}
 	} else {
 		// no data, so clear the panel
@@ -1006,7 +1007,7 @@ function init(mapconfig) {
 
 	var lang = "en";
 	if (QueryString.hasOwnProperty("lang")) {
-		lang_url = QueryString.lang;
+		lang = QueryString.lang;
 	}
 	var lang_url = 'data/lang_' + lang + '.json';
 
