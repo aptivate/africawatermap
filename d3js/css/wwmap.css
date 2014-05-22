@@ -98,11 +98,12 @@ h2 > a {
  ===============================*/
 
 .map-info {
-    background-color: #FFFFFF;
-    left: 3em;
-    margin-top: 42%;
-    position: absolute;
-    width: 42%;
+	background-color: #FFFFFF;
+	left: 3em;
+	margin-top: 42%;
+	position: absolute;
+	width: 42%;
+	z-index: 3;
 }
 
 .map-info > h1 {

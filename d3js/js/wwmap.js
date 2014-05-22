@@ -495,7 +495,7 @@ function hoverCountry(d) {
 	tooltipdiv
 		.style("width", ttWidth + "em")
 		.style("left", (d3.event.pageX - box.left + 10) + "px")
-		.style("top", (d3.event.pageY - box.top + 10) + "px");
+		.style("top", (d3.event.pageY - box.top - 130) + "px");
 }
 
 function unhoverCountry(d) {
