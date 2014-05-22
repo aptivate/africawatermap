@@ -568,6 +568,12 @@ aside.info {
 	font-size: 0.8em;
 }
 
+.tick line {
+	stroke-width: 3;
+	fill: none;
+	stroke: #888;
+}
+
 /*--Targets--*/
 
 #country-targets {

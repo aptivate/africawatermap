@@ -801,15 +801,17 @@ function plotAllYearData() {
 		.attr("x", function(d) { return lgX(d); })
 		.attr("y", 0)
 		.attr("text-anchor", "middle");
-	graphsvg.selectAll(".yLabel")
-		.data(lgY.ticks(3))
+	var yAxis = d3.svg.axis().scale(lgY).orient("right").ticks(3).tickFormat(function(d){return d+"%";});
+	var yAxisGroup = graphsvg.append("g").call(yAxis);
+	/*graphsvg.selectAll(".yLabel")
+		.data(lgY.ticks(3).tickFormat(function(d){return d+"%";}))
 		.enter().append("svg:text")
 		.attr("class", "yLabel")
 		.text(String)
 		.attr("x", 0)
 		.attr("y", function(d) { return -1 * lgY(d); })
 		.attr("text-anchor", "right")
-		.attr("dy", 4);
+		.attr("dy", 4);*/
 
 	graphsvg.selectAll(".xTicks")
 		.data(config.yearsOnGraph)
@@ -819,14 +821,14 @@ function plotAllYearData() {
 		.attr("y1", -1 * lgY(0))
 		.attr("x2", function(d) { return lgX(d); })
 		.attr("y2", -1 * lgY(-5));
-	graphsvg.selectAll(".yTicks")
+	/*graphsvg.selectAll(".yTicks")
 		.data(lgY.ticks(3))
 		.enter().append("svg:line")
 		.attr("class", "yTicks")
 		.attr("x1", lgX(config.minYear))
 		.attr("y1", function(d) { return -1 * lgY(d); })
 		.attr("x2", lgX(config.minYear-1))
-		.attr("y2", function(d) { return -1 * lgY(d); });
+		.attr("y2", function(d) { return -1 * lgY(d); });*/
 
 	// finally add the year line
 	drawLineGraphYearLine();
