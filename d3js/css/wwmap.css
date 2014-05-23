@@ -10,7 +10,7 @@ body {
 	font-family: Arial,"liberation sans", Helvetica, sans-serif;
 	font-size:85%;
 	color:#6D6E72;
-	margin:0;
+	margin:1em 0;
 	min-width:290px;
 }
 
@@ -19,22 +19,6 @@ body {
 		-moz-box-sizing:border-box;
 		  -o-box-sizing:border-box;
 		     box-sizing:border-box;
-}
-
-a, a:link, a:active, a:visited {
-    color: #00ADEE;
-    display: inline-block;
-    float: left;
-    font-size: 1em;
-    position: relative;
-    text-decoration:none;
-    z-index: 2;
-    line-height:1.5em;
-}
-
-a:hover {
-	color:#005899;
-	text-decoration: underline;
 }
 
 a, a img, img a {
@@ -101,7 +85,7 @@ aside.info {
 .main-footer {
     display: block;
     float: left;
-    padding: 0 1em 0 2.5em;
+    padding: 0.5em 1em 0 2.5em;
     width: 100%;
     position:relative;
 }
@@ -125,9 +109,8 @@ h2 > a {
  ===============================*/
 
 .map-info {
-	background-color: #FFFFFF;
 	left: 3em;
-	margin-top: 42%;
+	margin-top: 47%;
 	position: absolute;
 	width: 42%;
 	z-index: 3;
@@ -335,7 +318,7 @@ span.tooltip-percent {
 /*--Year Slider--*/
 
 #year-slider {
-    background-color: #2876A7;
+    background-color: #666;
     border: medium none;
     font-family: Verdana,Arial,sans-serif;
     font-size: 1.1em;
@@ -401,6 +384,23 @@ span.tooltip-percent {
 #year-slider > .d3-slider-axis text {
 	font-weight:bold;
 	font-size:0.7em;
+}
+
+.map-description > p {
+    display: inline;
+}
+
+
+#description-more-info > a,
+.targets-percent > a {
+    color: #333;
+    text-decoration: underline;
+}
+
+#description-more-info > a:hover,
+.targets-percent > a:hover {
+	color:#2980B9;
+	text-decoration:underline;
 }
 
 .logos {
@@ -513,6 +513,10 @@ aside.info {
     margin-top:1em;
 }
 
+.sanitation #country-info {
+	border-top:5px solid #43C4AD;
+}
+
 
 .country-info-year {
     background-color: #FFA500;
@@ -545,7 +549,7 @@ aside.info {
 #country-info > p {
     font-size: 0.9em;
     margin: 0.2em 0 1em;
-    padding-left: 8em;
+    padding-left: 8.5em;
     position: relative;
 }
 
@@ -557,9 +561,15 @@ aside.info {
     position: absolute;
 }
 
-.water #country-info-access-text > .access-percentage { color: steelblue; }
-.sanitation #country-info-access-text > .access-percentage { color: #43C4AD; }
-#country-info-access-text > .target-percentage {color: #FFA500;}
+.water #country-info-access-text > .access-percentage { color:#6B6A67; }
+.sanitation #country-info-access-text > .access-percentage { color: #DD7733; }
+#country-info-access-text > .target-percentage {color: #43C4AD;}
+.percent-sign {
+    font-size: 0.7em;
+    left: 0.1em;
+    position: relative;
+    top: -0.3em;
+}
 
 #country-info-graph {
 	background-color: #FFFFFF;
@@ -581,19 +591,20 @@ aside.info {
 
 .sanitation #country-info line.history,
 .sanitation #country-info line.projection {
-	stroke: #43C4AD;
+	stroke: #DD7733;
 	}
 
 .water #country-info line.history,
 .water #country-info line.projection {
-	stroke: steelblue;
+	stroke: #555;
 	}
-#country-info line.universal { stroke: orange; }
-#country-info line.year-line
-{
+	
+.sanitation #country-info line.universal { stroke: #43C4AD; }
+
+.water #country-info line.universal { stroke: #3FC0F0; }
+#country-info line.year-line {
 	stroke: #aaa;
 	stroke-width: 1;
-	stroke-dasharray: 2,2;
 }
 
 #country-info text {
@@ -658,15 +669,14 @@ aside.info {
 }
 #targets-key-text { display: inline; }
 
-.water .currently { color: steelblue; }
-.sanitation .currently { color: #43C4AD; }
+.water .currently { color:#666; }
+.sanitation .currently { color: #DD7733; }
 
 .currently > .targets-detail {
 	padding-left:1em;
 }
-.for-target {
-	color: orange;
-}
+.water .for-target {color: #3FC0F0;}
+.sanitation .for-target {color: #43C4AD;}
 .for-target > .targets-detail {
 	padding-right:1em;
 }
@@ -698,10 +708,11 @@ aside.info {
 }
 
 .person { fill: #aaa; }
-.water .person.current { fill: steelblue; }
-.sanitation .person.current { fill: #43C4AD; }
+.water .person.current { fill: #666; }
+.sanitation .person.current { fill: #DD7733; }
 .person.current .negative { fill: red; }
-.person.target { fill: orange; }
+.water .person.target { fill: #3FC0F0; }
+.sanitation .person.target { fill: #43C4AD; }
 .person.key { fill: #aaa; }
 
 /*------Footer----------------
@@ -735,7 +746,7 @@ aside.info {
 
 @media all and (max-width: 900px) and (min-width: 649px) {
 	.map-info {font-size:0.95em;left:2em;margin-top:45%;}
-	.big {font-size:2.5em;}
+	.big {font-size:2em;}
 
 
 
@@ -769,6 +780,7 @@ aside.info {
 	#country-info {font-size:0.9em;}
 	.targets-title {font-size:1em;}
 	.main-footer {width:65%;}
+	#reset-button {padding-top:0.2em;}
 
 }
 
@@ -807,7 +819,7 @@ aside.info {
 	#map {
 		width:85%;
 		float:right;
-		margin-bottom:2em;
+		margin-bottom:4em;
 	}
 	.social-share {
 	    background-color: #FFFFFF;
@@ -962,7 +974,7 @@ aside.info {
 	    font-size: 0.9em;
 	    padding: 0.5em;
 	}
-	#map {margin-bottom:6em;}
+	#map {margin-bottom:7.5em;}
 	.instructions {display:none;}
 	.legend {height: 60px;}
 	.map-info{font-size:0.9em;}
