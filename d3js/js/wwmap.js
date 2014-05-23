@@ -541,8 +541,8 @@ function resetCountryIfNoData() {
 	// the selected country might not have data for the other source
 	if (valueForCountry(selectedCountry, selectedYear) == null) {
 		selectedCountry = config.initialCountry;
+		removeSelectedBorder();
 	}
-	removeSelectedBorder();
 }
 
 /* called by the slider */
