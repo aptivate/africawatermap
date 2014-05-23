@@ -34,7 +34,7 @@ a, a img, img a {
 #wrapperdiv {
     display: table;
     margin: 0 auto;
-    max-width: 960px;
+    max-width: 1080px;
     min-width:290px;
     overflow: visible;
     padding: 1em 0 1em;
