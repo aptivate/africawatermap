@@ -241,6 +241,14 @@ function checkLogoRemoval() {
 	}
 }
 
+function checkSocialRemoval() {
+	if (QueryString.hasOwnProperty("social")) {
+		if (QueryString.social == "none") {
+			d3.select(".social-share").selectAll("*").remove();
+		}
+	}
+}
+
 /* draw circle and 2 rectangles
  *
  * svg - svg object to draw person on
@@ -1049,6 +1057,7 @@ function loadedDataCallback(error, africa, dataset, langData) {
 	addLinksToShareButtons();
 
 	checkLogoRemoval();
+	checkSocialRemoval();
 
 	// causes trouble for IE 9 - so do it last
 	tooltipdiv.style("opacity", 0);
