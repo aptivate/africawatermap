@@ -490,7 +490,7 @@ function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
 	var minWidth = 6;
 	if (coverage != null) {
-		coverage = coverage.toFixed(1) + "%";
+		coverage = formatPercent(coverage) + "%";
 	} else {
 		coverage = "No Data";
 		minWidth = 8;
