@@ -1091,7 +1091,7 @@ function init(mapconfig) {
 	if (QueryString.hasOwnProperty("lang")) {
 		lang = QueryString.lang;
 	}
-	var lang_url = 'data/lang_' + lang + '.json';
+	var lang_url = 'data/lang_' + lang + '.min.json';
 
 	var projection = d3.geo.mercator()
 		.scale(width/1.25)
