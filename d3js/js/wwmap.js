@@ -222,6 +222,11 @@ function updateSocialText() {
 			metaTag[i].content = title;
 		}
 	}
+
+	// update the iframe link with the query parameters
+	var embedPre = d3.select(".embed-example > pre");
+	embedPre.text(
+		embedPre.text().replace("index.html", "index.html" + window.location.search));
 }
 
 function addLinksToShareButtons() {
