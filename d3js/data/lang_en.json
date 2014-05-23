@@ -5,12 +5,14 @@
 	"access to water": "access to water",
 	"access to sanitation": "access to sanitation",
 
-	"of people have access to water": "of people have access to water",
-	"of people have access to sanitation": "of people have access to sanitation",
+	"of people have access to water - past": "of people had access to water",
+	"of people have access to water - future": "of people will have access to water",
+	"of people have access to sanitation - past": "of people had access to sanitation",
+	"of people have access to sanitation - future": "of people will have access to sanitation",
 	"of people need access to water": "of people need access to water",
 	"of people need access to sanitation": "of people need access to sanitation",
 	"actual and projected": "actual and projected",
-	"current trends": "current trends",
+	"current trends": "(on current trends)",
 	"to achieve targets": "to achieve targets",
 
 	"Africa Water Week": "Africa Water Week",

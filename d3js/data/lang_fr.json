@@ -5,12 +5,14 @@
 	"access to water": "acc\u00e8s \u00e0 l'eau potable",
 	"access to sanitation": "acc\u00e8s a l'assainissement",
 
-	"of people have access to water": "de la population a acc\u00e8s \u00e0 l'eau potable",
-	"of people have access to sanitation": "de la population a acc\u00e8s a l'assainissement",
+	"of people have access to water - past": "of people had access to water",
+	"of people have access to water - future": "of people will have access to water",
+	"of people have access to sanitation - past": "of people had access to sanitation",
+	"of people have access to sanitation - future": "of people will have access to sanitation",
 	"of people need access to water": "of people need access to water",
 	"of people need access to sanitation": "of people need access to sanitation",
 	"actual and projected": "r\u00e9el, projet\u00e9",
-	"current trends": "les tendances actuelles",
+	"current trends": "(on current trends)",
 	"to achieve targets": "to achieve targets",
 
 	"Africa Water Week": "Carte de l'Afrique de l'Eau",
