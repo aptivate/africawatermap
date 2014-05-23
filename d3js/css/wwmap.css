@@ -564,8 +564,9 @@ aside.info {
 #country-info line.universal { stroke: orange; }
 #country-info line.year-line
 {
-	stroke: #D34231;
+	stroke: #aaa;
 	stroke-width: 1;
+	stroke-dasharray: 2,2;
 }
 
 #country-info text {
