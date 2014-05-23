@@ -563,7 +563,8 @@ aside.info {
 
 .water #country-info-access-text > .access-percentage { color:#6B6A67; }
 .sanitation #country-info-access-text > .access-percentage { color: #DD7733; }
-#country-info-access-text > .target-percentage {color: #43C4AD;}
+.water #country-info-access-text > .target-percentage {color: #3FC0F0;}
+.sanitation #country-info-access-text > .target-percentage {color: #43C4AD;}
 .percent-sign {
     font-size: 0.7em;
     left: 0.1em;
