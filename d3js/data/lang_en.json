@@ -64,7 +64,7 @@
 
 	"people": "people",
 
-	"That is just % of the population": "Only an extra <span class=\"targets-percent-digits\"></span>% of the <a title=\"Find out more\" href=\"#description-more-info\">2030 population *</a> needs to be reached annually to achieve universal access",
+	"That is just % of the population": "Only an extra <span class=\"targets-percent-digits\"></span>% of the <a title=\"Find out more\" href=\"http://www.wateraid.org/get-involved/campaigns/africa-water-week#/about-our-interactive-map\">2030 population</a> needs to be reached annually to achieve universal access",
 
 	"about this map": "About this map",
 	"this map shows which ...": "This map shows which African countries are on track to reach everyone, everywhere with access to water and sanitation by 2030, and what increase in access is required in countries that are not on track.",
