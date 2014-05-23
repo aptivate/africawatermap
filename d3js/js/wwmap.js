@@ -530,6 +530,14 @@ function updateColorScale() {
 		.range(colorRange);
 }
 
+function resetCountryIfNoData() {
+	// the selected country might not have data for the other source
+	if (valueForCountry(selectedCountry, selectedYear) == null) {
+		selectedCountry = config.initialCountry;
+	}
+	removeSelectedBorder();
+}
+
 /* called by the slider */
 function setYear(ext, value) {
 	selectedYear = value;
@@ -543,6 +551,7 @@ function setYear(ext, value) {
 
 function setSource(source) {
 	selectedSource = source;
+	resetCountryIfNoData();
 	// update everything that varies by source
 	d3.select("#wrapperdiv").attr("class", "wrapper " + selectedSource);
 	updateMapInfo();
