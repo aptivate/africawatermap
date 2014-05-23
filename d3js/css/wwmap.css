@@ -606,6 +606,7 @@ aside.info {
 #country-info line.year-line {
 	stroke: #aaa;
 	stroke-width: 1;
+}
 
 #country-info text {
 	font-family: sans-serif;
