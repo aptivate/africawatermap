@@ -916,6 +916,9 @@ aside.info {
 	    margin-right: 0;
 	}
 
+	.embed-example { top:35px; }
+	.embed-example:after { left:calc(130px + 11.5em); }
+
 	#map {
 		margin-bottom:5em;
 	}
