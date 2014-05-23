@@ -190,6 +190,8 @@ function updateSocialText() {
 
 	d3.select("#twitter-search-link")
 		.attr("href", "https://twitter.com/#" + hashTag)
+		.attr("title", getTranslation("follow africa water map"))
+		.attr("target", "_top")
 		.text(" #" + hashTag);
 
 	d3.select(".ss-share-link.ico-facebook")
