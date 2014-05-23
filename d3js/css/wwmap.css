@@ -593,7 +593,7 @@ aside.info {
 {
 	stroke: #aaa;
 	stroke-width: 1;
-	stroke-dasharray: 2,2;
+	/*stroke-dasharray: 2,2;*/
 }
 
 #country-info text {
