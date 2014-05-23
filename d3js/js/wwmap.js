@@ -193,7 +193,6 @@ function updateSocialText() {
 		.text(" #" + hashTag);
 
 	d3.select(".ss-share-link.ico-facebook")
-		//.attr("href", "http://www.facebook.com/sharer.php?u=" + encodedUrl);
 		.attr("href", "https://www.facebook.com/sharer.php?s=100&p[title]=" + title +
 			"&p[summary]=" + otherText +
 			"&p[url]=" + encodedUrl);
