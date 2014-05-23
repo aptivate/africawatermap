@@ -66,6 +66,14 @@ function numberWithCommas(number) {
 	return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function formatPercent(number) {
+	if (number >= 100) {
+		return Math.round(number).toString();
+	} else {
+		return number.toFixed(1);
+	}
+}
+
 function capitaliseFirstLetter(string)
 {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -482,7 +490,7 @@ function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
 	var minWidth = 6;
 	if (coverage != null) {
-		coverage = coverage.toFixed(1) + "%";
+		coverage = formatPercent(coverage) + "%";
 	} else {
 		coverage = "No Data";
 		minWidth = 8;
@@ -691,14 +699,21 @@ function updateMapInfo() {
 }
 
 function setCountryInfoAccessText() {
-	var accessText;
-	var percentValue = valueForCountry(selectedCountry, selectedYear).toFixed(1);
+	var accessText, accessTextPast, accessTextFuture;
+	var percentValue = formatPercent(valueForCountry(selectedCountry, selectedYear));
 	if (selectedSource == 'water') {
-		accessText = getTranslation('of people have access to water');
+		accessTextPast = getTranslation('of people have access to water - past');
+		accessTextFuture = getTranslation('of people have access to water - future');
 		targetText = getTranslation('of people need access to water');
 	} else {
-		accessText = getTranslation('of people have access to sanitation');
+		accessTextPast = getTranslation('of people have access to sanitation - past');
+		accessTextFuture = getTranslation('of people have access to sanitation - future');
 		targetText = getTranslation('of people need access to sanitation');
+	}
+	if (selectedYear <= config.thisYear) {
+		accessText = accessTextPast;
+	} else {
+		accessText = accessTextFuture;
 	}
 	var accessTextElement = d3.select("#country-info-access-text");
 	accessTextElement.selectAll("*").remove();
@@ -712,12 +727,15 @@ function setCountryInfoAccessText() {
 	accessTextElement.append("span")
 		.attr("class", "in-year")
 		.text("in " + selectedYear.toString());
-	accessTextElement.append("span")
-		.attr("class", "actual-projected")
-		.text(" " + getTranslation("current trends"));
-	
 	if (selectedYear > config.thisYear) {
-		targetValue = targetValueForCountry(selectedCountry, selectedYear).toFixed(1);
+		accessTextElement.append("span")
+			.attr("class", "actual-projected")
+			.text(" " + getTranslation("current trends"));
+	}
+	
+	endTrendValue = valueForCountry(selectedCountry, config.maxYear);
+	if (selectedYear > config.thisYear && endTrendValue < 100) {
+		targetValue = formatPercent(targetValueForCountry(selectedCountry, selectedYear));
 		targetTextElement = accessTextElement.append("p")
 			.attr("class", "target-increase");
 		percentSpan = accessTextElement.append("span")
