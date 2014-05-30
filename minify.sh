@@ -12,6 +12,3 @@ jq --compact-output --ascii-output . d3js/data/lang_fr.json > d3js/data/lang_fr.
 
 # minify CSS
 minify d3js/css/wwmap.css
-
-git add */*/*.min.*
-git commit -m 'updated minified files'
