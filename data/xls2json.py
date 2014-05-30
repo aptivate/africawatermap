@@ -70,11 +70,12 @@ NAME_CODE = {
     "Seychelles": "SC",
     "Sierra Leone": "SL",
     "Somalia": "SO",
+    "Somaliland": "-99",
     "South Africa": "ZA",
     "South Sudan": "SS",
     "Sub-Saharan Africa": "Africa",
     "Sudan": "SD",
-    "Swaziland": "SW",
+    "Swaziland": "SZ",
     "Togo": "TG",
     "Tunisia": "TN",
     "Uganda": "UG",
@@ -166,7 +167,9 @@ def process_absolute_sheet(sheet, data):
 def main(argv):
     opts = docopt(__doc__, argv[1:])
 
-    data = {}
+    # somaliland has the label "-99" in the map data, and no data in the
+    # spreadsheets, but we still want a label.
+    data = {"-99": {"name": "Somaliland"}}
 
     #xls2json.py [--verbose] <xlsPercentFile> <xlsAbsoluteFile>
     percent_book = xlrd.open_workbook(opts['<xlsPercentFile>'])
