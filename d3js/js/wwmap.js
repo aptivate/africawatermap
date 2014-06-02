@@ -45,21 +45,6 @@ function replaceBodyWithFallbackImage() {
 	document.body.appendChild(image);
 }
 
-function pluck(anObject, key) {
-	range = []
-	for (var key in anObject) {
-		if (anObject.hasOwnProperty(key)) {
-			var obj = anObject[key]
-			for (var prop in obj) {
-				if (obj.hasOwnProperty(prop)) {
-					range.push(obj[prop]);
-				}
-			}
-		}
-	}
-	return range;
-}
-
 function numberWithCommas(number) {
 	// split on decimal point - we discard after decimal
 	var parts = number.toString().split(".");
