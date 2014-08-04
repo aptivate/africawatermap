@@ -1068,6 +1068,10 @@ function init(mapconfig) {
 	}
 	// we don't want to reset source on reset button
 	selectedSource = config.initialSource;
+	if (QueryString.hasOwnProperty("source")) {
+		selectedSource = QueryString.source;
+	}
+
 	setDefaultSelections();
 
 	var width = parseInt(d3.select('#map').style('width'));
