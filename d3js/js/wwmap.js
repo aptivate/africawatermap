@@ -45,21 +45,6 @@ function replaceBodyWithFallbackImage() {
 	document.body.appendChild(image);
 }
 
-function pluck(anObject, key) {
-	range = []
-	for (var key in anObject) {
-		if (anObject.hasOwnProperty(key)) {
-			var obj = anObject[key]
-			for (var prop in obj) {
-				if (obj.hasOwnProperty(prop)) {
-					range.push(obj[prop]);
-				}
-			}
-		}
-	}
-	return range;
-}
-
 function numberWithCommas(number) {
 	// split on decimal point - we discard after decimal
 	var parts = number.toString().split(".");
@@ -131,14 +116,14 @@ function updateStaticText() {
 	setSelectionText("#fallback-title", "Africa Water Map");
 	setSelectionHtml("#fallback-text", "browser fallback");
 	setSelectionLeadingText("#map-info-title", "map info title");
-	setSelectionLeadingText(".map-info > h1 > span.big", selectedSource)
+	setSelectionLeadingText(".map-info > h1 > span.big", selectedSource);
 	setSelectionHtml(".instructions", "instructions");
 	setSelectionText("#select-water-source", "water", true);
 	setSelectionText("#select-sanitation-source", "sanitation", true);
 	setSelectionText("#reset-button", "Reset");
 
 	// sharing section
-	setSelectionLeadingText(".social-share > h2", "share")
+	setSelectionLeadingText(".social-share > h2", "share");
 	setSelectionTitle("#twitter-search-link", "follow africa water map");
 	setSelectionTitle(".ss-share-link.ico-facebook", "share on facebook");
 	setSelectionTitle(".ss-share-link.ico-twitter", "share on twitter");
@@ -321,7 +306,7 @@ function drawPeople(totalPeople, maxPeople, current_or_target) {
 	personDiv.selectAll("*").remove();
 
 	// add the graph
-	var personDivInner = personDiv.append("div")
+	var personDivInner = personDiv.append("div");
 	var width = parseInt(personDivInner.style('width'));
 	var height;
 	if (maxPeople <= 10) {
@@ -430,7 +415,7 @@ function selectTextUnits(number1, number2) {
 	var k = {number: 1000, abbrev: getTranslation("one_letter_1000")};
 	var m = {number: 1000000, abbrev: getTranslation("one_letter_1000000")};
 
-	if (minNumber == 0) {
+	if (minNumber === 0) {
 		if (maxNumber < 1000000) {
 			return k;
 		} else {
@@ -503,7 +488,7 @@ function countryClicked(d) {
 function hoverCountry(d) {
 	var coverage = valueForCountry(d.id, selectedYear);
 	var minWidth = 6;
-	if (coverage != null) {
+	if (coverage !== null) {
 		coverage = formatPercent(coverage) + "%";
 	} else {
 		coverage = "No Data";
@@ -554,7 +539,7 @@ function updateColorScale() {
 
 function resetCountryIfNoData() {
 	// the selected country might not have data for the other source
-	if (valueForCountry(selectedCountry, selectedYear) == null) {
+	if (valueForCountry(selectedCountry, selectedYear) === null) {
 		selectedCountry = config.initialCountry;
 		removeSelectedBorder();
 	}
@@ -588,9 +573,9 @@ function setSource(source) {
 
 function getCountryName(country_code) {
 	if (allData.hasOwnProperty(country_code)) {
-		return getTranslation(allData[country_code]["name"]);
+		return getTranslation(allData[country_code].name);
 	}
-	return "unknown"
+	return "unknown";
 }
 
 function valueForCountry(country_code, year) {
@@ -639,7 +624,7 @@ function extractDataForSourceAndYear() {
 	for (var country_code in allData) {
 		if (allData.hasOwnProperty(country_code)) {
 			var value = valueForCountry(country_code, selectedYear);
-			if (value != null) {
+			if (value !== null) {
 				yearData[country_code] = value;
 			}
 		}
@@ -1007,7 +992,7 @@ function updateMapColors() {
 	mapsvg.selectAll(".country")
 		.style("fill", function(d) {
 			return colorScaleOrDefault(yearData, d.id);
-		})
+		});
 }
 
 function createSlider() {
@@ -1083,6 +1068,10 @@ function init(mapconfig) {
 	}
 	// we don't want to reset source on reset button
 	selectedSource = config.initialSource;
+	if (QueryString.hasOwnProperty("source")) {
+		selectedSource = QueryString.source;
+	}
+
 	setDefaultSelections();
 
 	var width = parseInt(d3.select('#map').style('width'));
